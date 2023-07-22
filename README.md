@@ -8,7 +8,11 @@
 
 刚需 FFmpeg，没有安装请进行安装
 
-#### 安装命令（没传东西，安装个 der）
+#### 安装命令
+
+```
+git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./plugins/reset-qianyu-plugin/
+```
 
 #### 使用说明
 
