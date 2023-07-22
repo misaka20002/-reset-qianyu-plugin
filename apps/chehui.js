@@ -1,4 +1,3 @@
-import './QQapi.js'
 import Base from '../model/base/Base.js'
 export default class chehui extends Base {
     constructor() {

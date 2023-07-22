@@ -1,5 +1,4 @@
 import Bili from '../model/bilibili.js'
-import lodash from 'lodash'
 export default class bilibili extends Bili {
     constructor(e) {
         super({
