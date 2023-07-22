@@ -1,0 +1,33 @@
+{
+    "QQ红包": {
+        "app": "com.tencent.qun.invite",
+        "desc": "xyz",
+        "view": "pic",
+        "ver": "1.0.0.31",
+        "prompt": "[QQ红包]恭喜发财!",
+        "appID": "",
+        "sourceName": "",
+        "actionData": "",
+        "actionData_A": "",
+        "sourceUrl": "",
+        "meta": {
+            "pic": {
+                "jumpUrl": "",
+                "preview": "http://p.qlogo.cn/qqmail_head/Q3auHgzwzM7lBCFS4Nqu7fl41k2EtkQwqpDowibDJFo2bnHFbOljIkhEa1o0QN3SbAYE9QaSXibsc/0",
+                "tag": "拼手气红包"
+            }
+        },
+        "config": {
+            "ctime": 1678617040,
+            "forward": 1,
+            "menuMode": 0,
+            "round": 0,
+            "showSender": 1,
+            "token": "2d3f5800cb1b345be42b892f91ad2849",
+            "type": "normal"
+        },
+        "text": "",
+        "sourceAd": "",
+        "extra": "{\"app_type\":1,\"appid\":100951776,\"msg_seq\":1678617035696200,\"uin\":1341806518}"
+    }
+}
