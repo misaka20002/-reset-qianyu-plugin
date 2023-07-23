@@ -5,7 +5,7 @@ import networks from '../../utils/networks.js'
 import downfile from '../../utils/downfile.js'
 import Path from './Path.js'
 import common from '../../utils/common.js'
-import timer from '../../utils/timer.js'
+import timer from '../../utils/Timer.js'
 let stateArr = {}
 export default class Base {
     constructor(data) {

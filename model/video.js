@@ -11,11 +11,11 @@ export default class video extends Base {
 
     //获取视频列表
     getVideoListData(name) {
-        return this.Data.getDataJson(name)
+        return this.Data.getDataJson(name) || {}
     }
 
     getVideoDataByName(name) {
-        return this.getVideoListData(`video/${name}`)
+        return this.getVideoListData(`video/${name}`) || {}
     }
 
     setVideoDataByName(data, name) {
@@ -77,7 +77,7 @@ export default class video extends Base {
 
     //获取b站视频列表
     getBiliListData() {
-        return this.getVideoListData('video/bilibilivideo')
+        return this.getVideoListData('video/bilibilivideo') || {}
     }
 
     async downVideo(data, path, suc) {
