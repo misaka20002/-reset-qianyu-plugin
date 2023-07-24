@@ -22,7 +22,7 @@ export default class Base {
         this.timer = timer
         this.task = {
             /** 任务名 */
-            name: '',
+            name: data.task?.name || '',
             /** 任务方法名 */
             fnc: data.task?.fnc || '',
             /** 任务cron表达式 */
