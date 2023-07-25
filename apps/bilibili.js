@@ -213,7 +213,7 @@ export default class bilibili extends Bili {
         let qnlist = [120, 116, 112, 80, 64, 32]
         let videoPath = this.Path.qianyuPath + `resources/video/source_${bv}.mp4`
         let resultPath = this.Path.qianyuPath + `resources/video/${bv}.mp4`
-        let { videoUrl, audio } = await this.getQnVideo(qn, bv, 'dsd')
+        let { videoUrl, audio } = await this.getQnVideo(qn, bv)
         let audioPath = this.Path.qianyuPath + `resources/video/source_${bv}.mp3`
         let bilibi = await this.downBiliFile(videoUrl, `source_${bv}.mp4`, () => { })
         let ado = await this.downBiliFile(audio, `source_${bv}.mp3`, () => { })

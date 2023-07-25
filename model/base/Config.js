@@ -3,6 +3,7 @@ import YamlReader from '../../utils/YamlReader.js'
 import chokidar from 'chokidar'
 import Path from './Path.js'
 import _ from 'lodash'
+let pluginName = 'reset-qianyu-plugin'
 class Config {
     constructor(isWatcher = false) {
         this.Cfg = {}//配置存储
@@ -98,7 +99,7 @@ class Config {
 
 
     watch(name) {
-        this.Watcher[name] = chokidar.watch(`./plugins/qianyu-plugin/${this.cfg_path}/${name}.config.yaml`).on('change', () => {
+        this.Watcher[name] = chokidar.watch(`./plugins/${pluginName}/${this.cfg_path}/${name}.config.yaml`).on('change', () => {
             delete this.Cfg[name]
             console.log("修改了配置文件" + name);
             this.GetCfg(name)

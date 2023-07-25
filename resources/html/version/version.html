@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{_res_path}}/html/version/version.css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>千羽版本</h1>
+        {{each loglist lg}}
+        <div class="version-div">
+            <h2>{{lg.Version}}</h2>
+            {{each lg.loglist lg2}}
+            <div class="updatainfo">
+                <span>●{{lg2.value}}</span>
+
+                <div class="buginfo">
+                    {{each lg2.logs lg3}}
+                    <div>
+                        ○{{lg3}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{/each}}
+    </div>
+</body>
+
+</html>

@@ -16,4 +16,4 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 
 #### 使用说明
 
-没有说明
+详细说明请看版本信息

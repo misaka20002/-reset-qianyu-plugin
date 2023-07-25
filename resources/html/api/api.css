@@ -1,0 +1,123 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+#container {
+    width: 1000px;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 10px;
+    background-size: cover;
+    height: 1300px;
+}
+
+.header {
+    width: 100%;
+    height: 70px;
+    background-color: rgba(118, 201, 215, 0.5);
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    line-height: 70px;
+    color: rgb(33, 3, 109);
+}
+
+.content {
+    width: 100%;
+}
+
+h3 {
+    background-color: rgb(243, 201, 125);
+    width: 100px;
+    text-align: center;
+    border-radius: 999px;
+    line-height: 40px;
+    color: rgb(77, 21, 21);
+    z-index: 10;
+    position: relative;
+    top: 10px;
+}
+
+li {
+    list-style: none;
+}
+
+.apicotent {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 220px);
+    grid-gap: 20px;
+    grid-auto-rows: 40px;
+    background-color: rgba(245, 185, 185, 0.5);
+    border-radius: 10px;
+    padding: 20px 10px 10px 10px;
+    justify-content: center;
+}
+
+.apilist {
+    margin-top: 20px;
+}
+
+.apibox {
+    background-color: rgb(154, 16, 57);
+    border-radius: 10px;
+    display: flex;
+    color: rgb(255, 255, 255);
+}
+
+.left {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.apibox>.left span,
+.bottom span {
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.green {
+    background-color: rgb(109, 225, 117);
+}
+
+.red {
+    background-color: rgb(255, 0, 0);
+}
+
+.yello {
+    background-color: rgb(231, 247, 11);
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.right span {
+    font-size: 12px;
+}
+
+.bottom {
+    margin-top: 50px;
+    padding: 50px;
+    background-color: rgba(245, 185, 185, 0.5);
+}
+
+.bottom h4 {
+    margin: 0 30%;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+
+}

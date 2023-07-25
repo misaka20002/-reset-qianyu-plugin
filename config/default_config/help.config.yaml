@@ -1,0 +1,12 @@
+#帮助列表
+helplist:
+  - title: 其他功能
+    list:
+      - title: 引用撤回
+        desc: 在机器人发送的消息回复撤回，机器人会撤回该消息
+        icon: "141"
+  - title: 管理员功能
+    list:
+      - title: "#千羽帮助"
+        desc: 帮帮
+        icon: "100"

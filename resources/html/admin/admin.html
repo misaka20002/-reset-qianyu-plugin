@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="{{_res_path}}/html/admin/index.css" />
+</head>
+
+<body>
+	<div class="container" id="container">
+		<div class="info_box">
+			<div class="head-box ">
+				<div class="label">--------千羽设置--------</div>
+				<div class="title">千羽管理面板</div>
+			</div>
+		</div>
+
+		{{each data d}}
+		<div class="cfg-box">
+			<div class="cfg-group">{{d.title}}</div>
+			<ul class="cfg-ul">
+				{{each d.configlist clist}}
+				<li class="cfg-li">
+					<div class="cfg-line">
+						{{clist.name}}
+						<span class="cfg-hint">{{clist.reg}} </span>
+						{{if
+						clist.name=='ai概率'||clist.name=='ai群概率'||clist.name=='ai名称'||clist.name=='私聊ai'||clist.name=='群聊ai'||clist.name=='报时角色'}}
+						<div class="cfg-status ">
+							{{clist.status}}</div>
+						{{else}}
+						<div class="cfg-status {{clist.status==false?'status-off':''}}">
+							{{clist.status?'已开启':'已关闭'}}</div>
+						{{/if}}
+
+					</div>
+					<div class="cfg-desc">{{clist.desc}}</div>
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+		{{/each}}
+	</div>
+</body>
+
+</html>

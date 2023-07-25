@@ -6,6 +6,7 @@ import downfile from '../../utils/downfile.js'
 import Path from './Path.js'
 import common from '../../utils/common.js'
 import timer from '../../utils/Timer.js'
+import render from './render.js'
 let stateArr = {}
 export default class Base {
     constructor(data) {
@@ -20,6 +21,7 @@ export default class Base {
         this.event = data.event || 'message'
         this.priority = data.priority || 5000
         this.timer = timer
+        this.render = render
         this.task = {
             /** 任务名 */
             name: data.task?.name || '',

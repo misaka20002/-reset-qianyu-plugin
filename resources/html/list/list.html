@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{_res_path}}/html/list/list.css">
+</head>
+
+<body>
+    <div id="container">
+        <div class="topdiv">
+
+            <div>
+                <img src="https://q1.qlogo.cn/g?b=qq&s=0&nk={{bqd.user_id}}" />
+                <img src="{{_res_path}}/img/表情帝.png" class="wl bqd" />
+                <span>表情帝</span>
+                <span>{{bqd.uname}}</span>
+                <span>共发送{{bqd.facestime}}张表情包</span>
+            </div>
+            <div>
+                <img src="https://q1.qlogo.cn/g?b=qq&s=0&nk={{dsw.user_id}}" />
+                <img src="{{_res_path}}/img/大水王.png" class="wl dsw" />
+                <span>大水王</span>
+                <span>{{dsw.uname}}</span>
+                <span>水群占比{{dsw.Percentage}}%</span>
+            </div>
+            <div>
+                <img src="https://q1.qlogo.cn/g?b=qq&s=0&nk={{shwz.user_id}}" />
+                <img src="{{_res_path}}/img/深海乌贼.png" class="wl shwz" />
+                <span>深海乌贼</span>
+                <span>{{shwz.nickname}}</span>
+                <span>上次发言在{{shwz.lastmsgtime}}</span>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th>NO</th>
+                <th>昵称</th>
+                <th>消息数</th>
+                <th>表情数</th>
+                <th>消息占比</th>
+            </tr>
+            {{each charlist ch,index}}
+            <tr>
+                <td>{{index+1}}</td>
+                <td><img src="https://q1.qlogo.cn/g?b=qq&s=0&nk={{ch.user_id}}" />{{ch.uname}}</td>
+                <td>{{ch.times}}</td>
+                <td>{{ch.facestime}}</td>
+                <td>{{ch.Percentage}}%</td>
+            </tr>
+            {{/each}}
+        </table>
+        <p class="last" align="center">当天消息统计</p>
+        <p class="last" align="center">Yunzai-Bot&qianyu-plugin</p>
+    </div>
+</body>
+
+</html>

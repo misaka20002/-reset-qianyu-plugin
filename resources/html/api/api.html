@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{_res_path}}/html/api/api.css">
+</head>
+
+<body>
+    <div id="container" style="background-image:url({{_res_path}}/html/api/api{{radom}}.jpg)">
+        <div class="header">
+            <h1>千羽API管理</h2>
+        </div>
+        <div class="content">
+            {{each apilist api}}
+            <div class="apilist">
+                <h3>{{api.name}}</h3>
+                <div class="apicotent">
+                    {{each api.list list}}
+                    <div class="apibox">
+                        <div class="left ">
+                            <span class="{{list.code==200?'green':list.code==404?'yello':'red'}}"></span>
+                        </div>
+                        <div class="right">
+                            <h4>{{list.name}}</h4>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="bottom">
+            <h4>api说明<span class="green"></span>表示接口正常<span class="yello"></span>表示找不到接口<span class="red"></span>表示接口报错
+            </h4>
+        </div>
+    </div>
+</body>
+
+</html>
