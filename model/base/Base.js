@@ -97,14 +97,19 @@ export default class Base {
         }
     }
 
-    async makeGroupMsg(title, msg, isfk = false) {
+    async makeGroupMsg(title, msg, isfk = false, user_id) {
         let nickname = Bot.nickname
+        let uid = Bot.uin
+        if (user_id) {
+            uid = user_id
+        }
+
         if (this.e.isGroup) {
-            let info = await Bot.getGroupMemberInfo(this.e.group_id, Bot.uin)
+            let info = await Bot.getGroupMemberInfo(this.e.group_id, uid)
             nickname = info.card ?? info.nickname
         }
         let userInfo = {
-            user_id: Bot.uin,
+            user_id: uid,
             nickname
         }
         let forwardMsg = []

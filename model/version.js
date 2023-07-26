@@ -11,7 +11,6 @@ const getLine = function (line) {
     line = line.replace(/\s*\*\*([^\*]+\*\*)/g, '<span class="strong">$1')
     line = line.replace(/\*\*\s*/g, '</span>')
     line = line.replace(/ⁿᵉʷ/g, '<span class="new"></span>')
-    console.log(line);
     return line
 }
 
@@ -54,7 +53,6 @@ const readLogFile = function (versionCount = 4) {
                         return
                     }
                     if (/^\*/.test(line)) {
-                        console.log("进来了");
                         lastLine = {
                             title: getLine(line),
                             logs: []
@@ -71,4 +69,5 @@ const readLogFile = function (versionCount = 4) {
     }
     return { changelogs, currentVersion }
 }
-console.log(readLogFile());
+let { currentVersion: qianyuVersion, changelogs } = readLogFile()
+export { qianyuVersion, changelogs }

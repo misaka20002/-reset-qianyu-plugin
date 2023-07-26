@@ -1,39 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+{{extend defaulthtml}}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="{{_res_path}}/html/help/help.css" />
-</head>
+{{block 'css'}}
+<link rel="stylesheet" type="text/css" href="{{ _res_path}}/html/help/help.css" />
+{{/block}}
 
-<body>
-    <div id="container">
-        <div class="head">
-            <h1>千羽帮助</h1>
-            <h3>YunZai-bot&qianyu-plugin</h3>
-        </div>
-        <div class="content">
-            {{each helplist h }}
-            <div class="content-div">
-                <h2> {{h.title}}</h2>
-                <div class="content-box">
-                    {{each h.list hl}}
-                    <div class="children-box">
-                        <div class="left"
-                            style="background-position-x: {{((hl.icon[hl.icon.length - 1] == 0 ? 10 : hl.icon[hl.icon.length - 1]) - 1) * -50}}px;background-position-y: {{((hl.icon.length>2?hl.icon[0]+hl.icon[1]:hl.icon[0])-(hl.icon[hl.icon.length-1]==0?1:0))*-50}}px;">
-                        </div>
-                        <div class="right"><span>{{hl.title}}</span><span>{{hl.desc}}</span></div>
-                    </div>
-                    {{/each}}
-                </div>
-            </div>
-            {{/each}}
-        </div>
-
+{{block 'main'}}
+<div id="container">
+    <div class="head">
+        <h1>千羽帮助</h1>
+        <h3>YunZai-bot&qianyu-plugin</h3>
     </div>
-</body>
+    <div class="content">
+        {{each helplist h }}
+        <div class="content-div">
+            <h2> {{h.title}}</h2>
+            <div class="content-box">
+                {{each h.list hl}}
+                <div class="children-box">
+                    <div class="left"
+                        style="background-position-x: {{((hl.icon[hl.icon.length - 1] == 0 ? 10 : hl.icon[hl.icon.length - 1]) - 1) * -50}}px;background-position-y: {{((hl.icon.length>2?hl.icon[0]+hl.icon[1]:hl.icon[0])-(hl.icon[hl.icon.length-1]==0?1:0))*-50}}px;">
+                    </div>
+                    <div class="right"><span>{{hl.title}}</span><span>{{hl.desc}}</span></div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{/each}}
+    </div>
 
-</html>
+</div>
+{{/block}}
