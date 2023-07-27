@@ -99,11 +99,7 @@ export default class Base {
 
     async makeGroupMsg(title, msg, isfk = false, user_id) {
         let nickname = Bot.nickname
-        let uid = Bot.uin
-        if (user_id) {
-            uid = user_id
-        }
-
+        let uid = user_id ? user_id : Bot.uin
         if (this.e.isGroup) {
             let info = await Bot.getGroupMemberInfo(this.e.group_id, uid)
             nickname = info.card ?? info.nickname
@@ -121,22 +117,35 @@ export default class Base {
             })
         });
         /** 制作转发内容 */
-        if (this.e.isGroup) {
-            forwardMsg = await this.e.group.makeForwardMsg(forwardMsg)
+        if (this.e?.group?.makeForwardMsg) {
+            forwardMsg = await e.group.makeForwardMsg(forwardMsg)
+        } else if (this.e?.friend?.makeForwardMsg) {
+            forwardMsg = await e.friend.makeForwardMsg(forwardMsg)
         } else {
-            forwardMsg = await this.e.friend.makeForwardMsg(forwardMsg)
+            return msg.join('\n')
         }
-
-        /** 处理描述 */
-        forwardMsg.data = forwardMsg.data
-            .replace(/\n/g, '')
-            .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-            .replace(/___+/, `<title color="#777777" size="26">${title}</title>`)
 
         if (isfk) {
             forwardMsg.data = forwardMsg.data
                 .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
         }
+
+
+        if (title) {
+            /** 处理描述 */
+            if (typeof (forwardMsg.data) === 'object') {
+                let detail = forwardMsg.data?.meta?.detail
+                if (detail) {
+                    detail.news = [{ text: title }]
+                }
+            } else {
+                forwardMsg.data = forwardMsg.data
+                    .replace(/\n/g, '')
+                    .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                    .replace(/___+/, `<title color="#777777" size="26">${title}</title>`)
+            }
+        }
+
         return forwardMsg
     }
 }
