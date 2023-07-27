@@ -1,5 +1,5 @@
 import Base from '../model/base/Base.js'
-
+import { changelogs } from '../model/version.js'
 export default class help extends Base {
     constructor() {
         super({
@@ -9,6 +9,10 @@ export default class help extends Base {
                 {
                     reg: '(#|)千羽帮助',
                     fnc: 'help'
+                },
+                {
+                    reg: '(#|)千羽版本',
+                    fnc: 'version'
                 }
             ]
         })
@@ -20,5 +24,9 @@ export default class help extends Base {
             data.splice(data.helplist.length - 1, 1)
         }
         return this.reply(await this.render('help', data))
+    }
+
+    async version(e) {
+        return this.reply(await this.render('version', { changelogs }))
     }
 }

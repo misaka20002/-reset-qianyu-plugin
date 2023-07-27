@@ -4,6 +4,7 @@ import fs from 'fs'
 class Render {
     async render(plugin, path, data = {}, cfg = {}) {
         // 处理传入的path
+        console.log(path);
         path = path.replace(/.html$/, '')
         let paths = lodash.filter(path.split('/'), (p) => !!p)
         path = paths.join('/')

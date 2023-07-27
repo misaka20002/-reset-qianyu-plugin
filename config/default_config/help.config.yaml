@@ -5,10 +5,10 @@ helplist:
       - title: b站解析
         desc: 检测到卡片自己解析视频，1080p及以上画质需要b站ck
         icon: "142"
-      - title: 订阅直播间+直播间id
+      - title: "#订阅直播间+直播间id"
         desc: 订阅b站直播间，直播间开始时群里at提醒
         icon: "142"
-      - title: 取消订阅直播间+直播间id
+      - title: "#取消订阅直播间+直播间id"
         desc: 取消订阅直播间
         icon: "142"
 

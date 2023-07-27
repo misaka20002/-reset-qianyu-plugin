@@ -174,7 +174,7 @@ export class update extends Base {
         }
         exec(command, function (error, stdout, stderr) {
             if (error) {
-                e.reply("自动重启失败，请手动重启以应用新版图鉴插件。\nError code: " + error.code + "\n" +
+                e.reply("自动重启失败，请手动重启以应用千羽插件。\nError code: " + error.code + "\n" +
                     error.stack + "\n");
                 Bot.logger.error('重启失败\n${error.stack}');
                 return true;

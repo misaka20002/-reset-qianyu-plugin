@@ -47,6 +47,7 @@ export default class worldColud extends Base {
             memberlist.push(m[1])
         }
         memberlist = lodash.orderBy(memberlist, 'last_sent_time', 'asc')
+        moment.locale('zh-cn')
         memberlist[0].lastmsgtime = moment.unix(memberlist[0].last_sent_time).fromNow().replace(/\s*/g, "")
         let CharArray = [];
         for (const key in groupMsglist) {

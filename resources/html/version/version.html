@@ -1,36 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
+{{extend defaulthtml}}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{_res_path}}/html/version/version.css">
-</head>
+{{block 'css'}}
+<link rel="stylesheet" type="text/css" href="{{_res_path}}/html/version/version-info.css" />
+{{/block}}
 
-<body>
-    <div id="container">
-        <h1>千羽版本</h1>
-        {{each loglist lg}}
-        <div class="version-div">
-            <h2>{{lg.Version}}</h2>
-            {{each lg.loglist lg2}}
-            <div class="updatainfo">
-                <span>●{{lg2.value}}</span>
+{{block 'main'}}
 
-                <div class="buginfo">
-                    {{each lg2.logs lg3}}
-                    <div>
-                        ○{{lg3}}
-                    </div>
-                    {{/each}}
-                </div>
-            </div>
+{{each changelogs ds idx}}
+<div class=" log-cont">
+  <div class="sharp-bg"></div>
+  <div class="cont">
+    {{if idx === 0 }}
+    <div class="cont-title current-version">当前版本 {{ds.version}}</div>
+    {{else}}
+    <div class="cont-title">千羽版本 {{ds.version}}</div>
+    {{/if}}
+    <div class="cont-body">
+      <ul class="log-ul">
+        {{each ds.logs log}}
+        <li>
+          <p>{{@log.title}}</p>
+          {{if log.logs.length > 0}}
+          <ul class="sub-log-ul">
+            {{each log.logs ls}}
+            <li>{{@ls}}</li>
             {{/each}}
-        </div>
+          </ul>
+          {{/if}}
+        </li>
         {{/each}}
+      </ul>
     </div>
-</body>
-
-</html>
+  </div>
+</div>
+{{/each}}
+{{/block}}
