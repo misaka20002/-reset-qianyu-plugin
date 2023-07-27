@@ -21,7 +21,7 @@ export default class worldColud extends Base {
     }
 
     async daySay(e) {
-        this.reply('正在查找今日发言记录！')
+        this.reply('正在查找今日发言记录......')
         let groupMsglist = await this.getGroupHistoryMsg()
         let user_id = e.user_id
         if (e.at) {
@@ -39,7 +39,7 @@ export default class worldColud extends Base {
     }
 
     async sqtj(e) {
-        this.reply('正在分析今天的聊天记录，稍后生成榜单！')
+        this.reply('正在分析今天的聊天记录，稍后生成榜单......')
         let groupMsglist = await this.getGroupHistoryMsg()
         let groupmemberlist = await e.group.getMemberMap()
         let memberlist = []

@@ -125,12 +125,6 @@ export default class Base {
             return msg.join('\n')
         }
 
-        if (isfk) {
-            forwardMsg.data = forwardMsg.data
-                .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
-        }
-
-
         if (title) {
             /** 处理描述 */
             if (typeof (forwardMsg.data) === 'object') {
@@ -139,6 +133,10 @@ export default class Base {
                     detail.news = [{ text: title }]
                 }
             } else {
+                if (isfk) {
+                    forwardMsg.data = forwardMsg.data
+                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
+                }
                 forwardMsg.data = forwardMsg.data
                     .replace(/\n/g, '')
                     .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
