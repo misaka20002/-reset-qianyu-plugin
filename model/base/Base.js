@@ -118,9 +118,9 @@ export default class Base {
         });
         /** 制作转发内容 */
         if (this.e?.group?.makeForwardMsg) {
-            forwardMsg = await e.group.makeForwardMsg(forwardMsg)
+            forwardMsg = await this.e.group.makeForwardMsg(forwardMsg)
         } else if (this.e?.friend?.makeForwardMsg) {
-            forwardMsg = await e.friend.makeForwardMsg(forwardMsg)
+            forwardMsg = await this.e.friend.makeForwardMsg(forwardMsg)
         } else {
             return msg.join('\n')
         }

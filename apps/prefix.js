@@ -39,6 +39,9 @@ export default class prefix extends Base {
             return this.reply("权限不足！")
         }
         let name = e.msg.replace("#设置前缀", "")
+        if (!name.trim()) {
+            return this.reply("群前缀不能为空！")
+        }
         this.SetCfg('group', `${e.group_id}.botAlias`, name)
         this.reply(`群前缀已设置为${name}!`)
     }
