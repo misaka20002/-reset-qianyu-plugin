@@ -21,7 +21,7 @@ export default class help extends Base {
     async help(e) {
         let data = this.Cfg
         if (!e.isMaster) {
-            data.splice(data.helplist.length - 1, 1)
+            data.helplist.splice(data.helplist.length - 1, 1)
         }
         return this.reply(await this.render('help', data))
     }

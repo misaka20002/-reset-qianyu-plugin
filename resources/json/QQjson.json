@@ -29,5 +29,34 @@
         "text": "",
         "sourceAd": "",
         "extra": "{\"app_type\":1,\"appid\":100951776,\"msg_seq\":1678617035696200,\"uin\":1341806518}"
+    },
+    "转图卡": {
+        "app": "com.tencent.imagetextbot",
+        "desc": "",
+        "bizsrc": "",
+        "view": "index",
+        "ver": "1.0.0.11",
+        "prompt": "[转图卡]",
+        "appID": "",
+        "sourceName": "",
+        "actionData": "",
+        "actionData_A": "",
+        "sourceUrl": "",
+        "meta": {
+            "robot": {
+                "cover": "http:\/\/gchat.qpic.cn\/gchatpic_new\/0\/0-0-876B0540DA75487F3E0699FB5F969DB8\/0?term=2",
+                "jump_url": "",
+                "subtitle": "",
+                "title": ""
+            }
+        },
+        "config": {
+            "ctime": 1683949035,
+            "token": "d63994005c9f2275c1b8abe7479f73b6"
+        },
+        "text": "",
+        "extraApps": [],
+        "sourceAd": "",
+        "extra": ""
     }
 }
