@@ -1,10 +1,19 @@
 #帮助列表
 helplist:
-  - title: b站功能
+  - title: 视频解析功能
     list:
       - title: b站解析
-        desc: 检测到卡片自己解析视频，1080p及以上画质需要b站ck
+        desc: 检测到卡片自动解析视频，1080p及以上画质需要b站ck
         icon: "142"
+      - title: "抖音解析"
+        desc: 检测到抖音分享链接自动解析视频
+        icon: "142"
+      - title: "qq小世界解析"
+        desc: 检测到小世界分享卡片自动解析视频
+        icon: "142"
+
+  - title: b站功能
+    list:
       - title: "#订阅直播间+直播间id"
         desc: 订阅b站直播间，直播间开始时群里at提醒
         icon: "142"
@@ -12,20 +21,23 @@ helplist:
         desc: 取消订阅直播间
         icon: "142"
 
-  - title: 其他功能
+  - title: 群功能
     list:
-      - title: 引用撤回
-        desc: 在机器人发送的消息回复撤回，机器人会撤回该消息
-        icon: "141"
-      - title: "#发个红包"
-        desc: 假装发了个大红包
-        icon: "141"
       - title: "#水群统计"
         desc: 让我看看群里的大水比是谁
         icon: "141"
       - title: "#今日发言记录"
         desc: 查看自己今天的发言记录可以@群友查看群友的发言记录
         icon: "143"
+      - title: 引用撤回
+        desc: 在机器人发送的消息回复撤回，机器人会撤回该消息
+        icon: "141"
+
+  - title: 其他功能
+    list:
+      - title: "#发个红包"
+        desc: 假装发了个大红包
+        icon: "141"
 
   - title: 管理员功能
     list:
@@ -34,4 +46,13 @@ helplist:
         icon: "100"
       - title: "#千羽（强制）更新"
         desc: 更新千羽（重置版）
+        icon: "100"
+      - title: "#千羽更新日志"
+        desc: 获取本地更新日志
+        icon: "100"
+      - title: "#设置前缀+名称"
+        desc: 设置当前群聊的机器人前缀
+        icon: "100"
+      - title: "#群前缀开启/关闭"
+        desc: 开启/关闭群前缀
         icon: "100"
