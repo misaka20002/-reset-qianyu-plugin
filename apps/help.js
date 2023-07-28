@@ -7,11 +7,11 @@ export default class help extends Base {
             priority: 50,
             rule: [
                 {
-                    reg: '(#|)千羽帮助',
+                    reg: '^(#|)千羽帮助$',
                     fnc: 'help'
                 },
                 {
-                    reg: '(#|)千羽版本',
+                    reg: '^(#|)千羽版本$',
                     fnc: 'version'
                 }
             ]
