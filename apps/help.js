@@ -1,5 +1,7 @@
 import Base from '../model/base/Base.js'
 import { changelogs } from '../model/version.js'
+import lodash from 'lodash'
+import YamlReader from '../utils/YamlReader.js'
 export default class help extends Base {
     constructor() {
         super({
@@ -16,6 +18,17 @@ export default class help extends Base {
                 }
             ]
         })
+
+        this.isCusHelp = false//是否自定义帮助
+    }
+
+    async init() {
+        let data = this.Cfg
+        let helplist = new YamlReader(`${this.Path.qianyuPath}config/default_config/help.config.yaml`).jsonData
+        if (!this.isCusHelp && !lodash.isEqual(data.helplist, helplist)) {
+            this.File.CopyFile('config/default_config/help.config.yaml', 'config/config/help.config.yaml')
+            delete this.Config.Cfg['help']
+        }
     }
 
     async help(e) {

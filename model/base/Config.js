@@ -75,13 +75,13 @@ class Config {
     }
 
     GetCfg(name = '', config = 'config') {
-        config = this.cfg_path
+        config = config === 'config' ? this.cfg_path : this.defCfg_path
         let path = `${config}/${name}.config.yaml`
         if (this.Cfg[name]) return this.Cfg[name].jsonData
         if (!this.file.ExistsFile(path)) {
-            this.Cfg[name] = new YamlReader(`${Path.qianyuPath}${this.cfg_path}/${this.dir + '/' + name}.config.yaml`)
+            this.Cfg[name] = new YamlReader(`${Path.qianyuPath}${config}/${this.dir + '/' + name}.config.yaml`)
         } else {
-            this.Cfg[name] = new YamlReader(`${Path.qianyuPath}${this.cfg_path}/${name}.config.yaml`)
+            this.Cfg[name] = new YamlReader(`${Path.qianyuPath}${config}/${name}.config.yaml`)
         }
 
         if (this.isWatcher && !this.Watcher[name]) {
