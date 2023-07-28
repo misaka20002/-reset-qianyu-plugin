@@ -61,7 +61,7 @@ export class update extends Base {
         /** 是否需要重启 */
         if (this.isUp) {
             await this.reply('即将执行重启，以应用更新')
-            setTimeout(async () => await this.restart(e), 2000)
+            setTimeout(async () => await this.restart(), 2000)
         }
     }
 
