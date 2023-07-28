@@ -13,13 +13,36 @@ export class update extends Base {
             priority: 4000,
             rule: [
                 {
-                    reg: '^#千羽(强制)*更新(.*)',
+                    reg: '^#千羽(强制)*更新$',
                     fnc: 'update'
+                },
+                {
+                    reg: '^#千羽更新日志$',
+                    fnc: 'updateLog'
                 }
             ]
         })
 
         this.typeName = '千羽插件'
+        this.key = "qianyu-update"
+    }
+
+    async init() {
+        let restart = await redis.get(this.key)
+        if (restart && process.argv[1].includes('pm2')) {
+            restart = JSON.parse(restart)
+            let time = restart.time || new Date().getTime()
+            time = (new Date().getTime() - time) / 1000
+
+            let msg = `重启成功：耗时${time.toFixed(2)}秒`
+
+            if (restart.isGroup) {
+                Bot.pickGroup(restart.id).sendMsg(msg)
+            } else {
+                Bot.pickUser(restart.id).sendMsg(msg)
+            }
+            redis.del(this.key)
+        }
     }
 
     async update() {
@@ -37,8 +60,8 @@ export class update extends Base {
 
         /** 是否需要重启 */
         if (this.isUp) {
-            // await this.reply('即将执行重启，以应用更新')
-            setTimeout(() => this.restart(e), 2000)
+            await this.reply('即将执行重启，以应用更新')
+            setTimeout(async () => await this.restart(e), 2000)
         }
     }
 
@@ -67,14 +90,16 @@ export class update extends Base {
         let cm = 'git pull --no-rebase'
 
         let type = '更新'
-        if (this.e.msg.includes('强制')) {
-            type = '强制更新'
-            cm = `git reset --hard origin/master && ${cm}`
-        }
 
         if (plugin) {
-            cm = `git -C ./plugins/${plugin}/ pull --no-rebase`
+            cm = `git -C ./plugins/${plugin}/ pull ${this.e.msg.includes('强制') ? '' : '--no-rebase'}`
         }
+
+        if (this.e.msg.includes('强制')) {
+            type = '强制更新'
+            cm = `git fetch --all && git reset --hard origin/master && ${cm}`
+        }
+
 
         this.oldCommitId = await this.getcommitId(plugin)
 
@@ -167,26 +192,58 @@ export class update extends Base {
         await this.reply([errMsg, stdout])
     }
 
-    restart(e) {
-        let command = `npm run start`;
-        if (process.argv[1].includes("pm2")) {
-            command = `npm run restart`;
-        }
-        exec(command, function (error, stdout, stderr) {
-            if (error) {
-                e.reply("自动重启失败，请手动重启以应用千羽插件。\nError code: " + error.code + "\n" +
-                    error.stack + "\n");
-                Bot.logger.error('重启失败\n${error.stack}');
-                return true;
-            } else if (stdout) {
-                Bot.logger.mark("重启成功，运行已转为后台，查看日志请用命令：npm run log");
-                Bot.logger.mark("停止后台运行命令：npm stop");
-                process.exit();
-            }
+    async restart(e) {
+        await this.e.reply('开始执行重启，请稍等...')
+        logger.mark(`${this.e.logFnc} 开始执行重启，请稍等...`)
+
+        let data = JSON.stringify({
+            isGroup: !!this.e.isGroup,
+            id: this.e.isGroup ? this.e.group_id : this.e.user_id,
+            time: new Date().getTime()
         })
+
+        let npm = await this.checkPnpm()
+
+        try {
+            await redis.set(this.key, data, { EX: 120 })
+            let cm = `${npm} start`
+            if (process.argv[1].includes('pm2')) {
+                cm = `${npm} run restart`
+            } else {
+                await this.e.reply('当前为前台运行，重启将转为后台...')
+            }
+
+            exec(cm, { windowsHide: true }, (error, stdout, stderr) => {
+                if (error) {
+                    redis.del(this.key)
+                    this.e.reply(`操作失败！\n${error.stack}`)
+                    logger.error(`重启失败\n${error.stack}`)
+                } else if (stdout) {
+                    logger.mark('重启成功，运行已由前台转为后台')
+                    logger.mark(`查看日志请用命令：${npm} run log`)
+                    logger.mark(`停止后台运行命令：${npm} stop`)
+                    process.exit()
+                }
+            })
+        } catch (error) {
+            redis.del(this.key)
+            let e = error.stack ?? error
+            this.e.reply(`操作失败！\n${e}`)
+        }
+
+        return true
+    }
+
+
+    async checkPnpm() {
+        let npm = 'npm'
+        let ret = await this.execSync('pnpm -v')
+        if (ret.stdout) npm = 'pnpm'
+        return npm
     }
 
     async getLog(plugin = '') {
+        plugin = 'reset-qianyu-plugin'
         let cm = 'git log  -20 --oneline --pretty=format:"%h||[%cd]  %s" --date=format:"%m-%d %H:%M"'
         if (plugin) {
             cm = `cd ./plugins/${plugin}/ && ${cm}`
@@ -221,55 +278,18 @@ export class update extends Base {
             end = '更多详细信息，请前往gitee查看\nhttps://gitee.com/think-first-sxs/reset-qianyu-plugin'
         }
 
-        log = await this.makeForwardMsg(`${plugin || 'Qianyu-Bot'}更新日志，共${line}条`, log, end)
-
+        log = [{
+            content: log
+        }]
+        if (end) {
+            log.push({
+                content: end
+            })
+        }
+        log = await this.makeGroupMsg(`${plugin || 'Qianyu-Bot'}更新日志，共${line}条`, log)
         return log
     }
 
-    async makeForwardMsg(title, msg, end) {
-        let nickname = Bot.nickname
-        if (this.e.isGroup) {
-            let info = await Bot.getGroupMemberInfo(this.e.group_id, Bot.uin)
-            nickname = info.card ?? info.nickname
-        }
-        let userInfo = {
-            user_id: Bot.uin,
-            nickname
-        }
-
-        let forwardMsg = [
-            {
-                ...userInfo,
-                message: title
-            },
-            {
-                ...userInfo,
-                message: msg
-            }
-        ]
-
-        if (end) {
-            forwardMsg.push({
-                ...userInfo,
-                message: end
-            })
-        }
-
-        /** 制作转发内容 */
-        if (this.e.isGroup) {
-            forwardMsg = await this.e.group.makeForwardMsg(forwardMsg)
-        } else {
-            forwardMsg = await this.e.friend.makeForwardMsg(forwardMsg)
-        }
-
-        /** 处理描述 */
-        forwardMsg.data = forwardMsg.data
-            .replace(/\n/g, '')
-            .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-            .replace(/___+/, `<title color="#777777" size="26">${title}</title>`)
-
-        return forwardMsg
-    }
 
     async updateLog() {
         let log = await this.getLog()

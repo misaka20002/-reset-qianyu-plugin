@@ -9,11 +9,11 @@ export default class worldColud extends Base {
             priority: 50,
             rule: [
                 {
-                    reg: '^(#|)水群统计',
+                    reg: '^(#|)水群统计$',
                     fnc: 'sqtj',
                 },
                 {
-                    reg: '^(#|)今日发言记录',
+                    reg: '^(#|)今日发言记录$',
                     fnc: 'daySay',
                 }
             ]
