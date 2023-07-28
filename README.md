@@ -28,8 +28,8 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 
 ## 免责声明
 
-1.功能仅限内部交流与小范围使用，严禁将qianyu-plugin用于任何商业用途或盈利
-2.图片与其他素材均来自于网络，仅供交流学习使用，如有侵权请联系，会立即删除
+1. 功能仅限内部交流与小范围使用，严禁将qianyu-plugin用于任何商业用途或盈利
+2. 图片与其他素材均来自于网络，仅供交流学习使用，如有侵权请联系，会立即删除
 
 ## 其他
 
