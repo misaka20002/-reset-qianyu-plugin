@@ -50,6 +50,9 @@ helplist:
       - title: "#千羽更新日志"
         desc: 获取本地更新日志
         icon: "100"
+      - title: "#千羽设置"
+        desc: 打开设置面板
+        icon: "100"
       - title: "#设置前缀+名称"
         desc: 设置当前群聊的机器人前缀
         icon: "100"

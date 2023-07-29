@@ -4,7 +4,7 @@ export default class ai extends Base {
     constructor() {
         super({
             name: 'ai',
-            priority: 50,
+            priority: 1000,
             rule: [
                 {
                     reg: '',
@@ -25,26 +25,26 @@ export default class ai extends Base {
         let config = this.Cfg
         let radom = lodash.random(1, 100)
         if (e.isGroup) {
-            let gcfg = config[e.group_id] || this.def_gaiCfg
+            let gcfg = { ...this.def_gaiCfg, ...config[e.group_id] }
             if (e.user_id == e.self_id) return false
             if (!gcfg.isOpen) return false
             if (e.atBot || e.hasAlias) {
                 return await this.getai(gcfg.aiType)
             }
             if (gcfg.isOpen && radom <= gcfg.gprobability) {
-                await this.getai(gcfg.aiType)
+                return await this.getai(gcfg.aiType)
             }
         }
         if (e.isPrivate) {
             if (config.isPrivate == false) return ""
             if (radom <= config.probability) {
-                await this.getai(config.aiType)
+                return await this.getai(config.aiType)
             }
         }
     }
 
     async getai(aiType) {
-        await this.choieai(this.e.msg, aiType)
+        return await this.choieai(this.e.msg, aiType)
     }
 
     async choieai(msg, ai) {
@@ -52,14 +52,11 @@ export default class ai extends Base {
         let botname = await redis.get(`qianyu:ai:botname`)
         let aida = ailist.find(list => list.name == ai)
         if (!aida) return
-        new this.networks({ url: `${aida.url}${encodeURI(msg)}` }).getData().then((res) => {
-            let data = res;
-            aida.data.forEach(item => {
-                data = data[item]
-            })
-            this.reply(`${data.replace(/小思|小爱|思知/g, botname ? botname : ai)}`)
+        let data = await new this.networks({ url: `${aida.url}${encodeURI(msg)}` }).getData()
+        aida.data.forEach(item => {
+            data = data[item]
         })
-
+        return await this.reply(`${data.replace(/菲菲|小思|小爱|思知/g, botname ? botname : ai)}`)
     }
 
 

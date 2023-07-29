@@ -12,7 +12,6 @@ export default class prefix extends Base {
                 },
                 {
                     reg: '^#设置前缀',
-                    desc: '前缀设置',
                     fnc: 'setPrefix',
                 }
             ]

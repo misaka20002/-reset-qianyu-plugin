@@ -1,0 +1,64 @@
+ai:
+  title: ai功能
+  set:
+    #私聊ai开关
+    isPrivte:
+      title: "私聊ai" #属性名
+      def: false
+      type: Boolean
+      desc: "私聊是否开启ai"
+      reg: "#千羽设置私聊ai开启/关闭"
+    #私聊ai概率
+    probability:
+      title: "私聊ai概率" #属性名
+      def: 0
+      range: [0, 100]
+      type: Number
+      desc: "私聊触发的概率"
+      reg: "#千羽设置私聊ai概率（0-100）"
+    #私聊ai类型
+    aiType:
+      title: "私聊ai类型" #属性名
+      def: 思知
+      type: String
+      range: [思知, 青云客, 小爱同学]
+      desc: "私聊的ai，可以设置思知、青云客、小爱同学"
+      reg: "#千羽设置私聊ai类型思知"
+  GroupSet:
+    isOpen:
+      title: "群聊ai" #属性名
+      def: false
+      type: Boolean
+      desc: "群聊是否开启ai"
+      reg: "#千羽设置群聊ai开启/关闭"
+    #私聊ai概率
+    gprobability:
+      title: "群聊ai概率" #属性名
+      def: 0
+      range: [0, 100]
+      type: Number
+      desc: "群聊触发的概率"
+      reg: "#千羽设置群聊ai概率（0-100）"
+    #私聊ai类型
+    aiType:
+      title: "群聊ai类型" #属性名
+      def: 思知
+      type: String
+      range: [思知, 青云客, 小爱同学]
+      desc: "群聊的ai，可以设置思知、青云客、小爱同学"
+      reg: "#千羽设置群聊ai类型思知"
+bilibili:
+  title: B站功能
+  set:
+    card:
+      title: b站解析卡片
+      def: false
+      type: Boolean
+      desc: B站解析是否开启卡片信息
+      reg: "#千羽设置b站解析卡片开启/关闭"
+    isjx:
+      title: b站解析
+      def: false
+      type: Boolean
+      desc: B站解析是否开启
+      reg: "#千羽设置b站解析开启/关闭"

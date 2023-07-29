@@ -18,26 +18,25 @@
 			</div>
 		</div>
 
-		{{each data d}}
+		{{each adminList d}}
 		<div class="cfg-box">
 			<div class="cfg-group">{{d.title}}</div>
 			<ul class="cfg-ul">
-				{{each d.configlist clist}}
+				{{each d.cfglist cl}}
 				<li class="cfg-li">
 					<div class="cfg-line">
-						{{clist.name}}
-						<span class="cfg-hint">{{clist.reg}} </span>
-						{{if
-						clist.name=='ai概率'||clist.name=='ai群概率'||clist.name=='ai名称'||clist.name=='私聊ai'||clist.name=='群聊ai'||clist.name=='报时角色'}}
+						{{cl.title}}
+						<span class="cfg-hint">{{cl.reg}} </span>
+						{{if cl.type!=='Boolean'}}
 						<div class="cfg-status ">
-							{{clist.status}}</div>
+							{{cl.def}}</div>
 						{{else}}
-						<div class="cfg-status {{clist.status==false?'status-off':''}}">
-							{{clist.status?'已开启':'已关闭'}}</div>
+						<div class="cfg-status {{cl.def==false?'status-off':''}}">
+							{{cl.def?'已开启':'已关闭'}}</div>
 						{{/if}}
 
 					</div>
-					<div class="cfg-desc">{{clist.desc}}</div>
+					<div class="cfg-desc">{{cl.desc}}</div>
 				</li>
 				{{/each}}
 			</ul>
