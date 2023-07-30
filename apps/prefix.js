@@ -7,12 +7,20 @@ export default class prefix extends Base {
             priority: 50,
             rule: [
                 {
-                    reg: '^#群前缀(开启|关闭)',
+                    reg: '^#群前缀(开启|关闭)$',
                     fnc: 'openPrefix',
                 },
                 {
                     reg: '^#设置前缀',
                     fnc: 'setPrefix',
+                },
+                {
+                    reg: '^#尾缀(开启|关闭)$',
+                    fnc: 'openendPrefix',
+                },
+                {
+                    reg: '^#设置尾缀',
+                    fnc: 'setendPrefix',
                 }
             ]
         })
@@ -49,6 +57,32 @@ export default class prefix extends Base {
     SetCfg(name, key, value) {
         let Cfg = new YamlReader(`${process.cwd()}/config/config/${name}.yaml`)
         Cfg.set(key, value)
+    }
+
+
+    async openendPrefix(e) {
+        if (!e.isMaster) {
+            return true
+        }
+        let text = e.msg.replace(/#|尾缀/g, "")
+        if (text == '开启') {
+            await redis.set('qianyu:iswzopen', 1)
+        } else if (text == '关闭') {
+            await redis.set('qianyu:iswzopen', 0)
+        } else {
+            return true
+        }
+        this.reply(`尾缀已${text}!`)
+    }
+
+    async setendPrefix(e) {
+        if (!e.isMaster) return true
+        let value = e.msg.replace("#设置尾缀", "").trim()
+        if (!value) {
+            return this.reply("尾缀不能为空！")
+        }
+        await redis.set('qianyu:wz', JSON.stringify(value))
+        this.reply(`尾缀已设置为${value}!`)
     }
 
 

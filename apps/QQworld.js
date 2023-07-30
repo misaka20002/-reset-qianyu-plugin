@@ -3,7 +3,7 @@ export default class QQworld extends Video {
     constructor(e) {
         super({
             name: 'qqworld',
-            priority: 12000,
+            priority: 50,
             rule: [
                 {
                     reg: '',
