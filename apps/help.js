@@ -63,14 +63,16 @@ export default class help extends Base {
                 }
             })
         })
+        let result;
         if (!e.isGroup) {
             if (setKey.includes("群")) {
                 return this.reply("群里的设置不能私聊设置！");
             }
             Object.keys(SetCfg).forEach(item => SetCfg[item].hasOwnProperty('GroupSet') ? delete SetCfg[item].GroupSet : '')
+        } else {
+            result = this.dealVaule(setKey, SetCfg, Cfg, 'GroupSet')
         }
-        let type = e.isGroup ? setKey.includes("群") ? 'GroupSet' : 'set' : 'set'
-        let result = this.dealVaule(setKey, SetCfg, Cfg, type)
+        result = this.dealVaule(setKey, SetCfg, Cfg)
         if (result?.msg) {
             return this.reply(result.msg);
         } else {
@@ -100,6 +102,7 @@ export default class help extends Base {
                     result = this.dealType(value, SetCfg[c][typeSet][s])
                     if (!result.msg) {
                         this.setValue(c, s, result.value, SetCfg, typeSet)
+                        return result
                     }
                 }
             }
