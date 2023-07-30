@@ -10,7 +10,7 @@ export class update extends Base {
     constructor() {
         super({
             name: 'update',
-            priority: 4000,
+            priority: 50,
             rule: [
                 {
                     reg: '^#千羽(强制)*更新$',
