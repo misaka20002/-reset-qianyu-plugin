@@ -69,10 +69,11 @@ export default class help extends Base {
                 return this.reply("群里的设置不能私聊设置！");
             }
             Object.keys(SetCfg).forEach(item => SetCfg[item].hasOwnProperty('GroupSet') ? delete SetCfg[item].GroupSet : '')
-        } else {
-            result = this.dealVaule(setKey, SetCfg, Cfg, 'GroupSet')
         }
-        result = this.dealVaule(setKey, SetCfg, Cfg)
+        this.initValue(SetCfg, Cfg)
+        if (setKey) {
+            result = setKey.includes("群") ? this.dealVaule(setKey, SetCfg, 'GroupSet') : this.dealVaule(setKey, SetCfg)
+        }
         if (result?.msg) {
             return this.reply(result.msg);
         } else {
@@ -87,17 +88,8 @@ export default class help extends Base {
         }
     }
 
-    dealVaule(setKey, SetCfg, Cfg, typeSet = 'set') {
+    dealVaule(setKey, SetCfg, typeSet = 'set') {
         let result
-        for (let c in SetCfg) {
-            for (let s in SetCfg[c][typeSet]) {
-                if (typeSet === 'GroupSet') {
-                    SetCfg[c][typeSet][s].def = Cfg[c][this.e.group_id] ? Cfg[c][this.e.group_id][s] ? Cfg[c][this.e.group_id][s] : SetCfg[c][typeSet][s].def : SetCfg[c][typeSet][s].def
-                } else {
-                    SetCfg[c][typeSet][s].def = Cfg[c][s]
-                }
-            }
-        }
         for (let c in SetCfg) {
             for (let s in SetCfg[c][typeSet]) {
                 if (setKey && setKey.includes(SetCfg[c][typeSet][s].title)) {
@@ -117,6 +109,23 @@ export default class help extends Base {
         }
         return result
     }
+
+    initValue(SetCfg, Cfg) {
+        let setList = ['set', 'GroupSet']
+        for (let c in SetCfg) {
+            for (let s in SetCfg[c]) {
+                if (!setList.includes(s)) continue
+                for (let v in SetCfg[c][s]) {
+                    if (s === 'GroupSet') {
+                        SetCfg[c][s][v].def = Cfg[c][this.e.group_id] ? Cfg[c][this.e.group_id][v] ? Cfg[c][this.e.group_id][v] : SetCfg[c][s][v].def : SetCfg[c][s][v].def
+                    } else {
+                        SetCfg[c][s][v].def = Cfg[c][v]
+                    }
+                }
+            }
+        }
+    }
+
 
     dealType(value, Obj) {
         let result = {
