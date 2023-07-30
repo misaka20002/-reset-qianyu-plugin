@@ -13,7 +13,8 @@ export default async function returnImg(name, data) {
                     defaulthtml: Path.qianyuPath + '/resources/html/common/' + 'default.html',
                     ...data,
                     _res_path: resPath,
-                    version: qianyuVersion
+                    version: qianyuVersion,
+                    imgType: 'png'
                 }
             }
         }

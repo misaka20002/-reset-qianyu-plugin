@@ -14,6 +14,7 @@
 .container {
     width: 500px;
     font-family: "tttgbnumber";
+    font-size: 16px;
 }
 
 .version {

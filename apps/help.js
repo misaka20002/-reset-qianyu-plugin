@@ -102,7 +102,6 @@ export default class help extends Base {
             for (let s in SetCfg[c][typeSet]) {
                 if (setKey && setKey.includes(SetCfg[c][typeSet][s].title)) {
                     let value = setKey.replace(SetCfg[c][typeSet][s].title, "")
-                    //其他包喊得要处理
                     result = this.dealType(value, SetCfg[c][typeSet][s])
                     if (!result.msg) {
                         this.setValue(c, s, result.value, SetCfg, typeSet)
