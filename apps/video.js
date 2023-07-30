@@ -4,7 +4,7 @@ export default class video extends Video {
     constructor(e) {
         super({
             name: 'video',
-            priority: 10000,
+            priority: 50,
             rule: [
                 {
                     reg: '^#创建目录',

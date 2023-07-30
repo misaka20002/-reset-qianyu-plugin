@@ -5,7 +5,7 @@ export default class bilibili extends Bili {
     constructor(e) {
         super({
             name: 'bilibili',
-            priority: 10000,
+            priority: 50,
             rule: [
                 {
                     reg: '',
