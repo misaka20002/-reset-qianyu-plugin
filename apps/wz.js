@@ -179,7 +179,7 @@ export default class wz extends Base {
         Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
         await redis.del('qianyu:wz:iswz')
         await redis.del('qianyu:wz:InitiatorInfo')
-        await cacelds('wz');
+        await this.timer.CancelTimeTask('wz');
         if (!cfg.masterQQ.includes(e.user_id)) {
             cishu.iscd = true
             await this.timer.SetTimeTask('wzcd', moment().add(wzcd, 'm').format(), async () => {
