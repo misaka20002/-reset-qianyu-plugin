@@ -21,6 +21,7 @@ export default class networks {
             headers: this.headers,
             method: this.method
         })
+
         switch (this.type) {
             case 'json':
                 await this.Tojson()
@@ -30,6 +31,9 @@ export default class networks {
                 break;
             case 'arrayBuffer':
                 await this.ToArrayBuffer()
+                break;
+            case 'blob':
+                await this.ToBlob()
                 break;
         }
         return this.fetch
@@ -45,6 +49,9 @@ export default class networks {
 
     async ToArrayBuffer() {
         this.fetch = await this.fetch.arrayBuffer()
+    }
+    async ToBlob() {
+        this.fetch = await this.fetch.blob()
     }
 
 }

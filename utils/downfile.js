@@ -41,6 +41,4 @@ class downfile {
     }
 }
 export default new downfile()
-// await new downfile().downImg({ url: 'https://image.dbbqb.com/202307311958/4ec401cddb9b09cc8f5a41bc868d23bf/eNZz0' }, '打断复读.jpg', () => {
-//     console.log("成功了");
-// })
+// await new downfile().downImg({urtl})

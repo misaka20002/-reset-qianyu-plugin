@@ -1,8 +1,9 @@
 import moment from 'moment'
 //import cfg from '../../../../../lib/config/config.js'
 import Base from '../model/base/Base.js'
-const path = process.cwd() + '/plugins/qianyu-plugin/'
-
+const cfg = {
+    masterQQ: [1765629830]
+}
 let wzcd = 10//伪装cd 分钟
 
 let wztime = 10 //伪装时长 分钟
@@ -12,7 +13,6 @@ let cishu = {
     userlist: [],
     iscd: false
 }
-
 export default class wz extends Base {
     constructor() {
         super({
@@ -33,15 +33,30 @@ export default class wz extends Base {
                     log: false
                 }
             ],
+            task: {
+                name: 'clswz',
+                fnc: 'livepush',
+                cron: '0 0 0 * * *'
+            },
         })
     }
 
     async init() {
-
+        let iswz = await redis.get('qianyu:wz:iswz')
+        let myuserinfo = JSON.parse(await redis.get('qianyu:wz:myinfo'))
+        let InitiatorInfo = JSON.parse(await redis.get('qianyu:wz:InitiatorInfo'))
+        if (iswz && myuserinfo) {
+            await Bot.setAvatar(`${this.Path.qianyuPath}resources/img/${myuserinfo.user_id}.jpg`)
+            await Bot.setNickname(myuserinfo.nickname)
+            Bot.pickGroup(InitiatorInfo.group_id).setCard(myuserinfo.user_id, myuserinfo.nickname)
+            await redis.del('qianyu:wz:iswz')
+            await redis.del('qianyu:wz:atuserinfo')
+            await redis.del('qianyu:wz:InitiatorInfo')
+        }
     }
 
     async weiz(e) {
-        return false
+        this.timer.SetTimeTask
         if (!e.isGroup) {
             return false
         }
@@ -80,10 +95,13 @@ export default class wz extends Base {
         atuserinfo.group_id = e.group_id
         if (!myuserinfo) {
             myuserinfo = await Bot.pickMember(e.group_id, e.self_id).getSimpleInfo()
+            console.log(myuserinfo);
+            //头像
             myuserinfo.avatar = await Bot.pickMember(e.group_id, e.self_id).getAvatarUrl()
-            const file = path + 'resources/img/'
+
             await redis.set('qianyu:wz:myinfo', JSON.stringify(myuserinfo))
-            await dowmimg(myuserinfo.avatar, file, `${e.self_id}头像`, 'qq')
+            let result = await this.downfile.downImg({ url: myuserinfo.avatar }, `${e.self_id}.jpg`)
+            if (!result) return this.reply("头像下载失败！")
         }
         await redis.set('qianyu:wz:atuserinfo', JSON.stringify(atuserinfo))
         await redis.set('qianyu:wz:InitiatorInfo', JSON.stringify({
@@ -95,26 +113,25 @@ export default class wz extends Base {
         await Bot.setNickname(atuserinfo.nickname)
         Bot.pickGroup(e.group_id).setCard(e.self_id, atuserinfo.group_name)
         this.reply(`伪装任务开始！我已经伪装成指定目标，接下来${wztime}分钟，我会模仿伪装目标说话！！`)
-        await wztask(e)
+        await this.wztask(e)
     }
 
-    async wz() {
-        return false
-        if (e.user_id == cfg.qq) return
+    async wz(e) {
+        if (e.user_id == e.self_id) return false
         // 判断是否主人消息
         // if (cfg.masterQQ.includes(e.user_id)) return
-        if (!e.isGroup) return
+        if (!e.isGroup) return false
         let iswz = await redis.get('qianyu:wz:iswz')
-        if (!iswz) return
+        if (!iswz) return false
         let atuserinfo = JSON.parse(await redis.get('qianyu:wz:atuserinfo'))
-        if (e.group_id != atuserinfo.group_id) return
-        if (e.user_id != atuserinfo.user_id) return
+        if (e.group_id != atuserinfo.group_id) return false
+        if (e.user_id != atuserinfo.user_id) return false
         let msg = e.message
         let sendmsg = []
         for (let m of msg) {
             switch (m.type) {
                 case 'image':
-                    sendmsg.push(segment.image(m.url))
+                    sendmsg.push(this.segment.image(m.url))
                     break;
                 case 'text':
                     if (e.source != undefined) {
@@ -124,126 +141,79 @@ export default class wz extends Base {
                     }
                     break;
                 case 'face':
-                    sendmsg.push(segment.face(m.id))
+                    sendmsg.push(this.segment.face(m.id))
                     break
                 case 'bface':
-                    sendmsg.push(segment.bface(m.file))
+                    sendmsg.push(this.segment.bface(m.file))
                     break
                 case 'at':
-                    sendmsg.push(segment.at(m.qq))
+                    sendmsg.push(this.segment.at(m.qq))
                     break;
             }
         }
         if (!e.source) {
             e.reply(sendmsg)
         }
+        return true
     }
-
-}
-
-
-
-async function stopwz(e) {
-    let iswz = await redis.get('qianyu:wz:iswz')
-    let myuserinfo = JSON.parse(await redis.get('qianyu:wz:myinfo'))
-    if (!iswz) {
-        return this.reply("还没有进行伪装任务！")
-    }
-    if (!e.isGroup) {
-        return this.reply("非法的指令！")
-    }
-    let InitiatorInfo = JSON.parse(await redis.get('qianyu:wz:InitiatorInfo'))
-    if (e.user_id != InitiatorInfo.user_id && !cfg.masterQQ.includes(e.user_id)) {
-        return this.reply("只有发起人才能结束伪装！")
-    }
-    if (InitiatorInfo.group_id != e.group_id) {
-        return this.reply("只有发起的群才能结束伪装！")
-    }
-    await Bot.setAvatar(path + `resources/img/${e.self_id}头像.jpg`)
-    await Bot.setNickname(myuserinfo.nickname)
-    Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
-    await redis.del('qianyu:wz:iswz')
-    await redis.del('qianyu:wz:InitiatorInfo')
-    await cacelds('wz');
-    if (!cfg.masterQQ.includes(e.user_id)) {
-        cishu.iscd = true
-        await ds('wzcd', moment().add(wzcd, 'm').format(), async () => {
-            cishu.iscd = false
-        })
-    }
-    this.reply("伪装任务已结束！伪装进入10分钟冷却cd！（主人除外！）")
-}
-
-//12点重置
-// await ds('wz', `0 0 0 * * *`, async () => {
-//     cishu = {
-//         sum: 0,
-//         userlist: [],
-//         iscd: false
-//     }
-// })
-
-async function wztask(e) {
-    await ds('wz', moment().add(wztime, 'm').format(), async () => {
+    async stopwz(e) {
+        let iswz = await redis.get('qianyu:wz:iswz')
         let myuserinfo = JSON.parse(await redis.get('qianyu:wz:myinfo'))
+        if (!iswz) {
+            return this.reply("还没有进行伪装任务！")
+        }
+        if (!e.isGroup) {
+            return this.reply("非法的指令！")
+        }
+        let InitiatorInfo = JSON.parse(await redis.get('qianyu:wz:InitiatorInfo'))
+        if (e.user_id != InitiatorInfo.user_id && !cfg.masterQQ.includes(e.user_id)) {
+            return this.reply("只有发起人才能结束伪装！")
+        }
+        if (InitiatorInfo.group_id != e.group_id) {
+            return this.reply("只有发起的群才能结束伪装！")
+        }
         await Bot.setAvatar(path + `resources/img/${e.self_id}头像.jpg`)
         await Bot.setNickname(myuserinfo.nickname)
         Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
-        redis.del('qianyu:wz:iswz')
-        redis.del('qianyu:wz:InitiatorInfo')
-        e.reply("伪装任务已结束！伪装进入10分钟冷却cd！（主人除外！）")
-        //进入cd
+        await redis.del('qianyu:wz:iswz')
+        await redis.del('qianyu:wz:InitiatorInfo')
+        await cacelds('wz');
         if (!cfg.masterQQ.includes(e.user_id)) {
             cishu.iscd = true
-            await ds('wzcd', moment().add(wzcd, 'm').format(), async () => {
+            await this.timer.SetTimeTask('wzcd', moment().add(wzcd, 'm').format(), async () => {
                 cishu.iscd = false
             })
         }
+        this.reply("伪装任务已结束！伪装进入10分钟冷却cd！（主人除外！）")
+    }
 
-    })
+    async wztask(e) {
+        await this.timer.SetTimeTask('wz', moment().add(wztime, 'm').format(), async () => {
+            let myuserinfo = JSON.parse(await redis.get('qianyu:wz:myinfo'))
+            await Bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}头像.jpg`)
+            await Bot.setNickname(myuserinfo.nickname)
+            Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
+            redis.del('qianyu:wz:iswz')
+            redis.del('qianyu:wz:InitiatorInfo')
+            e.reply("伪装任务已结束！伪装进入10分钟冷却cd！（主人除外！）")
+            //进入cd
+            if (!cfg.masterQQ.includes(e.user_id)) {
+                cishu.iscd = true
+                await this.timer.SetTimeTask('wzcd', moment().add(wzcd, 'm').format(), async () => {
+                    cishu.iscd = false
+                })
+            }
+
+        })
+    }
+
+    clswz() {
+        cishu = {
+            sum: 0,
+            userlist: [],
+            iscd: false
+        }
+    }
+
+
 }
-
-// async function wz(e) {
-//     if (e.user_id == cfg.qq) return
-//     // 判断是否主人消息
-//     // if (cfg.masterQQ.includes(e.user_id)) return
-//     if (!e.isGroup) return
-//     let iswz = await redis.get('qianyu:wz:iswz')
-//     if (!iswz) return
-//     let atuserinfo = JSON.parse(await redis.get('qianyu:wz:atuserinfo'))
-//     if (e.group_id != atuserinfo.group_id) return
-//     if (e.user_id != atuserinfo.user_id) return
-//     let msg = e.message
-//     let sendmsg = []
-//     for (let m of msg) {
-//         switch (m.type) {
-//             case 'image':
-//                 sendmsg.push(segment.image(m.url))
-//                 break;
-//             case 'text':
-//                 if (e.source != undefined) {
-//                     Bot.sendGroupMsg(e.group_id, [segment.at(e.source.user_id), " ", m.text], e.source)
-//                 } else {
-//                     sendmsg.push(m.text)
-//                 }
-//                 break;
-//             case 'face':
-//                 sendmsg.push(segment.face(m.id))
-//                 break
-//             case 'bface':
-//                 sendmsg.push(segment.bface(m.file))
-//                 break
-//             case 'at':
-//                 sendmsg.push(segment.at(m.qq))
-//                 break;
-//         }
-//     }
-//     if (!e.source) {
-//         e.reply(sendmsg)
-//     }
-// }
-
-// await redis.del('qianyu:wz:iswz')
-// await redis.del('qianyu:wz:atuserinfo')
-// await redis.del('qianyu:wz:InitiatorInfo')
-
