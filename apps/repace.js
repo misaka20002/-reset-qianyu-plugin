@@ -56,7 +56,7 @@ export default class repace extends Base {
             }
         } else {
             msg[this.e.group_id].msg = this.e.message
-            msg[this.e.group_id].times = 0
+            msg[this.e.group_id].times = 1
             return false
         }
 
