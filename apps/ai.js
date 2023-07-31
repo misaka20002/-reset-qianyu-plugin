@@ -41,6 +41,7 @@ export default class ai extends Base {
                 return await this.getai(config.aiType)
             }
         }
+        return false
     }
 
     async getai(aiType) {
@@ -52,6 +53,7 @@ export default class ai extends Base {
         let botname = await redis.get(`qianyu:ai:botname`)
         let aida = ailist.find(list => list.name == ai)
         if (!aida) return
+        msg = msg.replace("#", "")
         let data = await new this.networks({ url: `${aida.url}${encodeURI(msg)}` }).getData()
         aida.data.forEach(item => {
             data = data[item]
