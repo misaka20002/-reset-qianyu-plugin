@@ -100,6 +100,43 @@ export default class wz extends Base {
 
     async wz() {
         return false
+        if (e.user_id == cfg.qq) return
+        // 判断是否主人消息
+        // if (cfg.masterQQ.includes(e.user_id)) return
+        if (!e.isGroup) return
+        let iswz = await redis.get('qianyu:wz:iswz')
+        if (!iswz) return
+        let atuserinfo = JSON.parse(await redis.get('qianyu:wz:atuserinfo'))
+        if (e.group_id != atuserinfo.group_id) return
+        if (e.user_id != atuserinfo.user_id) return
+        let msg = e.message
+        let sendmsg = []
+        for (let m of msg) {
+            switch (m.type) {
+                case 'image':
+                    sendmsg.push(segment.image(m.url))
+                    break;
+                case 'text':
+                    if (e.source != undefined) {
+                        Bot.sendGroupMsg(e.group_id, [segment.at(e.source.user_id), " ", m.text], e.source)
+                    } else {
+                        sendmsg.push(m.text)
+                    }
+                    break;
+                case 'face':
+                    sendmsg.push(segment.face(m.id))
+                    break
+                case 'bface':
+                    sendmsg.push(segment.bface(m.file))
+                    break
+                case 'at':
+                    sendmsg.push(segment.at(m.qq))
+                    break;
+            }
+        }
+        if (!e.source) {
+            e.reply(sendmsg)
+        }
     }
 
 }
