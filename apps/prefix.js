@@ -77,14 +77,22 @@ export default class prefix extends Base {
 
     async setendPrefix(e) {
         if (!e.isMaster) return true
-        let value = e.msg.replace("#设置尾缀", "").trim()
-        if (!value) {
+        if (e.message.some(item => item.type === 'image')) return this.reply("尾缀不能设置图片！")
+        let value = e.message.map(item => {
+            if (item.type === 'text') {
+                item.text = item.text.replace("#设置尾缀", "")
+            }
+            return item
+        })
+        if (e.message.length == 1 && e.message[0].type == 'text') {
+            value = e.msg.replace("#设置尾缀", "").trim()
+        }
+        if (!Array.isArray(value) && !e.msg.replace("#设置尾缀", "").trim()) {
             return this.reply("尾缀不能为空！")
         }
         await redis.set('qianyu:wz', JSON.stringify(value))
-        this.reply(`尾缀已设置为${value}!`)
+        this.reply(Array.isArray(value) ? [{ type: 'text', text: '尾缀已设置为' }, ...value, '!'] : `尾缀已设置为${value}!`)
     }
-
 
 }
 

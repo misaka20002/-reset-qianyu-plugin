@@ -24,6 +24,7 @@ export default class help extends Base {
         })
 
         this.isCusHelp = false//是否自定义帮助
+        this.isCusSet = false//是否自定义帮助
     }
 
     async init() {
@@ -33,6 +34,11 @@ export default class help extends Base {
             this.File.CopyFile('config/default_config/help.config.yaml', 'config/config/help.config.yaml')
             delete this.Config.Cfg['help']
         }
+        if (!this.isCusSet) {
+            this.File.CopyFile('config/default_config/set.config.yaml', 'config/config/set.config.yaml')
+            delete this.Config.Cfg['set']
+        }
+
     }
 
     async help(e) {

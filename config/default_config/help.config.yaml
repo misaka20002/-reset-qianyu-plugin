@@ -38,6 +38,9 @@ helplist:
       - title: "#发个红包"
         desc: 假装发了个大红包
         icon: "141"
+      - title: "千羽ai功能"
+        desc: 通过#千羽设置查看具体功能
+        icon: "141"
 
   - title: 管理员功能
     list:
@@ -58,4 +61,10 @@ helplist:
         icon: "100"
       - title: "#群前缀开启/关闭"
         desc: 开启/关闭群前缀
+        icon: "100"
+      - title: "#设置尾缀+名称"
+        desc: 设置当前群聊的机器人发送消息的尾缀
+        icon: "100"
+      - title: "#尾缀开启/关闭"
+        desc: 开启/关闭尾缀
         icon: "100"

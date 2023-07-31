@@ -27,4 +27,3 @@ export default class chehui extends Base {
 
     }
 }
-console.log("");

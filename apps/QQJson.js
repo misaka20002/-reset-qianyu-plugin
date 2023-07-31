@@ -15,6 +15,10 @@ export default class hongb extends Base {
                     reg: '#转图卡',
                     fnc: 'card'
                 },
+                {
+                    reg: '#炮友关系',
+                    fnc: 'pao'
+                }
             ],
         })
     }
@@ -26,6 +30,10 @@ export default class hongb extends Base {
 
     async card(e) {
         let json = this.File.getFileDataToJson('/resources/json/QQjson.json')['转图卡']
+        e.reply(segment.json(JSON.stringify(json)))
+    }
+    async pao(e) {
+        let json = this.File.getFileDataToJson('/resources/json/QQjson.json')['炮友关系']
         e.reply(segment.json(JSON.stringify(json)))
     }
 }

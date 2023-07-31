@@ -19,5 +19,25 @@ class downfile {
             })
         })
     }
+
+    async downImg(data, path, suc = () => { }) {
+        return new Promise(async (resolve, reject) => {
+            new networks({
+                url: data.url,
+                headers: data.headers,
+                type: 'arrayBuffer'
+            }
+            ).getData().then(res => {
+                fs.writeFile(Path.qianyuPath + '/resources/img/' + path, Buffer.from(res), "binary", async function (err) {
+                    if (!err) {
+                        suc()
+                        resolve(true)
+                    } else {
+                        resolve(false)
+                    }
+                });
+            })
+        })
+    }
 }
 export default new downfile()

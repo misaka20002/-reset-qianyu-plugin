@@ -16,7 +16,12 @@ export default class worldColud extends Base {
                     reg: '^(#|)今日发言记录$',
                     fnc: 'daySay',
                 }
-            ]
+            ],
+            task: {
+                name: 'learnImg',
+                fnc: 'learnImg',
+                cron: '0 19 0 * * *'
+            },
         })
     }
 
@@ -27,7 +32,6 @@ export default class worldColud extends Base {
         if (e.at) {
             user_id = e.at
         }
-        console.log(user_id);
         groupMsglist[user_id].msglist.forEach((item, index) => {
             item.content.forEach((cont) => {
                 if (cont.type == 'file') {
@@ -119,6 +123,9 @@ export default class worldColud extends Base {
             }
         }
         return { ...CharList, allcount: allcount }
+    }
+    learnImg() {
+
     }
 }
 
