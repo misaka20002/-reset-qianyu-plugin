@@ -1,9 +1,9 @@
 import moment from 'moment'
-//import cfg from '../../../../../lib/config/config.js'
+import cfg from '../../../../../lib/config/config.js'
 import Base from '../model/base/Base.js'
-const cfg = {
-    masterQQ: [1765629830]
-}
+// const cfg = {
+//     masterQQ: [1765629830]
+// }
 let wzcd = 10//伪装cd 分钟
 
 let wztime = 10 //伪装时长 分钟
