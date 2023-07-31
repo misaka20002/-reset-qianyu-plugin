@@ -45,10 +45,12 @@ export default class wz extends Base {
         let iswz = await redis.get('qianyu:wz:iswz')
         let myuserinfo = JSON.parse(await redis.get('qianyu:wz:myinfo'))
         let InitiatorInfo = JSON.parse(await redis.get('qianyu:wz:InitiatorInfo'))
-        if (iswz && myuserinfo) {
-            await Bot.setAvatar(`${this.Path.qianyuPath}resources/img/${myuserinfo.user_id}.jpg`)
-            await Bot.setNickname(myuserinfo.nickname)
-            Bot.pickGroup(InitiatorInfo.group_id).setCard(myuserinfo.user_id, myuserinfo.nickname)
+        if (iswz) {
+            if (myuserinfo) {
+                await Bot.setAvatar(`${this.Path.qianyuPath}resources/img/${myuserinfo.user_id}.jpg`)
+                await Bot.setNickname(myuserinfo.nickname)
+                Bot.pickGroup(InitiatorInfo.group_id).setCard(myuserinfo.user_id, myuserinfo.nickname)
+            }
             await redis.del('qianyu:wz:iswz')
             await redis.del('qianyu:wz:atuserinfo')
             await redis.del('qianyu:wz:InitiatorInfo')
@@ -172,7 +174,7 @@ export default class wz extends Base {
         if (InitiatorInfo.group_id != e.group_id) {
             return this.reply("只有发起的群才能结束伪装！")
         }
-        await Bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}头像.jpg`)
+        await Bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}.jpg`)
         await Bot.setNickname(myuserinfo.nickname)
         Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
         await redis.del('qianyu:wz:iswz')
@@ -190,7 +192,7 @@ export default class wz extends Base {
     async wztask(e) {
         await this.timer.SetTimeTask('wz', moment().add(wztime, 'm').format(), async () => {
             let myuserinfo = JSON.parse(await redis.get('qianyu:wz:myinfo'))
-            await Bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}头像.jpg`)
+            await Bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}.jpg`)
             await Bot.setNickname(myuserinfo.nickname)
             Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
             redis.del('qianyu:wz:iswz')
