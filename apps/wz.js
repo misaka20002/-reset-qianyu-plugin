@@ -20,6 +20,10 @@ export default class wz extends Base {
             priority: 1,
             rule: [
                 {
+                    reg: '^#清除伪装缓存$',
+                    fnc: 'cleanwz',
+                },
+                {
                     reg: '^#伪装',
                     fnc: 'weiz',
                 },
@@ -55,6 +59,13 @@ export default class wz extends Base {
             await redis.del('qianyu:wz:atuserinfo')
             await redis.del('qianyu:wz:InitiatorInfo')
         }
+    }
+
+    async cleanwz(e) {
+        await redis.del('qianyu:wz:iswz')
+        await redis.del('qianyu:wz:atuserinfo')
+        await redis.del('qianyu:wz:InitiatorInfo')
+        await redis.del('qianyu:wz:myinfo')
     }
 
     async weiz(e) {
