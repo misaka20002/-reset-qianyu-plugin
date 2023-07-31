@@ -152,7 +152,7 @@ export default class wz extends Base {
             }
         }
         if (!e.source) {
-            e.reply(sendmsg)
+            Bot.pickGroup(e.group_id).sendMsg(sendmsg)
         }
         return true
     }
