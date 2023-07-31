@@ -172,7 +172,7 @@ export default class wz extends Base {
         if (InitiatorInfo.group_id != e.group_id) {
             return this.reply("只有发起的群才能结束伪装！")
         }
-        await Bot.setAvatar(path + `resources/img/${e.self_id}头像.jpg`)
+        await Bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}头像.jpg`)
         await Bot.setNickname(myuserinfo.nickname)
         Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
         await redis.del('qianyu:wz:iswz')
