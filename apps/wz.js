@@ -66,6 +66,7 @@ export default class wz extends Base {
         await redis.del('qianyu:wz:atuserinfo')
         await redis.del('qianyu:wz:InitiatorInfo')
         await redis.del('qianyu:wz:myinfo')
+        this.reply("伪装缓存清除成功！")
     }
 
     async weiz(e) {
