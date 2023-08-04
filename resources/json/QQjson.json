@@ -97,5 +97,34 @@
         "text": "",
         "sourceAd": "",
         "extra": ""
+    },
+    "黑丝": {
+        "app": "com.tencent.imagetextbot",
+        "desc": "",
+        "view": "index",
+        "bizsrc": "",
+        "ver": "1.0.0.11",
+        "prompt": "黑丝",
+        "appID": "",
+        "sourceName": "",
+        "actionData": "",
+        "actionData_A": "",
+        "sourceUrl": "",
+        "meta": {
+            "robot": {
+                "cover": "http:\/\/api.tombk.cn\/API\/hs\/hs.php",
+                "jump_url": "",
+                "subtitle": "",
+                "title": ""
+            }
+        },
+        "config": {
+            "ctime": 1675246840,
+            "token": "367a64a038face9b7ad5cc6da03a3363"
+        },
+        "text": "",
+        "extraApps": [],
+        "sourceAd": "",
+        "extra": ""
     }
 }

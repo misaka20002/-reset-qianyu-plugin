@@ -1,9 +1,7 @@
 import moment from 'moment'
 import cfg from '../../../lib/config/config.js'
 import Base from '../model/base/Base.js'
-// const cfg = {
-//     masterQQ: [1765629830]
-// }
+
 let wzcd = 10//伪装cd 分钟
 
 let wztime = 10 //伪装时长 分钟
@@ -13,6 +11,7 @@ let cishu = {
     userlist: [],
     iscd: false
 }
+
 export default class wz extends Base {
     constructor() {
         super({
@@ -194,7 +193,7 @@ export default class wz extends Base {
         await this.timer.CancelTimeTask('wz');
         if (!cfg.masterQQ.includes(e.user_id)) {
             cishu.iscd = true
-            await this.timer.SetTimeTask('wzcd', moment().add(wzcd, 'm').format(), async () => {
+            this.timer.SetTimeTask('wzcd', moment().add(wzcd, 'm').format(), async () => {
                 cishu.iscd = false
             })
         }

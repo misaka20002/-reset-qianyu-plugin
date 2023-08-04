@@ -6,13 +6,17 @@ export default class networks {
         this.headers = data.headers || {}
         this.type = data.type || 'json'
         this.method = data.method || 'get'
+        this.body = data.body || ''
         this.data = {}
+
     }
 
     async getfetch() {
+        console.log(JSON.stringify(this.body));
         return await fetch(this.url, {
             headers: this.headers,
-            method: this.method
+            method: this.method,
+            body: JSON.stringify(this.body) || ''
         })
     }
 
