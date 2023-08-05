@@ -20,7 +20,7 @@ export default class worldColud extends Base {
             task: {
                 name: 'learnGroupImg',
                 fnc: 'learnGroupImg',
-                cron: '0 57 13 * * *'
+                cron: '0 5 0 * * *'
             },
         })
 
