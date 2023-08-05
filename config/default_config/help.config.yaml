@@ -32,6 +32,15 @@ helplist:
       - title: 引用撤回
         desc: 在机器人发送的消息回复撤回，机器人会撤回该消息
         icon: "141"
+      - title: "#伪装@群友"
+        desc: 机器人换上at用户的头像昵称，并在10分钟内复读at用户的发言
+        icon: "141"
+      - title: "#停止伪装"
+        desc: 停止机器人的伪装
+        icon: "141"
+      - title: "早安/晚安"
+        desc: 记录早晚安时间
+        icon: "141"
 
   - title: 其他功能
     list:
@@ -67,4 +76,7 @@ helplist:
         icon: "100"
       - title: "#尾缀开启/关闭"
         desc: 开启/关闭尾缀
+        icon: "100"
+      - title: "#设置b站ck"
+        desc: 设置机器人的b站cookie
         icon: "100"

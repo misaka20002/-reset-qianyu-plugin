@@ -13,11 +13,15 @@ export default class networks {
 
     async getfetch() {
         console.log(JSON.stringify(this.body));
-        return await fetch(this.url, {
+        let data = {
             headers: this.headers,
             method: this.method,
-            body: JSON.stringify(this.body) || ''
-        })
+
+        }
+        if (this.method == 'post') {
+            data = { ...data, body: JSON.stringify(this.body) || '' }
+        }
+        return await fetch(this.url, data)
     }
 
     async getData() {
