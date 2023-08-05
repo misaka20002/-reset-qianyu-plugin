@@ -62,12 +62,14 @@ export default class help extends Base {
         let filterList = ['ck', 'cookie', 'aiList']
         let configList = this.Config.config.filter(item => !filterCfg.includes(item))
         configList.forEach(item => {
-            Cfg[item] = this.Config.GetCfg(item)
+            Cfg[item] = this.Config.GetCfg(item) || {}
+            // if (Cfg[item]) {
             Object.keys(Cfg[item]).map(key => {
                 if (filterList.includes(key)) {
                     delete Cfg[item][key]
                 }
             })
+            // }
         })
         let result;
         if (!e.isGroup) {
@@ -86,7 +88,7 @@ export default class help extends Base {
             let adminList = Object.values(SetCfg).map(item => {
                 item = {
                     title: item.title,
-                    cfglist: [...Object.values(item.set), ...item.GroupSet ? Object.values(item.GroupSet) : []]
+                    cfglist: [...Object.values(item.set || {}), ...item.GroupSet ? Object.values(item.GroupSet) : []]
                 }
                 return item
             })

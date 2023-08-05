@@ -12,7 +12,6 @@ export default class networks {
     }
 
     async getfetch() {
-        console.log(JSON.stringify(this.body));
         let data = {
             headers: this.headers,
             method: this.method,

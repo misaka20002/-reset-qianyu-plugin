@@ -44,11 +44,11 @@ helplist:
 
   - title: 其他功能
     list:
-      - title: "#发个红包"
-        desc: 假装发了个大红包
-        icon: "141"
       - title: "千羽ai功能"
         desc: 通过#千羽设置查看具体功能
+        icon: "141"
+      - title: "群聊表情包学习功能"
+        desc: 每天从昨天的聊天记录中学习表情包
         icon: "141"
 
   - title: 管理员功能
@@ -79,4 +79,16 @@ helplist:
         icon: "100"
       - title: "#设置b站ck"
         desc: 设置机器人的b站cookie
+        icon: "100"
+      - title: "#清除伪装缓存"
+        desc: 清除本地缓存的伪装数据，防止恢复时信息错误
+        icon: "100"
+      - title: "#群聊复读开启/关闭"
+        desc: 开启关闭群聊复读功能（被动复读）
+        icon: "100"
+      - title: "#打断复读开启/关闭"
+        desc: 开启关闭打断群聊复读功能
+        icon: "100"
+      - title: "达咩/哒咩"
+        desc: 删除机器人所学习不对的表情包
         icon: "100"

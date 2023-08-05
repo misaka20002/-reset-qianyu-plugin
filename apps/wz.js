@@ -61,6 +61,7 @@ export default class wz extends Base {
     }
 
     async cleanwz(e) {
+        if (!e.isMaster) return true
         await redis.del('qianyu:wz:iswz')
         await redis.del('qianyu:wz:atuserinfo')
         await redis.del('qianyu:wz:InitiatorInfo')

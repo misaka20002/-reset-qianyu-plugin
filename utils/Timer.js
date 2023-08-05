@@ -11,6 +11,7 @@ class Timer {
      * @use: 
      */
     SetTimeTask(name, cron, fuc) {
+        this.CancelTimeTask(name)
         schedule.scheduleJob(name, cron, async () => {
             try {
                 fuc()

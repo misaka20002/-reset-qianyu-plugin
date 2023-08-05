@@ -15,11 +15,24 @@ export default class douyin extends Douyin {
     }
 
     async doujx(e) {
+        if (!this.Cfg.isjx) return false
         let url = await this.dealUrl(e)
         if (!url) return false
-        let id = await this.getDouyinId(url)
-        if (!id) {
-            return this.reply("抖音解析只支持短链接分享！")
+        let id;
+        if (url.includes('v.douyin')) {
+            id = await this.getDouyinId(url)
+            if (!id) {
+                return this.reply("抖音解析只支持短链接分享！")
+            }
+        } else {
+            let reg = /video\/(.*?)\//g
+            if (Array.isArray(url.match(reg))) {
+                id = url.match(reg)[0].split("/")[1]
+            } else {
+                let r = url.match(reg).splite('\/')
+                id = r[1]
+            }
+
         }
         let videoUrl = await this.getDouyinVideo(`${id}`)
         if (!videoUrl) {
@@ -31,8 +44,8 @@ export default class douyin extends Douyin {
     async dealUrl(e) {
         if (!e.url) return false
         let url = e.url;
-        let urllist = ['v.douyin']
-        let reg2 = new RegExp(`${urllist[0]}`)
+        let urllist = ['v.douyin', 'www.douyin.com']
+        let reg2 = new RegExp(`${urllist[0]}|${urllist[1]}`)
         if (!url.match(reg2)) return false
         return url
     }

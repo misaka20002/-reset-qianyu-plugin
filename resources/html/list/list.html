@@ -53,7 +53,11 @@
             </tr>
             {{/each}}
         </table>
-        <p class="last" align="center">当天消息统计</p>
+        <div class="count">
+            <span class="allcount">{{day}}消息总计: {{allcount}}</span>
+            <span class="botcount">Bot消息总计: {{botcount}}</span>
+        </div>
+        <p class="last" align="center">{{day}}消息统计</p>
         <p class="last" align="center">Yunzai-Bot&qianyu-plugin</p>
     </div>
 </body>

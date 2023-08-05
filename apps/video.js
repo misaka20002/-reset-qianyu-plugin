@@ -11,7 +11,7 @@ export default class video extends Video {
                     fnc: 'creatVideoJson'
                 },
                 {
-                    reg: '^#随机',
+                    reg: '^#千羽随机',
                     fnc: 'getRadomVideo'
                 },
                 {

@@ -69,6 +69,7 @@ class Config {
             let data = new YamlReader(`${Path.qianyuPath}${this.cfg_path}/${d}.config.yaml`).jsonData
             let keylist = this.differenceKey(defultData, data)
             for (let k of keylist) {
+                if (!defultData) continue
                 this.SetCfg(d, k, defultData[k])
             }
         }

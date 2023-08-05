@@ -62,3 +62,29 @@ bilibili:
       type: Boolean
       desc: B站解析是否开启
       reg: "#千羽设置b站解析开启/关闭"
+douyin:
+  title: 抖音功能
+  set:
+    isjx:
+      title: 抖音解析
+      def: false
+      type: Boolean
+      desc: 抖音解析是否开启
+      reg: "#千羽设置抖音解析开启/关闭"
+groupimg:
+  title: 群聊学习功能
+  set:
+    learnTimes:
+      title: 表情包学习次数
+      def: 10
+      range: [1, 100]
+      type: Number
+      desc: 群聊表情包学习的次数
+      reg: "#千羽设置表情包学习次数10"
+  GroupSet:
+    isOpen:
+      title: 群随机表情
+      def: false
+      type: Boolean
+      desc: 发送每天学习的表情包
+      reg: "#千羽设置群随机表情开启/关闭"
