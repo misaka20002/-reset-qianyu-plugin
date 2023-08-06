@@ -1,0 +1,16 @@
+#伪装cd
+wzcd: 10
+#伪装时长
+wztime: 10
+#群友一天伪装次数
+gcishu: 1
+#伪装上限
+max: 10
+#存储群次数和cd每天重置
+cishu:
+  #伪装总次数
+  sum: 0
+  #限制伪装的群友名单
+  userlist:
+  #是否处于cd
+  iscd: false

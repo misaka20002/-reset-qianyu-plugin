@@ -69,5 +69,6 @@ const readLogFile = function (versionCount = 4) {
     }
     return { changelogs, currentVersion }
 }
+let packJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'))
 let { currentVersion: qianyuVersion, changelogs } = readLogFile()
-export { qianyuVersion, changelogs }
+export { qianyuVersion, changelogs, packJson }

@@ -5,12 +5,12 @@
 {{/block}}
 
 {{block 'main'}}
-<div id="container">
+<div class="helpbox">
     <div class="head">
         <h1>千羽帮助</h1>
-        <h3>YunZai-bot&qianyu-plugin</h3>
+        <h3>{{botname}}&qianyu-plugin</h3>
     </div>
-    <div class="content">
+    <div class="content" style="background-image:url({{_res_path}}/img/可莉/{{bgimg}})">
         {{each helplist h }}
         <div class="content-div">
             <h2> {{h.title}}</h2>

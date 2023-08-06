@@ -4,20 +4,24 @@
 }
 
 #container {
-    width: 850px;
-    background-image: url("../../img/可莉/可莉14.jpg");
+    width: 860px;
+    background-color: rgb(255, 255, 255);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    padding: 10px;
     color: white;
+    font-size: 18px;
 }
 
 h1 {
     color: rgb(184, 58, 58);
     font-size: 40px;
-    font-style: italic;
     margin: 10px 20px;
+    background-color: white;
+}
+
+.head {
+    background-color: rgb(255, 255, 255);
 }
 
 h3 {
@@ -43,7 +47,10 @@ img {
 }
 
 .content {
-    margin-top: 5px
+    margin-top: 20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 h2 {
@@ -103,9 +110,19 @@ h2 {
     flex-direction: column;
 }
 
+.right span:nth-child(1) {
+    font-weight: 600;
+}
+
 .right span:nth-child(2) {
     margin-top: 5px;
-    font-size: 12px;
+    font-size: 14px;
     text-align: left;
-    color: rgb(210, 204, 204);
+    color: rgb(233, 233, 233);
+}
+
+.version {
+    background-color: gainsboro;
+    padding: 10px 0;
+
 }

@@ -1,6 +1,6 @@
 import Render from "../../utils/render.js";
 import Path from "./Path.js";
-import { qianyuVersion } from '../version.js'
+import { qianyuVersion, packJson } from '../version.js'
 export default async function returnImg(name, data) {
     return await Render.render('reset-qianyu-plugin', `/html/${name}/${name}.html`, {
         ...data,
@@ -14,7 +14,8 @@ export default async function returnImg(name, data) {
                     ...data,
                     _res_path: resPath,
                     version: qianyuVersion,
-                    imgType: 'png'
+                    botname: packJson.name,
+                    imgType: 'webp'
                 }
             }
         }

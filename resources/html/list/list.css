@@ -212,3 +212,7 @@ td:nth-child(2) {
     height: 100px;
     position: relative;
 }
+
+.version {
+    display: none;
+}

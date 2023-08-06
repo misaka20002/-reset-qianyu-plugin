@@ -1,48 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+{{extend defaulthtml}}
 
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<link rel="stylesheet" type="text/css" href="{{_res_path}}/html/admin/index.css" />
-</head>
+{{block 'css'}}
+<link rel="stylesheet" type="text/css" href="{{_res_path}}/html/admin/index.css" />
+{{/block}}
 
-<body>
-	<div class="container" id="container">
-		<div class="info_box">
-			<div class="head-box ">
-				<div class="label">--------千羽设置--------</div>
-				<div class="title">千羽管理面板</div>
-			</div>
+
+{{block 'main'}}
+<div class="container" id="container">
+	<div class="info_box">
+		<div class="head-box ">
+			<div class="label">--------千羽设置--------</div>
+			<div class="title">千羽管理面板</div>
 		</div>
-
-		{{each adminList d}}
-		<div class="cfg-box">
-			<div class="cfg-group">{{d.title}}</div>
-			<ul class="cfg-ul">
-				{{each d.cfglist cl}}
-				<li class="cfg-li">
-					<div class="cfg-line">
-						{{cl.title}}
-						<span class="cfg-hint">{{cl.reg}} </span>
-						{{if cl.type!=='Boolean'}}
-						<div class="cfg-status ">
-							{{cl.def}}</div>
-						{{else}}
-						<div class="cfg-status {{cl.def==false?'status-off':''}}">
-							{{cl.def?'已开启':'已关闭'}}</div>
-						{{/if}}
-
-					</div>
-					<div class="cfg-desc">{{cl.desc}}</div>
-				</li>
-				{{/each}}
-			</ul>
-		</div>
-		{{/each}}
 	</div>
-</body>
 
-</html>
+	{{each adminList d}}
+	<div class="cfg-box">
+		<div class="cfg-group">{{d.title}}</div>
+		<ul class="cfg-ul">
+			{{each d.cfglist cl}}
+			<li class="cfg-li">
+				<div class="cfg-line">
+					{{cl.title}}
+					<span class="cfg-hint">{{cl.reg}} </span>
+					{{if cl.type!=='Boolean'}}
+					<div class="cfg-status ">
+						{{cl.def}}</div>
+					{{else}}
+					<div class="cfg-status {{cl.def==false?'status-off':''}}">
+						{{cl.def?'已开启':'已关闭'}}</div>
+					{{/if}}
+
+				</div>
+				<div class="cfg-desc">{{cl.desc}}</div>
+			</li>
+			{{/each}}
+		</ul>
+	</div>
+	{{/each}}
+</div>
+{{/block}}

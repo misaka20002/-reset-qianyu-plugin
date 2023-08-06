@@ -81,6 +81,12 @@ groupimg:
       type: Number
       desc: 群聊表情包学习的次数
       reg: "#千羽设置表情包学习次数10"
+    isSendMsg:
+      title: 表情包学习提醒
+      def: false
+      type: Boolean
+      desc: 每天凌晨发送学习的表情包合集
+      reg: "#千羽设置表情包学习提醒开启/关闭"
   GroupSet:
     isOpen:
       title: 群随机表情
@@ -88,3 +94,12 @@ groupimg:
       type: Boolean
       desc: 发送每天学习的表情包
       reg: "#千羽设置群随机表情开启/关闭"
+help:
+  title: 帮助功能
+  set:
+    randomImgOpen:
+      title: 随机帮助图背景
+      def: false
+      type: Boolean
+      desc: 设置千羽设置的帮助图是否随机
+      reg: "#千羽设置随机帮助图背景开启/关闭"

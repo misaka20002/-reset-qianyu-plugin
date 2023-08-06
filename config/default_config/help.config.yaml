@@ -1,4 +1,5 @@
 #帮助列表
+randomImgOpen: true
 helplist:
   - title: 视频解析功能
     list:
@@ -35,7 +36,7 @@ helplist:
       - title: "#伪装@群友"
         desc: 机器人换上at用户的头像昵称，并在10分钟内复读at用户的发言
         icon: "141"
-      - title: "#停止伪装"
+      - title: "#停止|结束伪装"
         desc: 停止机器人的伪装
         icon: "141"
       - title: "早安/晚安"
@@ -49,6 +50,12 @@ helplist:
         icon: "141"
       - title: "群聊表情包学习功能"
         desc: 每天从昨天的聊天记录中学习表情包
+        icon: "141"
+      - title: "达咩/哒咩"
+        desc: 删除机器人所学习不对的表情包
+        icon: "141"
+      - title: "#查看所有表情"
+        desc: 查看机器人当前群聊所学习的表情包
         icon: "141"
 
   - title: 管理员功能
@@ -89,6 +96,15 @@ helplist:
       - title: "#打断复读开启/关闭"
         desc: 开启关闭打断群聊复读功能
         icon: "100"
-      - title: "达咩/哒咩"
-        desc: 删除机器人所学习不对的表情包
+      - title: "#设置伪装cd10"
+        desc: 设置伪装cd为10分钟
+        icon: "100"
+      - title: "#设置伪装时长10"
+        desc: 设置伪装的时长为10分钟
+        icon: "100"
+      - title: "#设置伪装次数上限10"
+        desc: 设置每天伪装的次数上限为10
+        icon: "100"
+      - title: "#设置伪装群友次数1"
+        desc: 设置每天伪装群友的伪装次数上限为1
         icon: "100"

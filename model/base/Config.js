@@ -98,6 +98,13 @@ class Config {
         this.Cfg[name].set(key, value)
     }
 
+    //数组添加数据
+    AddCfg(name, key, value) {
+        if (!this.Cfg[name]) {
+            this.GetCfg(name)
+        }
+        this.Cfg[name].addIn(key, value)
+    }
 
     watch(name) {
         this.Watcher[name] = chokidar.watch(`./plugins/${pluginName}/${this.cfg_path}/${name}.config.yaml`).on('change', () => {

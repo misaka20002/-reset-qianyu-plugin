@@ -302,14 +302,10 @@ export default class worldColud extends Base {
             }
             faceList = Object.values(face[g[0]]).filter(item => item.times >= this.Config.GetCfg('groupimg').learnTimes)
             let oldList = this.Data.getDataJson(`groupface/${g[0]}-face`) || []
-            oldList = oldList.filter(item => {
-                if (faceList.some(it => it.content.file == item.content.file)) {
-                    return false
-                }
-            })
-            let facelist = [...faceList, ...oldList]
+            faceList = faceList.filter(item => !oldList.some(it => it.content.file === item.content.file))
+            let facelist = [...oldList, ...faceList]
             this.Data.setDataJson(facelist, `groupface/${g[0]}-face`)
-            if (facelist.length > 0) {
+            if (faceList.length > 0 && this.Config.GetCfg('groupimg').isSendMsg) {
                 Bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('昨日学习表情包', faceList, true, g[0]))
             }
 

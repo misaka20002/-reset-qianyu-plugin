@@ -42,9 +42,15 @@ export default class help extends Base {
     }
 
     async help(e) {
+        let imglist = this.File.GetfileList('resources/img/可莉')
+        let random = lodash.random(0, imglist.length - 1)
         let data = this.Cfg
         if (!e.isMaster) {
             data.helplist.splice(data.helplist.length - 1, 1)
+        }
+        data.bgimg = '可莉14.jpg'
+        if (this.Cfg.randomImgOpen) {
+            data.bgimg = imglist[random]
         }
         return this.reply(await this.render('help', data))
     }
@@ -58,8 +64,8 @@ export default class help extends Base {
         let setKey = e.msg.replace("#千羽设置", "")
         let Cfg = {}
         let SetCfg = this.Config.GetCfg('set')
-        let filterCfg = ['help', 'set']
-        let filterList = ['ck', 'cookie', 'aiList']
+        let filterCfg = ['set']
+        let filterList = ['ck', 'cookie', 'aiList', 'helplist']
         let configList = this.Config.config.filter(item => !filterCfg.includes(item))
         configList.forEach(item => {
             Cfg[item] = this.Config.GetCfg(item) || {}
@@ -92,6 +98,7 @@ export default class help extends Base {
                 }
                 return item
             })
+            console.log(adminList[adminList.length - 1]);
             return this.reply(await this.render('admin', { adminList: adminList }));
         }
     }

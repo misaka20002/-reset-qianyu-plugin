@@ -31,10 +31,10 @@ export default class groupimg extends Base {
                 cron: '0 */3 * * * *'
             },
         })
-        groupList = this.Cfg !== null ? Object.keys(this.Cfg).filter(item => item !== 'learnTimes') : []
+        let fileterList = ['learnTimes', 'isSendMsg']
+        groupList = this.Cfg !== null ? Object.keys(this.Cfg).filter(item => !fileterList.includes(item)) : []
     }
     async seeface(e) {
-        if (!e.isMaster) return false
         let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
         if (imgData.length == 0) {
             return this.reply("还没有在该群学习过表情包")
