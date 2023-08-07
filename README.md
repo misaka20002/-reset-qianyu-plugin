@@ -16,7 +16,7 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 
 ## 使用说明
 
-![](resouces/img/可莉/可莉14.jpg)
+![](resources/img/可莉/可莉14.jpg)
 
 ### 视频解析
 
