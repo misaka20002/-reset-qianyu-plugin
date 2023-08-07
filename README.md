@@ -2,7 +2,7 @@
 
 ## 介绍
 
-对千羽插件进行重置，优化无用功能，在原有的功能提供更多功能。
+对千羽插件进行重置，优化无用功能，在原有的功能提供更多功能。(因生存问题，可能要咕咕咕......)
 
 ## 依赖安装
 
@@ -15,6 +15,8 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 ```
 
 ## 使用说明
+
+![](resouces/img/可莉/可莉14.jpg)
 
 ### 视频解析
 

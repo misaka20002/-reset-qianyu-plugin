@@ -36,7 +36,7 @@ export default class prefix extends Base {
         } else if (text == '关闭') {
             this.SetCfg('group', `${e.group_id}.onlyReplyAt`, 0)
         } else {
-            console.log("无效的设置!")
+            return this.reply("无效的设置!")
         }
         this.reply(`群前缀已${text}!`)
     }

@@ -98,7 +98,6 @@ export default class help extends Base {
                 }
                 return item
             })
-            console.log(adminList[adminList.length - 1]);
             return this.reply(await this.render('admin', { adminList: adminList }));
         }
     }

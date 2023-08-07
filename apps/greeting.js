@@ -42,7 +42,6 @@ export default class greeting extends Base {
             redis.set(`qianyu:greeting:${e.user_id}`, JSON.stringify({ ...userdata, mtime: moment().format() }))
             monightlist[e.group_id].mnum += 1
             monightlist[e.group_id].mlist.push(e.user_id)
-            console.log(userdata);
             if (userdata.ntime) {
                 msg = `早安成功！你的睡眠时长为${this.update(userdata.ntime)},`
             }
@@ -77,7 +76,6 @@ export default class greeting extends Base {
         let msg = ``;
         if (e.msg == '晚安' && this.isevening() && !monightlist[e.group_id].nlist.includes(e.user_id)) {
             let userdata = JSON.parse(await redis.get(`qianyu:greeting:${e.user_id}`)) || {}
-            console.log(userdata);
             redis.set(`qianyu:greeting:${e.user_id}`, JSON.stringify({ ...userdata, ntime: moment().format() }))
             monightlist[e.group_id].nnum += 1
             monightlist[e.group_id].nlist.push(e.user_id)
