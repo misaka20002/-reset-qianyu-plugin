@@ -16,7 +16,7 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 
 ## 使用说明
 
-![](resouces/img/可莉/可莉14.jpg)
+![](resources/img/可莉/可莉14.jpg)
 
 ### 视频解析
 
@@ -52,3 +52,7 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 - QQ 群
   - qianyu-plugin 交流群 QQ 群：[860111915](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ZJEKletp5HiYrz1T28nV21-xOXwlC89J&authKey=fYvmzDU8wu4moRw1GEc%2FVboJMDvQQV%2F6aIGGIz2elD5U53bOqGpC9YRz2k4Msvuy&noverify=0&group_code=860111915)
 - [爱发电](https://afdian.net/a/qianyu-plugin) :欢迎老板打赏
+
+## 访问数量：
+
+[![访问量](https://profile-counter.glitch.me/reset-qianyu-plugin/count.svg)](https://gitee.com/think-first-sxs/reset-qianyu-plugin/)
