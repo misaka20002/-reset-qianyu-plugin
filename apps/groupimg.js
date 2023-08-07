@@ -28,7 +28,7 @@ export default class groupimg extends Base {
             task: {
                 name: 'sendimg',
                 fnc: 'sendimg',
-                cron: '0 */3 * * * *'
+                cron: '0 * * * * *'
             },
         })
         let fileterList = ['learnTimes', 'isSendMsg']
@@ -56,7 +56,8 @@ export default class groupimg extends Base {
             return false
         }
         if (e.source.user_id == e.self_id) {
-            let msg = (await e.group.getChatHistory(e.source.seq, 1))[0].message
+            let m = (await e.group.getChatHistory(e.source.seq, 1))[0]
+            let msg = m.message
             if (!msg) return false
             let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
             let isdelete = false
@@ -67,6 +68,10 @@ export default class groupimg extends Base {
                 }
             });
             if (!isdelete) return false
+            let res = await e.group.recallMsg(m.message_id)
+            if (!res) {
+                this.reply("伦家不是管理员，不能撤回超过2分钟的消息呢~")
+            }
             Bot.pickGroup(e.group_id).sendMsg("呜呜呜~我错了，以后不发了~呜")
             this.Data.setDataJson(imgData, `groupface/${e.group_id}-face`)
         }
@@ -80,6 +85,7 @@ export default class groupimg extends Base {
                     let time = msg[g]?.time || 0
                     if (moment().unix() >= time + (random * 60)) {
                         let imgData = this.Data.getDataJson(`groupface/${g}-face`) || []
+                        if (imgData.length === 0) return false
                         let img = imgData[lodash.random(0, imgData.length - 1)]
                         msg[g] = {}
                         msg[g].time = moment().unix()
