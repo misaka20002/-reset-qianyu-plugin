@@ -103,3 +103,12 @@ help:
       type: Boolean
       desc: 设置千羽设置的帮助图是否随机
       reg: "#千羽设置随机帮助图背景开启/关闭"
+chuo:
+  title: 戳一戳
+  set:
+    isOpen:
+      title: 戳一戳表情
+      def: false
+      type: Boolean
+      desc: 发送每天学习的表情包
+      reg: "#千羽设置戳一戳表情开启/关闭"

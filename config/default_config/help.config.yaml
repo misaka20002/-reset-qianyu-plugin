@@ -57,7 +57,9 @@ helplist:
       - title: "#查看所有表情"
         desc: 查看机器人当前群聊所学习的表情包
         icon: "141"
-
+      - title: "千羽戳一戳"
+        desc: 戳一戳发送当前群聊所学习的表情包
+        icon: "141"
   - title: 管理员功能
     list:
       - title: "#千羽帮助"
