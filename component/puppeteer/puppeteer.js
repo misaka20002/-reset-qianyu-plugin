@@ -46,6 +46,12 @@ class Puppeteer {
     return puppeteer
   }
 
+  getversion() {
+    let version = JSON.parse(fs.readFileSync('./node_modules/puppeteer/package.json')).version
+    let v = version.split('.')
+    return v[0]
+  }
+
   createDir(dir) {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir)
@@ -60,7 +66,9 @@ class Puppeteer {
     if (this.browser) return this.browser
     if (this.lock) return false
     this.lock = true
-
+    if (this.getversion() >= 20) {
+      this.config.headless = 'new'
+    }
     logger.mark('puppeteer Chromium 启动中...')
 
     /** 初始化puppeteer */
