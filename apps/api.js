@@ -122,12 +122,29 @@ export default class api extends Api {
     async gettextapi(e) {
         let parm = '';
         let msg = e.msg
-        let text = (await this.getApiList('text')).find(item => {
+        let text = (await this.getApiList('text')).filter(item => {
             let reg = new RegExp(item.reg)
             if (reg.test(msg)) {
-                return true
+                return item
             }
         })
+        if (text.length == 0) {
+            return false
+        } else if (text.length == 1) {
+            text = text[0]
+        } else if (text.length > 1) {
+            let l = 0;
+            text = text.filter((item, index) => {
+                if (l == 0) {
+                    l = item.reg.length
+                } else {
+                    l = text[index - 1].reg.length
+                }
+                if (item.reg.length > l) {
+                    return item
+                }
+            })[0]
+        }
         if (text.range) {
             if (Array.isArray(text.range)) {
                 parm = text.range.find(item => msg.includes(item))

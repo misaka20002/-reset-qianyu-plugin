@@ -8,7 +8,7 @@ export class Api extends Base {
     async getApiData(type, name, suc, parms = '') {
         let datalist = await this.getApiList(type)
         datalist.forEach(async element => {
-            if (element.reg == name) {
+            if (element.reg === name) {
                 let url = element.url + parms
                 await this.dealType(url, element.data, suc)
             }
@@ -108,5 +108,5 @@ export class Api extends Base {
     async downVideo(data, path, suc) {
         return await this.downfile.downVideo(data, path, suc)
     }
-
 }
+
