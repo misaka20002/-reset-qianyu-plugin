@@ -22,7 +22,7 @@ ai:
       def: 思知
       type: String
       range: [思知, 青云客, 小爱同学, gpt]
-      desc: "私聊的ai，可以设置思知、青云客、小爱同学"
+      desc: "私聊的ai，可以设置思知、青云客、小爱同学、gpt"
       reg: "#千羽设置私聊ai类型思知"
     botname:
       title: "ai名称" #属性名
@@ -51,7 +51,7 @@ ai:
       def: 思知
       type: String
       range: [思知, 青云客, 小爱同学, gpt]
-      desc: "群聊的ai，可以设置思知、青云客、小爱同学"
+      desc: "群聊的ai，可以设置思知、青云客、小爱同学、gpt"
       reg: "#千羽设置群聊ai类型思知"
 bilibili:
   title: B站功能
