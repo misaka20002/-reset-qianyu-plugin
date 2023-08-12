@@ -21,9 +21,15 @@ ai:
       title: "私聊ai类型" #属性名
       def: 思知
       type: String
-      range: [思知, 青云客, 小爱同学]
+      range: [思知, 青云客, 小爱同学, gpt]
       desc: "私聊的ai，可以设置思知、青云客、小爱同学"
       reg: "#千羽设置私聊ai类型思知"
+    botname:
+      title: "ai名称" #属性名
+      def: 思知
+      type: String
+      desc: "设置ai名称为任意名称"
+      reg: "#千羽设置ai名称思知"
   GroupSet:
     isOpen:
       title: "群聊ai" #属性名
@@ -44,7 +50,7 @@ ai:
       title: "群聊ai类型" #属性名
       def: 思知
       type: String
-      range: [思知, 青云客, 小爱同学]
+      range: [思知, 青云客, 小爱同学, gpt]
       desc: "群聊的ai，可以设置思知、青云客、小爱同学"
       reg: "#千羽设置群聊ai类型思知"
 bilibili:

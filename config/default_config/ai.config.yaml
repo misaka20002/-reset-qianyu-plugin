@@ -1,26 +1,16 @@
-#ai列表
-aiList:
-  - name: 小爱同学
-    url: https://xiaobai.klizi.cn/API/other/xiaoai.php?data=&msg= #小爱
-    data: ["text"]
-  - name: 思知
-    url: https://api.ownthink.com/bot?appid=xiaosi&userid=user&spoken= #思知
-    data: ["data", "info", "text"]
-  - name: 青云客
-    url: http://api.qingyunke.com/api.php?key=free&appid=0&msg= #青云客
-    data: ["content"]
-
 #私聊ai开关
 isPrivte: false
 #私聊ai概率
 probability: 0
 #私聊ai类型
 aiType: 思知
+#ai名称
+botname: 思知
 #示例数据
 1212121: #群配置
   #是否群内开启
   isOpen: false
-  #设置ai类型 （小爱同学、思知、青云客）
+  #设置ai类型 （小爱同学、思知、青云客、gpt(3.5他是这么写的)）
   aiType: 思知
   #设置ai触发概率
   gprobability: 0

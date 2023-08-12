@@ -49,16 +49,22 @@ export default class ai extends Base {
     }
 
     async choieai(msg, ai) {
-        let ailist = this.Cfg.aiList
-        let botname = await redis.get(`qianyu:ai:botname`)
+        let ailist = this.File.getYamlData('resources/api/ai.yaml').ailist
+        let botname = this.Cfg.botname
         let aida = ailist.find(list => list.name == ai)
         if (!aida) return
         msg = msg.replace("#", "")
-        let data = await new this.networks({ url: `${aida.url}${encodeURI(msg)}` }).getData()
-        aida.data.forEach(item => {
-            data = data[item]
-        })
-        return await this.reply(`${data.replace(/菲菲|小思|小爱|思知/g, botname ? botname : ai)}`)
+        let networks = new this.networks({ url: `${aida.url}${encodeURI(msg)}` })
+        let data = await networks.getData()
+        if (Array.isArray(aida.data)) {
+            if (networks.type == 'text') {
+                data = JSON.parse(data)
+            }
+            aida.data.forEach(item => {
+                data = data[item]
+            })
+        }
+        return await this.reply(`${data.replace(/菲菲|小思|小爱|思知|ChatGPT/g, botname ? botname : ai)}`)
     }
 
 

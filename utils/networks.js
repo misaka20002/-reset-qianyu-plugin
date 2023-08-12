@@ -65,7 +65,6 @@ export default class networks {
             this.fetch = await this.fetch.text()
             this.type = 'text'
         }
-
     }
 
     async ToText() {

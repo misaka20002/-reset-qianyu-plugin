@@ -1,0 +1,14 @@
+#ai列表
+ailist:
+  - name: 小爱同学
+    url: https://xiaobai.klizi.cn/API/other/xiaoai.php?data=&msg= #小爱
+    data: ["text"]
+  - name: 思知
+    url: https://api.ownthink.com/bot?appid=xiaosi&userid=user&spoken= #思知
+    data: ["data", "info", "text"]
+  - name: 青云客
+    url: http://api.qingyunke.com/api.php?key=free&appid=0&msg= #青云客
+    data: ["content"]
+  - name: gpt
+    url: https://xiaobai.klizi.cn/API/other/gpt.php?msg= #青云客
+    data: 0
