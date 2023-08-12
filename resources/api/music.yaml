@@ -1,1 +1,6 @@
 musiclist:
+  - reg: 随机唱鸭
+    name: 随机唱鸭
+    url: https://xiaobai.klizi.cn/API/music/changya.php
+    desc: 随机唱鸭
+    data: ["data", "audioSrc"]

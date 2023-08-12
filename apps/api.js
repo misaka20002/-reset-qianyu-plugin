@@ -1,5 +1,6 @@
 import { Api } from "../model/api.js"
 import lodash from 'lodash'
+let videoing = false
 export default class api extends Api {
     constructor() {
         super({
@@ -120,22 +121,22 @@ export default class api extends Api {
         return this.reply(await this.render('help', data))
     }
 
-    async gettextapi(e) {
+
+    async dealApi(type, msg, suc) {
         let parm = '';
-        let msg = e.msg
-        let text = (await this.getApiList('text')).filter(item => {
+        let api = (await this.getApiList(type)).filter(item => {
             let reg = new RegExp(item.reg)
             if (reg.test(msg)) {
                 return item
             }
         })
-        if (text.length == 0) {
+        if (api.length == 0) {
             return false
-        } else if (text.length == 1) {
-            text = text[0]
-        } else if (text.length > 1) {
+        } else if (api.length == 1) {
+            api = api[0]
+        } else if (api.length > 1) {
             let l = 0;
-            text = text.filter((item, index) => {
+            api = api.filter((item, index) => {
                 if (l == 0) {
                     l = item.reg.length
                 } else {
@@ -146,80 +147,62 @@ export default class api extends Api {
                 }
             })[0]
         }
-        if (text.range) {
-            if (Array.isArray(text.range)) {
-                parm = text.range.find(item => msg.includes(item))
-            } else if (text.range != 'any') {
-                parm = text.range[msg]
+        if (api.replace) {
+            msg = msg.replace(api.replace, "")
+        }
+        if (api.range) {
+            if (Array.isArray(api.range)) {
+                parm = api.range.find(item => msg.includes(item))
+            } else if (api.range !== 'any') {
+                parm = api.range[msg]
             } else {
-                let str = msg.match(text.reg)[0]
+                let str = msg.match(api.reg)[0]
                 parm = msg.replace(str, "")
             }
-            if (text.parm) {
-                parm += text.parm
+            if (api.parm) {
+                parm += api.parm
             }
         }
-        await this.getApiData('text', text.reg, async (res) => {
-            if (!res) {
-                return this.reply("请求失败！")
-            }
-            let remsg = res;
-            res = res.replace(/[\r\n]/g, "")
-            this.reply(remsg)
+        await this.getApiData(type, api.reg, async (res) => {
+            suc(res, api)
         }, encodeURI(parm))
     }
 
-    async getrecordapi(e) {
-        let parm = '';
+    async gettextapi(e) {
         let msg = e.msg
-        let record = (await this.getApiList('record')).find(item => {
-            let reg = new RegExp(item.reg)
-            if (reg.test(msg)) {
-                return true
+        await this.dealApi('text', msg, async (res) => {
+            if (!res) {
+                return this.reply("请求失败！")
             }
+            let remsg = res.trim();
+            remsg = remsg.replace(/\n/g, "\n")
+            this.reply(remsg)
         })
-        if (record.range) {
-            if (Array.isArray(record.range)) {
-                parm = record.range.find(item => msg.includes(item))
-            } else if (record.range != 'any') {
-                parm = record.range[msg]
-            } else {
-                let str = msg.match(record.reg)[0]
-                parm = msg.replace(str, "")
-            }
-            if (record.parm) {
-                parm += record.parm
-            }
-        }
-        await this.getApiData('record', record.reg, async (res) => {
+    }
+
+    async getrecordapi(e) {
+        let msg = e.msg
+        await this.dealApi('record', msg, async (res) => {
             if (!res) {
                 return this.reply("请求失败！")
             }
             this.reply(this.segment.record(res))
-        }, encodeURI(parm))
+        })
+    }
+
+    async getmusicapi(e) {
+        let msg = e.msg
+        await this.dealApi('music', msg, async (res) => {
+            if (!res) {
+                return this.reply("请求失败！")
+            }
+            this.reply(this.segment.record(res))
+        })
     }
 
     async getimageapi(e) {
-        let parm = '';
         let msg = e.msg
-        let image = (await this.getApiList('image')).find(item => {
-            let reg = new RegExp(item.reg)
-            if (reg.test(msg)) {
-                return true
-            }
-        })
-        if (!image) return false
-        if (image.range) {
-            if (Array.isArray(image.range)) {
-                parm = image.range.find(item => msg.includes(item))
-            } else {
-                parm = image.range[msg]
-            }
-            if (image.parm) {
-                parm += image.parm
-            }
-        }
-        await this.getApiData('image', image.reg, async (res) => {
+        await this.dealApi('image', msg, async (res) => {
             if (!res) {
                 return this.reply("请求失败！")
             }
@@ -227,41 +210,26 @@ export default class api extends Api {
                 await this.reply(this.segment.image(res))
             } else {
                 let mes = []
+                res = [...new Set(res)]
                 res.forEach((item, index) => {
-                    if (res.length > 5 ? index < 5 : index < res.length) {
-                        mes.push({ content: this.segment.image(item) })
-                    }
+                    // if (res.length > 5 ? index < 5 : index < res.length) {
+                    mes.push({ content: this.segment.image(item) })
+                    // }
                 })
                 return this.reply(await this.makeGroupMsg(e.msg, mes))
             }
-        }, encodeURI(parm))
+        })
     }
 
     async getvideoapi(e) {
         let msg = e.msg
-        let parm = '';
-        let video = (await this.getApiList('video')).find(item => {
-            let reg = new RegExp(item.reg)
-            if (reg.test(msg)) {
-                return true
-            }
-        })
-        if (!video) return false
-        if (video.range) {
-            if (Array.isArray(video.range)) {
-                parm = video.range.find(item => msg.includes(item))
-            } else if (video.range != 'any') {
-                parm = video.range[msg]
-            } else {
-                let str = msg.match(video.reg)[0]
-                parm = msg.replace(str, "")
-            }
-            if (video.parm) {
-                parm += video.parm
-            }
+        if (videoing) {
+            return this.reply("当前有视频任务正在下载请稍后！")
         }
-        await this.getApiData('video', video.reg, async (res) => {
+        videoing = true
+        await this.dealApi('video', msg, async (res, video) => {
             if (!res) {
+                videoing = false
                 return this.reply("请求错误！请重试！")
             }
             if (video.data === 0) {
@@ -269,12 +237,16 @@ export default class api extends Api {
                 res = res.match(reg2)[0]
             }
             let result = await this.downVideoFile(res, `${msg}.mp4`, async () => {
-                e.reply(this.segment.video(`${this.Path.qianyuPath}resources/video/${msg}.mp4`))
+                Bot.pickGroup(this.e.group_id).sendMsg(this.segment.video(`${this.Path.qianyuPath}resources/video/${msg}.mp4`)).catch(err => {
+                    videoing = false
+                    return e.reply("视频解析失败！")
+                })
             })
+            videoing = false
             if (!result) {
-                e.reply("视频下载失败！")
+                return e.reply("视频下载失败！")
             }
-        }, encodeURI(parm))
+        })
 
     }
 

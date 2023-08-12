@@ -17,6 +17,6 @@ recordapi:
   - name: 有道语音
     reg: 有道语音
     url: https://xiaobai.klizi.cn/API/other/tts_youdao.php?msg=
-    desc: 无
+    desc: 有道语音+内容，发出内容语音
     data: 1
     range: any

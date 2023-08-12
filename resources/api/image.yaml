@@ -46,3 +46,54 @@ imagelist:
     desc: 女仆|jk制服|兔女郎|夏日泳装|动漫类|萝莉|少女|御姐|巨乳|丰满微胖|黑丝|白丝|肉丝|网丝|吊带袜|腿控|脚控|旗袍美图
     data: ["imgurl"]
     parm: "&format=json"
+  - url: https://xiaobai.klizi.cn/API/other/tianqi_t.php?msg=
+    data: 1
+    reg: 天气|天气
+    desc: 发送城市天气图片
+    name: 北京天气
+    range: any
+  - url: https://xiaobai.klizi.cn/API/tw/60s.php
+    data: 1
+    reg: 60s读懂世界
+    desc: 60s读懂世界
+    name: 60s读懂世界
+  - url: https://xiaobai.klizi.cn/API/img/game.php
+    data: 0
+    reg: 游戏人物图
+    desc: 游戏人物图
+    name: 游戏人物图
+  - reg: (纯净|气质|俏皮|侧颜)美图
+    name: 各种美图2
+    range:
+      - 纯净
+      - 气质
+      - 俏皮
+      - 侧颜
+    url: https://xiaobai.klizi.cn/API/img/beauty.php?lx=
+    desc: 纯净/气质/俏皮/侧颜美女图
+    data: 0
+  - url: https://xiaobai.klizi.cn/API/img/sjbz.php?data=&type=txt
+    data: 0
+    reg: 随机壁纸
+    desc: 随机壁纸
+    name: 随机壁纸
+  - url: https://xiaobai.klizi.cn/API/img/beauty.php?data=&
+    data: 0
+    reg: 高清美女图
+    desc: 高清美女图
+    name: 高清美女图
+  - url: https://xiaobai.klizi.cn/API/img/duitang.php?data=&lx=
+    data: ["covers"]
+    reg: 堆糖壁纸
+    desc: 堆糖壁纸
+    name: 堆糖壁纸
+  - url: https://xiaobai.klizi.cn/API/img/bizhi.php
+    data: ["pic"]
+    reg: 高清壁纸
+    desc: 高清壁纸
+    name: 高清壁纸
+  - url: https://xiaobai.klizi.cn/API/other/bing.php
+    data: 0
+    reg: 必应每日一图
+    desc: 必应每日一图
+    name: 必应每日一图

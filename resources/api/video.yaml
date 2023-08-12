@@ -1,11 +1,16 @@
 videoapi:
-  # - url: https://api.xcboke.cn/api/xjj
-  #   data: 0
-  #   reg: 小姐姐
-  #   desc: 小姐姐视频
-  #   name: 小姐姐
-  # - url: http://api.caonm.net/api/mn/index.php
-  #   data: 0
-  #   reg: 小姐姐2
-  #   desc: 小姐姐视频2
-  #   name: 小姐姐2
+  - url: https://api.xcboke.cn/api/xjj
+    data: 0
+    reg: 小姐姐
+    desc: 小姐姐视频
+    name: 小姐姐
+  - url: http://api.caonm.net/api/mn/index.php
+    data: 0
+    reg: 小姐姐2
+    desc: 小姐姐视频2
+    name: 小姐姐2
+  - url: https://xiaobai.klizi.cn/API/video/kuaishou_dm.php
+    data: ["url"]
+    reg: 快手动漫短视频
+    desc: 快手动漫短视频
+    name: 快手动漫短视频

@@ -15,11 +15,11 @@ textapi:
     reg: 古诗名句
     desc: 随机一句古诗名句
     name: 古诗名句
-  - url: https://xian.txma.cn/API/yiyan.php
-    data: 0
-    reg: 名人一言
-    desc: 随机发送名人的一句话
-    name: 名人一言
+  # - url: https://xian.txma.cn/API/yiyan.php
+  #   data: 0
+  #   reg: 名人一言
+  #   desc: 随机发送名人的一句话
+  #   name: 名人一言
   - url: https://v.api.aa1.cn/api/api-wenan-ktff/index.php?type=5&format=json
     data: ["text"]
     reg: 口吐芬芳
@@ -40,3 +40,110 @@ textapi:
     reg: 网易云热评
     desc: 网易云热门评论
     name: 网易云热评
+  - url: https://xiaobai.klizi.cn/API/other/tgrj.php
+    data: 0
+    reg: 舔狗日记
+    desc: 舔狗日记
+    name: 舔狗日记
+  - url: https://xiaobai.klizi.cn/API/other/sjxh.php
+    data: 0
+    reg: 笑话
+    desc: 笑话
+    name: 笑话
+  - url: https://xiaobai.klizi.cn/API/other/tkl.php
+    data: 0
+    reg: 脱口令
+    desc: 脱口令
+    name: 脱口令
+  - url: https://xiaobai.klizi.cn/API/other/lzyl.php
+    data: ["data"]
+    reg: 随机语录
+    desc: 随机语录
+    name: 随机语录
+  - url: https://xiaobai.klizi.cn/API/other/djt.php
+    data: 0
+    reg: 毒鸡汤
+    desc: 毒鸡汤
+    name: 毒鸡汤
+  - url: https://xiaobai.klizi.cn/API/other/sjsc.php
+    data: ["content"]
+    reg: 随机诗词
+    desc: 随机诗词
+    name: 随机诗词
+  - url: https://xiaobai.klizi.cn/API/other/gxqm.php?lx=
+    data: 0
+    reg: (女生|男生|个性|搞笑)签名
+    desc: 女生/男生/个性/搞笑签名
+    name: 个性签名
+    range:
+      - 女生
+      - 男生
+      - 个性
+      - 搞笑
+    replace: 签名
+  - url: https://xiaobai.klizi.cn/API/other/cqyl.php?data=&id=
+    data: 0
+    reg: (句子迷|快乐|开心|高兴|优秀|心声|诗歌|民国|最爱|深刻|美丽|感人|潇洒|经典|佛经|寂寞|爱情语录|女人|放弃|悲伤|梦想|感悟|哲理|歌词|QQ个性签名|经典台词|唯美|伤感|感伤|小说书摘|爱情|经典语录|忧伤|优美|甜蜜|随笔|失望|英语名言|励志|绝望|基督教|格言|离别|失恋|祝福语|动漫|思念|心语|佛语|温柔|心愿|希望|回忆|孤独|遥远|远方|魅力|成长|喜欢一个人)语录
+    desc: (句子迷|快乐|开心|高兴|优秀|心声|诗歌|民国|最爱|深刻|美丽|感人|潇洒|经典|佛经|寂寞|爱情语录|女人|放弃|悲伤|梦想|感悟|哲理|歌词|QQ个性签名|经典台词|唯美|伤感|感伤|小说书摘|爱情|经典语录|忧伤|优美|甜蜜|随笔|失望|英语名言|励志|绝望|基督教|格言|离别|失恋|祝福语|动漫|思念|心语|佛语|温柔|心愿|希望|回忆|孤独|遥远|远方|魅力|成长|喜欢一个人)语录
+    name: 超强语录
+    range:
+      句子迷: 1
+      快乐: 2
+      开心: 3
+      高兴: 4
+      优秀: 5
+      心声: 6
+      诗歌: 7
+      民国: 8
+      最爱: 9
+      深刻: 10
+      美丽: 11
+      感人: 12
+      潇洒: 13
+      经典: 14
+      佛经: 15
+      寂寞: 16
+      爱情语录: 17
+      女人: 18
+      放弃: 19
+      悲伤: 20
+      梦想: 21
+      感悟: 22
+      哲理: 23
+      歌词: 24
+      QQ个性签名: 25
+      经典台词: 26
+      唯美: 27
+      伤感: 28
+      感伤: 29
+      小说书摘: 30
+      爱情: 31
+      经典语录: 32
+      忧伤: 33
+      优美: 34
+      甜蜜: 35
+      随笔: 36
+      失望: 37
+      英语名言: 38
+      励志: 39
+      绝望: 40
+      基督教: 41
+      格言: 42
+      离别: 43
+      失恋: 44
+      祝福语: 45
+      动漫: 46
+      思念: 47
+      心语: 48
+      佛语: 49
+      温柔: 50
+      心愿: 51
+      希望: 52
+      回忆: 53
+      孤独: 54
+      遥远: 55
+      远方: 56
+      魅力: 57
+      成长: 58
+      喜欢一个人: 59
+    replace: 语录
