@@ -76,22 +76,22 @@ export class Api extends Base {
 
     getApiList(type) {
         if (type == 'text') {
-            let { textapi } = this.File.getYamlData('resources/data/api/text.yaml')
+            let { textapi } = this.File.getYamlData('resources/api/text.yaml')
             return textapi
         } else if (type == 'image') {
-            let { imagelist } = this.File.getYamlData('resources/data/api/image.yaml')
+            let { imagelist } = this.File.getYamlData('resources/api/image.yaml')
             return imagelist
         }
         else if (type == 'record') {
-            let { recordapi } = this.File.getYamlData('resources/data/api/record.yaml')
+            let { recordapi } = this.File.getYamlData('resources/api/record.yaml')
             return recordapi
         }
         else if (type == 'video') {
-            let { videoapi } = this.File.getYamlData('resources/data/api/video.yaml')
+            let { videoapi } = this.File.getYamlData('resources/api/video.yaml')
             return videoapi
         }
         else if (type == 'music') {
-            let { musiclist } = this.File.getYamlData('resources/data/api/music.yaml')
+            let { musiclist } = this.File.getYamlData('resources/api/music.yaml')
             return musiclist
         }
     }

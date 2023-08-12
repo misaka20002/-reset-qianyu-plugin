@@ -1,0 +1,22 @@
+recordapi:
+  - name: 脱口秀
+    reg: (糗事播报|段子来了|波波有理|妙宇连朱|非常溜佳期|今晚脱口秀|娱乐逗翻天|上班脱口秀)
+    url: https://xiaobai.klizi.cn/API/img/xmly.php?data=&lx=
+    desc: 糗事播报/段子来了/波波有理/妙宇连朱/非常溜佳期/今晚脱口秀/娱乐逗翻天/上班脱口秀
+    range:
+      - 糗事播报
+      - 段子来了
+      - 波波有理
+      - 妙宇连朱
+      - 非常溜佳期
+      - 今晚脱口秀
+      - 娱乐逗翻天
+      - 上班脱口秀
+    data: ["meta", "music", "jumpUrl"]
+    parm: "&type=json"
+  - name: 有道语音
+    reg: 有道语音
+    url: https://xiaobai.klizi.cn/API/other/tts_youdao.php?msg=
+    desc: 无
+    data: 1
+    range: any

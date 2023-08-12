@@ -1,0 +1,42 @@
+#写一个注释
+textapi:
+  - url: http://apii.gq/api/renjian.php
+    data: 0
+    reg: 人间凑数
+    desc: 你是来人间凑数的吗
+    name: 人间凑数
+  - url: https://v1.hitokoto.cn/
+    data: ["hitokoto"]
+    reg: 一言
+    desc: 随机一言
+    name: 一言
+  - url: http://apii.gq/api/shiju.php
+    data: 0
+    reg: 古诗名句
+    desc: 随机一句古诗名句
+    name: 古诗名句
+  - url: https://xian.txma.cn/API/yiyan.php
+    data: 0
+    reg: 名人一言
+    desc: 随机发送名人的一句话
+    name: 名人一言
+  - url: https://v.api.aa1.cn/api/api-wenan-ktff/index.php?type=5&format=json
+    data: ["text"]
+    reg: 口吐芬芳
+    desc: 没事别找骂
+    name: 口吐芬芳
+  - url: http://apii.gq/api/shangganyl.php
+    data: 0
+    reg: 伤感语录
+    desc: 桑心难过
+    name: 伤感语录
+  - url: https://xiaobai.klizi.cn/API/other/chp.php
+    data: 0
+    reg: 彩虹屁
+    desc: 让我看看是哪个帅哥美女用了这个功能
+    name: 彩虹屁
+  - url: https://api.uomg.com/api/comments.163?format=json
+    data: ["data", "content"]
+    reg: 网易云热评
+    desc: 网易云热门评论
+    name: 网易云热评

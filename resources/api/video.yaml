@@ -1,0 +1,11 @@
+videoapi:
+  - url: https://api.xcboke.cn/api/xjj
+    data: 0
+    reg: 小姐姐
+    desc: 小姐姐视频
+    name: 小姐姐
+  - url: http://api.caonm.net/api/mn/index.php
+    data: 0
+    reg: 小姐姐2
+    desc: 小姐姐视频2
+    name: 小姐姐2

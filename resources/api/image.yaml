@@ -1,0 +1,48 @@
+imagelist:
+  - reg: 原神黄历
+    name: 原神黄历
+    url: https://api.xingzhige.com/API/yshl/
+    desc: 看看今天的原神黄历
+    data: 1
+  - reg: 摸鱼日历
+    name: 摸鱼日历
+    url: https://api.vvhan.com/api/moyu?type=json
+    desc: 每天都要摸鱼
+    data: ["url"]
+  - reg: (男头|女头|动漫头像|动漫男头|动漫女头)
+    name: 头像
+    url: https://api.btstu.cn/sjtx/api.php?lx=
+    range:
+      男头: a1
+      女头: b1
+      动漫头像: c1
+      动漫女头: c2
+      动漫男头: c3
+    desc: 有男头、女头、动漫头像、动漫女头、动漫男头这几个分类
+    data: 1
+    parm: "&format=images"
+  - reg: (女仆|jk制服|兔女郎|夏日泳装|动漫类|萝莉|少女|御姐|巨乳|丰满微胖|黑丝|白丝|肉丝|网丝|吊带袜|腿控|脚控|旗袍)美图
+    name: 各种美图
+    range:
+      - "女仆"
+      - "jk制服"
+      - "兔女郎"
+      - "夏日泳装"
+      - "动漫类"
+      - "萝莉"
+      - "少女"
+      - "御姐"
+      - "巨乳"
+      - "丰满微胖"
+      - "黑丝"
+      - "白丝"
+      - "肉丝"
+      - "网丝"
+      - "吊带袜"
+      - "腿控"
+      - "脚控"
+      - "旗袍"
+    url: https://api.uomg.com/api/rand.img4?sort=
+    desc: 女仆|jk制服|兔女郎|夏日泳装|动漫类|萝莉|少女|御姐|巨乳|丰满微胖|黑丝|白丝|肉丝|网丝|吊带袜|腿控|脚控|旗袍美图
+    data: ["imgurl"]
+    parm: "&format=json"
