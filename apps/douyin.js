@@ -6,6 +6,10 @@ export default class douyin extends Douyin {
             priority: 50,
             rule: [
                 {
+                    reg: '^抖音搜索',
+                    fnc: 'douyinSearch',
+                },
+                {
                     reg: '',
                     fnc: 'doujx',
                     log: false
@@ -39,6 +43,23 @@ export default class douyin extends Douyin {
             return this.reply("解析失败！")
         }
         this.changeVideo(videoUrl, e)
+    }
+
+    async douyinSearch(e) {
+        let msg = e.msg.replace("抖音搜索", "")
+        let res = await new this.networks({ url: 'http://api.xn--7gqa009h.top/api/dyss?msg=' + encodeURI(msg), type: 'json' }).getData()
+        res = JSON.parse(res).video
+        if (!res) return this.reply("搜索失败！")
+        this.reply([res.bt, this.segment.image(res.fm)])
+        if (res.sp.includes(".mp3")) {
+            res = res.fm
+        } else {
+            res = res.sp
+        }
+        if (res.includes('.douyinpic')) {
+            return e.reply(this.segment.image(res))
+        }
+        this.changeVideo(res, e)
     }
 
     async dealUrl(e) {

@@ -21,7 +21,8 @@ export default class groupimg extends Base {
                 },
                 {
                     reg: '',
-                    fnc: 'uxmsg'
+                    fnc: 'uxmsg',
+                    log: false
                 }
 
             ],

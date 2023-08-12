@@ -32,7 +32,7 @@ export default class wz extends Base {
             ],
             task: {
                 name: 'clswz',
-                fnc: 'livepush',
+                fnc: 'clswz',
                 cron: '0 0 0 * * *'
             },
         })

@@ -6,10 +6,13 @@
 #container {
     width: 1000px;
     box-sizing: border-box;
-    padding: 10px;
     border-radius: 10px;
     background-size: cover;
-    height: 1300px;
+    position: relative;
+}
+
+.box {
+    padding: 10px;
 }
 
 .header {
@@ -107,7 +110,12 @@ li {
 }
 
 .bottom {
-    margin-top: 50px;
+    width: 900px;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    margin-left: -10px;
+    margin-top: 220px;
     padding: 50px;
     background-color: rgba(245, 185, 185, 0.5);
 }
@@ -119,5 +127,4 @@ li {
     flex-direction: row;
     text-align: center;
     align-items: center;
-
 }

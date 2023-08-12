@@ -1,6 +1,7 @@
 import fs from 'fs'
 import Path from '../model/base/Path.js'
 import PATH from 'path'
+import YamlReader from './YamlReader.js'
 export default class Filemage {
 
     constructor(RootPath) {
@@ -14,6 +15,10 @@ export default class Filemage {
 
     getFileDataToJson(fileName, type = 'utf-8') {
         return JSON.parse(fs.readFileSync(this.RootPath + fileName, { encoding: type }) || null)
+    }
+
+    getYamlData(path) {
+        return new YamlReader(this.RootPath + path).jsonData
     }
 
     writeFile(fileName, data) {
