@@ -60,6 +60,9 @@ helplist:
       - title: "千羽戳一戳"
         desc: 戳一戳发送当前群聊所学习的表情包
         icon: "141"
+      - title: "api帮助"
+        desc: 查看具体api的帮助
+        icon: "141"
   - title: 管理员功能
     list:
       - title: "#千羽帮助"
@@ -109,4 +112,7 @@ helplist:
         icon: "100"
       - title: "#设置伪装群友次数1"
         desc: 设置每天伪装群友的伪装次数上限为1
+        icon: "100"
+      - title: "api检测"
+        desc: 检测api是否能正常使用
         icon: "100"

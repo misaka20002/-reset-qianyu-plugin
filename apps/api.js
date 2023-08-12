@@ -40,6 +40,7 @@ export default class api extends Api {
 
 
     async apitest(e) {
+        if (!e.isMaster) return true
         let list = this.getAllApilist()
         for (let l in list) {
             if (!list[l]) continue
