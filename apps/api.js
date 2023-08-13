@@ -175,7 +175,7 @@ export default class api extends Api {
                 return this.reply("请求失败！")
             }
             let remsg = res.trim();
-            remsg = remsg.replace(/\n/g, "\n")
+            remsg = remsg.replace(/\\n/g, "\n")
             this.reply(remsg)
         })
     }

@@ -53,6 +53,13 @@ export default class ai extends Base {
         let botname = this.Cfg.botname
         let aida = ailist.find(list => list.name == ai)
         if (!aida) return
+        if (!msg) {
+            if (this.e.group_id) {
+                let imglist = this.Data.getDataJson(`groupface/${this.e.group_id}-face`) || []
+                return this.reply(imglist[lodash.random(0, imglist.length - 1)].content)
+            }
+            return false
+        }
         msg = msg.replace("#", "")
         let networks = new this.networks({ url: `${aida.url}${encodeURI(msg)}` })
         let data = await networks.getData()
@@ -64,6 +71,7 @@ export default class ai extends Base {
                 data = data[item]
             })
         }
+        data = data.replace(/\\n/g, "\n")
         return await this.reply(`${data.replace(/菲菲|小思|小爱|思知|ChatGPT/g, botname ? botname : ai)}`)
     }
 
