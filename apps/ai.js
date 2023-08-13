@@ -54,11 +54,8 @@ export default class ai extends Base {
         let aida = ailist.find(list => list.name == ai)
         if (!aida) return
         if (!msg) {
-            if (this.e.group_id) {
-                let imglist = this.Data.getDataJson(`groupface/${this.e.group_id}-face`) || []
-                return this.reply(imglist[lodash.random(0, imglist.length - 1)].content)
-            }
-            return false
+            let imglist = this.File.GetfileList('resources/img/noresult')
+            return this.reply(this.segment.image(`${this.Path.qianyuPath}resources/img/noresult/${imglist[lodash.random(0, imglist.length - 1)]}`))
         }
         msg = msg.replace("#", "")
         let networks = new this.networks({ url: `${aida.url}${encodeURI(msg)}` })
