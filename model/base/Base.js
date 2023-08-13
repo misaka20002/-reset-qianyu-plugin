@@ -7,6 +7,7 @@ import Path from './Path.js'
 import common from '../../utils/common.js'
 import timer from '../../utils/Timer.js'
 import render from './render.js'
+import { segment } from 'icqq'
 let stateArr = {}
 export default class Base {
     constructor(data) {
@@ -22,6 +23,7 @@ export default class Base {
         this.priority = data.priority || 5000
         this.timer = timer
         this.render = render
+        this.segment = segment
         this.task = {
             /** 任务名 */
             name: data.task?.name || '',

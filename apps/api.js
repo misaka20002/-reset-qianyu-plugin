@@ -17,6 +17,7 @@ export default class api extends Api {
                 },
             ],
         })
+        this.task = []
         let datalist = this.getAllApilist()
         Object.keys(datalist).forEach(item => {
             if (datalist[item]) {
@@ -26,11 +27,19 @@ export default class api extends Api {
                 })
             }
         })
+
     }
 
     getreg(list) {
         let reg = ''
         list.forEach((item, index) => {
+            if (item.cron) {
+                this.task.push({
+                    name: item.name,
+                    cron: item.cron,
+                    fnc: 'autoTask'
+                })
+            }
             reg += `${index == 0 ? '' : '|'}^${item.reg}`
             if (!item.range && item.range !== 'any') {
                 reg += '$'
@@ -171,6 +180,7 @@ export default class api extends Api {
     async gettextapi(e) {
         let msg = e.msg
         await this.dealApi('text', msg, async (res) => {
+            console.log(res);
             if (!res) {
                 return this.reply("请求失败！")
             }
@@ -254,5 +264,35 @@ export default class api extends Api {
         return await this.downVideo({
             url: url,
         }, path, suc)
+    }
+
+    async autoTask(name) {
+        let api = this.getApiByname(name)
+        await this.dealApi(api.type, api.reg, async (res) => {
+            switch (api.type) {
+                case 'image':
+                    if (!Array.isArray(res)) {
+                        res = this.segment.image(res)
+                    } else {
+                        let mes = []
+                        res = [...new Set(res)]
+                        res.forEach((item, index) => {
+                            mes.push({ content: this.segment.image(item) })
+                        })
+                        res = await this.makeGroupMsg(name, mes)
+                    }
+            }
+            if (api.isGroup) {
+                if (!isNaN(api.target)) {
+                    await Bot.pickGroup(api.target).sendMsg(res)
+                } else if (api.target === 'all') {
+                    let groupList = Bot.gl
+                    for (let g of groupList) {
+                        await Bot.pickGroup(g[0]).sendMsg(res)
+                        await this.common.sleep(1000)
+                    }
+                }
+            }
+        })
     }
 }

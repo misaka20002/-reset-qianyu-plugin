@@ -1,16 +1,16 @@
 import Video from '../model/video.js'
 import puppeteer from '../component/puppeteer/puppeteer.js'
-export default class urlpuppeteer extends Video {
+export default class other extends Video {
     constructor(e) {
         super({
-            name: 'urlpuppeteer',
+            name: 'other',
             priority: 200,
             rule: [
                 {
                     reg: '',
                     fnc: 'jxtu',
                 }
-            ],
+            ]
         })
         this.e = e
     }
@@ -20,7 +20,7 @@ export default class urlpuppeteer extends Video {
         if (!url || !this.Cfg.isOpen) {
             return false
         }
-        this.reply(await puppeteer.urlScreenshot(url))
+        this.reply(await puppeteer.urlScreenshot(encodeURI(url)))
     }
 
 }

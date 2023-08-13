@@ -5,6 +5,15 @@ export class Api extends Base {
         super(data)
     }
 
+    getApiByname(name) {
+        let apilist = this.getAllApilist()
+        let list = []
+        for (let l in apilist) {
+            list.push(...apilist[l].map(it => { return { ...it, type: l.replace('api', "") } }))
+        }
+        return list.find(item => item.name === name)
+    }
+
     async getApiData(type, name, suc, parms = '') {
         let datalist = await this.getApiList(type)
         datalist.forEach(async element => {
@@ -38,6 +47,8 @@ export class Api extends Base {
         }
         return newlist
     }
+
+
 
 
     async dealType(url, data, suc, test = '') {
@@ -109,4 +120,6 @@ export class Api extends Base {
         return await this.downfile.downVideo(data, path, suc)
     }
 }
+let a = new Api({ name: 'api' })
 
+console.log(a.getApiByname("寸幼萱早报"));

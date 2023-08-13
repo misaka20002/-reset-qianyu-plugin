@@ -118,10 +118,10 @@ chuo:
       type: Boolean
       desc: 发送每天学习的表情包
       reg: "#千羽设置戳一戳表情开启/关闭"
-urlpuppeteer:
-  title: 网页截图
+other:
+  title: 其他设置
   set:
-    isOpen:
+    isscreenshot:
       title: 网页截图
       def: true
       type: Boolean
