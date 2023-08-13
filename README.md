@@ -42,6 +42,16 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 
 - [x] 尾缀，`#设置尾缀+名称`快速设置机器人尾缀(可以设置小黄人表情)，`#尾缀开启/关闭`指令开启尾缀
 
+## 帮助指令
+
+### 千羽帮助
+![](https://gitee.com/think-first-sxs/qianyu-resources/raw/master/helpimg/qianyuhelp.jpg)
+
+
+### api帮助
+![](https://gitee.com/think-first-sxs/qianyu-resources/raw/master/helpimg/apihelp.jpg)
+
+
 ## 免责声明
 
 1. 功能仅限内部交流与小范围使用，严禁将 qianyu-plugin 用于任何商业用途或盈利
