@@ -169,6 +169,57 @@ class Puppeteer {
     return segment.image(buff)
   }
 
+
+  async urlScreenshot(url) {
+    if (!await this.browserInit()) {
+      return false
+    }
+    let buff = ''
+    let start = Date.now()
+
+
+    try {
+      const page = await this.browser.newPage()
+      await page.goto(url)
+      let body = await page.$('body')
+      let randData = {
+        type: 'jpeg',
+        quality: 100,
+        fullPage: true,
+        clip: ''
+      }
+
+      buff = await body.screenshot(randData)
+
+      page.close().catch((err) => logger.error(err))
+    } catch (error) {
+      logger.error(`图片生成失败:${error}`)
+      /** 关闭浏览器 */
+      if (this.browser) {
+        await this.browser.close().catch((err) => logger.error(err))
+      }
+      this.browser = false
+      buff = ''
+      return false
+    }
+
+    if (!buff) {
+      logger.error(`图片生成为空:${name}`)
+      return false
+    }
+
+    this.renderNum++
+
+    /** 计算图片大小 */
+    let kb = (buff.length / 1024).toFixed(2) + 'kb'
+
+    logger.mark(`[图片生成][${this.renderNum}次] ${kb} ${logger.green(`${Date.now() - start}ms`)}`)
+
+    this.restart()
+
+    return segment.image(buff)
+  }
+
   /** 模板 */
   dealTpl(name, data) {
     let { tplFile, saveId = name } = data
