@@ -7,7 +7,8 @@ class downfile {
             new networks({
                 url: data.url,
                 headers: data.headers,
-                type: 'arrayBuffer'
+                type: 'arrayBuffer',
+                isAgent: data.isAgent || false
             }
             ).getData().then(res => {
                 fs.writeFile(Path.qianyuPath + '/resources/video/' + path, Buffer.from(res), "binary", async function (err) {

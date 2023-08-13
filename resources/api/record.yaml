@@ -20,3 +20,39 @@ recordapi:
     desc: 有道语音+内容，发出内容语音
     data: 1
     range: any
+  - name: 坤坤唱歌
+    reg: 坤坤唱歌
+    url: http://api.yujn.cn/api/sjkk.php?
+    desc: 坤坤唱歌
+    data: 1
+  - name: 支付宝到账
+    reg: 支付宝到账
+    url: http://api.yujn.cn/api/zfb.php?msg=
+    desc: 支付宝到账+数字，返回支付宝播报语音
+    data: 1
+    range: any
+  - name: 怼人语音
+    reg: 怼人语音
+    url: http://api.yujn.cn/api/duiren.php?
+    desc: 怼人语音
+    data: 1
+  - name: 御姐撒娇语音
+    reg: 御姐撒娇语音
+    url: http://api.yujn.cn/api/yujie.php?
+    desc: 御姐撒娇语音
+    data: 1
+  - name: kfc语录
+    reg: kfc语录
+    url: http://api.yujn.cn/api/yskfc.php?
+    desc: kfc语录
+    data: 1
+  - name: 骂人语音
+    reg: 骂人语音
+    url: http://api.yujn.cn/api/maren.php?
+    desc: 骂人语音
+    data: 1
+  - name: 阿脑袋语音
+    reg: 阿脑袋语音
+    url: http://api.yujn.cn/api/and.php?
+    desc: 阿脑袋语音
+    data: 1

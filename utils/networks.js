@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import https from 'https'
 export default class networks {
 
     constructor(data) {
@@ -8,7 +9,9 @@ export default class networks {
         this.method = data.method || 'get'
         this.body = data.body || ''
         this.data = {}
-
+        this.agent = data.isAgent ? new https.Agent({
+            rejectUnauthorized: false,
+        }) : ''
     }
 
     async getfetch() {
@@ -16,12 +19,14 @@ export default class networks {
             let data = {
                 headers: this.headers,
                 method: this.method,
+                agent: this.agent
             }
             if (this.method == 'post') {
                 data = { ...data, body: JSON.stringify(this.body) || '' }
             }
             return await fetch(this.url, data)
         } catch (error) {
+            console.log(err);
             return false
         }
 
@@ -32,7 +37,8 @@ export default class networks {
             if (!new_fetch) {
                 this.fetch = await fetch(this.url, {
                     headers: this.headers,
-                    method: this.method
+                    method: this.method,
+                    agent: this.agent
                 })
             } else {
                 this.fetch = new_fetch
@@ -53,6 +59,7 @@ export default class networks {
             }
             return this.fetch
         } catch (error) {
+            console.log(error);
             return false
         }
 

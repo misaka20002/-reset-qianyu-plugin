@@ -19,7 +19,7 @@ export class Api extends Base {
         datalist.forEach(async element => {
             if (element.reg === name) {
                 let url = element.url + parms
-                await this.dealType(url, element.data, suc)
+                await this.dealType(url, element, suc)
             }
         });
     }
@@ -39,7 +39,7 @@ export class Api extends Base {
                 }
             }
             let url = element.url + parm
-            let api = await this.dealType(url, element.data, (code) => {
+            let api = await this.dealType(url, element, (code) => {
                 code = code || 500
                 return { name: element.name, code: code }
             }, 'test')
@@ -53,13 +53,14 @@ export class Api extends Base {
 
     async dealType(url, data, suc, test = '') {
         let type = 'json'
-        if (data === 1 && test !== 'test') {
+        if (data.data === 1 && test !== 'test') {
             return suc(url)
-        } else if (data === 0) {
+        } else if (data.data === 0) {
             type = 'text'
         }
         let networks = new this.networks({
-            url: url, type: type
+            url: url, type: type,
+            isAgent: data.isAgent || false
         })
         let fetch = await networks.getfetch()
         let code = fetch.status
@@ -71,13 +72,13 @@ export class Api extends Base {
         }
         networks.getData(fetch).then(async res => {
             if (type == 'json' && networks.type === 'json') {
-                data.forEach(item => {
+                data.data.forEach(item => {
                     res = res[item]
                 })
             } else if (type === 'json' && networks.type === 'text') {
                 res = res.replace('json:', "").replace(/[\r\n]/g, "")
                 res = JSON.parse(res)
-                data.forEach(item => {
+                data.data.forEach(item => {
                     res = res[item]
                 })
             }
@@ -120,6 +121,3 @@ export class Api extends Base {
         return await this.downfile.downVideo(data, path, suc)
     }
 }
-let a = new Api({ name: 'api' })
-
-console.log(a.getApiByname("寸幼萱早报"));

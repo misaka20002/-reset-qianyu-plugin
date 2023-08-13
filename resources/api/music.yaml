@@ -4,3 +4,13 @@ musiclist:
     url: https://xiaobai.klizi.cn/API/music/changya.php
     desc: 随机唱鸭
     data: ["data", "audioSrc"]
+  - reg: 随机网易云
+    name: 随机网易云
+    url: http://api.yujn.cn/api/sjwyy.php?type=mp3
+    desc: 随机网易云
+    data: 1
+  - reg: 随机dj
+    name: 随机dj
+    url: http://api.yujn.cn/api/dj.php?
+    desc: 随机dj
+    data: 1

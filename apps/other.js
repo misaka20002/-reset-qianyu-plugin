@@ -9,6 +9,7 @@ export default class other extends Video {
                 {
                     reg: '',
                     fnc: 'jxtu',
+                    log: false
                 }
             ]
         })
@@ -17,7 +18,7 @@ export default class other extends Video {
 
     async jxtu(e) {
         let url = e.url
-        if (!url || !this.Cfg.isOpen) {
+        if (!url || !this.Cfg.screenshot) {
             return false
         }
         this.reply(await puppeteer.urlScreenshot(encodeURI(url)))

@@ -63,6 +63,9 @@ helplist:
       - title: "api帮助"
         desc: 查看具体api的帮助
         icon: "141"
+      - title: "网页截图"
+        desc: 发送网址后机器人会自动发送网页截图
+        icon: "141"
   - title: 管理员功能
     list:
       - title: "#千羽帮助"

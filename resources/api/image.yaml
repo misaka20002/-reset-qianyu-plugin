@@ -48,7 +48,7 @@ imagelist:
     parm: "&format=json"
   - url: https://xiaobai.klizi.cn/API/other/tianqi_t.php?msg=
     data: 1
-    reg: 天气|天气
+    reg: 天气$|天气$
     desc: 发送城市天气图片
     name: 北京天气
     range: any
@@ -105,3 +105,52 @@ imagelist:
     cron: "0 0 8 * * * "
     target: all
     isGroup: true
+  - url: http://www.plapi.tk/api/hs.php
+    data: 1
+    reg: 黑丝
+    desc: 黑丝
+    name: 黑丝
+  - url: https://api.dzzui.com/api/imgtaobao
+    data: 1
+    reg: 买家秀
+    desc: 买家秀
+    name: 买家秀
+  - url: http://api.yujn.cn/api/mnxz.php?
+    data: ["data"]
+    reg: 美女写真
+    desc: 美女写真
+    name: 美女写真
+  - url: http://api.yujn.cn/api/xiezhen.php?type=image
+    data: 1
+    reg: 唯美写真
+    desc: 唯美写真
+    name: 唯美写真
+  - url: http://api.yujn.cn/api/lltx.php?
+    data: 1
+    reg: 网红头像
+    desc: 网红头像
+    name: 网红头像
+  - url: http://api.yujn.cn/api/sese.php?
+    data: 1
+    reg: 渋渋
+    desc: 瑟瑟，r18专用
+    name: 渋渋
+    isRecall: true
+    ishide: true
+  - url: http://api.yujn.cn/api/ACG.php?
+    data: 1
+    reg: acg图片
+    desc: acg图片超高质量极速响应（竖屏居多）
+    name: acg图片
+  - url: http://api.yujn.cn/api/Pixiv.php?
+    data: 0
+    reg: p站图片
+    desc: p站图片
+    name: p站图片
+  - url: http://api.yujn.cn/api/r18.php?
+    data: 1
+    reg: p站渋图
+    desc: p站渋图
+    name: p站渋图
+    isRecall: true
+    ishide: true

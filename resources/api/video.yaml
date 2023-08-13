@@ -5,7 +5,7 @@ videoapi:
     desc: 小姐姐视频
     name: 小姐姐
   - url: http://api.caonm.net/api/mn/index.php
-    data: 0
+    data: 1
     reg: 小姐姐2
     desc: 小姐姐视频2
     name: 小姐姐2
@@ -14,3 +14,19 @@ videoapi:
     reg: 快手动漫短视频
     desc: 快手动漫短视频
     name: 快手动漫短视频
+  - url: https://v.api.aa1.cn/api/api-girl-11-02/index.php?type=json
+    data: ["mp4"]
+    reg: 小姐姐3
+    desc: 小姐姐3
+    name: 小姐姐3
+  - url: https://tucdn.wpon.cn/api-girl/index.php?wpon=json
+    data: ["mp4"]
+    reg: 小姐姐4
+    desc: 小姐姐4
+    name: 小姐姐4
+    isAgent: true
+  - url: http://api.yujn.cn/api/juhexjj.php?type=video
+    data: 1
+    reg: 小姐姐5
+    desc: 小姐姐5
+    name: 小姐姐5

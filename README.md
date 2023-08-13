@@ -26,7 +26,7 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 
 ### 群功能
 
-- [x] 水群统计，`#水群统计`，除机器人本身外的发言统计，新增`三日/一周水群统计`，新增bot消息计数，显示总消息量
+- [x] 水群统计，`#水群统计`，除机器人本身外的发言统计，新增`三日/一周水群统计`，新增 bot 消息计数，显示总消息量
 - [x] 今日发言记录 ，`#今日发言记录`查看今天的发言记录，@可以查看群友发言记录，新增`昨日/前日发言记录`
 - [x] 群前缀，`#设置前缀+名称`快速设置机器人前缀，`#群前缀开启/关闭`指令开启前缀
 - [x] 群聊复读功能，`#群聊复读开启/关闭`设置机器人群聊复读开关，`#打断复读开启/关闭`群聊复读打断开关
@@ -36,7 +36,6 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 ### ai 功能
 
 - [x] 智障 ai，可以设置的 ai 有青云客、小爱同学、思知，具体设置请通过`#千羽设置`查看
-- [ ] 必应 gpt，先画饼
 
 ### 其他功能
 
@@ -45,12 +44,12 @@ git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./
 ## 帮助指令
 
 ### 千羽帮助
+
 ![](https://gitee.com/think-first-sxs/qianyu-resources/raw/master/helpimg/qianyuhelp.jpg)
 
+### api 帮助
 
-### api帮助
 ![](https://gitee.com/think-first-sxs/qianyu-resources/raw/master/helpimg/apihelp.jpg)
-
 
 ## 免责声明
 

@@ -8,11 +8,11 @@ export default class api extends Api {
             priority: 50,
             rule: [
                 {
-                    reg: '^api帮助$',
+                    reg: '^(#|)api帮助$',
                     fnc: 'apihelp'
                 },
                 {
-                    reg: '^api检测$',
+                    reg: '^(#|)api检测$',
                     fnc: 'apitest'
                 },
             ],
@@ -27,6 +27,7 @@ export default class api extends Api {
                 })
             }
         })
+        console.log(this.task);
 
     }
 
@@ -37,7 +38,8 @@ export default class api extends Api {
                 this.task.push({
                     name: item.name,
                     cron: item.cron,
-                    fnc: 'autoTask'
+                    fnc: 'autoTask',
+                    log: true
                 })
             }
             reg += `${index == 0 ? '' : '|'}^${item.reg}`
@@ -117,11 +119,13 @@ export default class api extends Api {
                 list: []
             }
             apilist[a].forEach(item => {
-                list.list.push({
-                    title: item.name,
-                    desc: item.desc,
-                    icon: titlelist[a].icon
-                })
+                if (!item.ishide) {
+                    list.list.push({
+                        title: item.name,
+                        desc: item.desc,
+                        icon: titlelist[a].icon
+                    })
+                }
             })
             data.helplist.unshift(list)
         }
@@ -149,7 +153,7 @@ export default class api extends Api {
                 if (l == 0) {
                     l = item.reg.length
                 } else {
-                    l = text[index - 1].reg.length
+                    l = api[index - 1].reg.length
                 }
                 if (item.reg.length > l) {
                     return item
@@ -180,12 +184,11 @@ export default class api extends Api {
     async gettextapi(e) {
         let msg = e.msg
         await this.dealApi('text', msg, async (res) => {
-            console.log(res);
             if (!res) {
                 return this.reply("请求失败！")
             }
             let remsg = res.trim();
-            remsg = remsg.replace(/\\n/g, "\n")
+            remsg = remsg.replace(/\\n/g, "\n").replace(/&nbsp;/g, " ").replace(/<br>/g, '\n')
             this.reply(remsg)
         })
     }
@@ -212,12 +215,15 @@ export default class api extends Api {
 
     async getimageapi(e) {
         let msg = e.msg
-        await this.dealApi('image', msg, async (res) => {
+        await this.dealApi('image', msg, async (res, img) => {
             if (!res) {
                 return this.reply("请求失败！")
             }
             if (!Array.isArray(res)) {
-                await this.reply(this.segment.image(res))
+                if (img.isRecall) {
+                    return await this.reply(await this.makeGroupMsg(e.msg, [{ content: this.segment.image(res) }], true), false, { recallMsg: img.isRecall ? 5 : 0 })
+                }
+                return await this.reply(this.segment.image(res), false, { recallMsg: img.isRecall ? 5 : 0 })
             } else {
                 let mes = []
                 res = [...new Set(res)]
@@ -226,7 +232,7 @@ export default class api extends Api {
                     mes.push({ content: this.segment.image(item) })
                     // }
                 })
-                return this.reply(await this.makeGroupMsg(e.msg, mes))
+                return this.reply(await this.makeGroupMsg(e.msg, mes), false, { recallMsg: img.isRecall ? 5 : 0 })
             }
         })
     }
@@ -242,11 +248,14 @@ export default class api extends Api {
                 videoing = false
                 return this.reply("请求错误！请重试！")
             }
+            if (!/^(http|https)/g.test(res) && video.data !== 0) {
+                res = 'https:' + res
+            }
             if (video.data === 0) {
                 const reg2 = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
                 res = res.match(reg2)[0]
             }
-            let result = await this.downVideoFile(res, `${msg}.mp4`, async () => {
+            let result = await this.downVideoFile({ url: res, isAgent: video.isAgent }, `${msg}.mp4`, async () => {
                 Bot.pickGroup(this.e.group_id).sendMsg(this.segment.video(`${this.Path.qianyuPath}resources/video/${msg}.mp4`)).catch(err => {
                     videoing = false
                     return e.reply("视频解析失败！")
@@ -260,9 +269,10 @@ export default class api extends Api {
 
     }
 
-    async downVideoFile(url, path, suc) {
+    async downVideoFile(data, path, suc) {
         return await this.downVideo({
-            url: url,
+            url: data.url,
+            isAgent: data.isAgent
         }, path, suc)
     }
 

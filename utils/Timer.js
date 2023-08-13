@@ -62,3 +62,4 @@ export default new Timer()
 
 
 
+console.log(Date());

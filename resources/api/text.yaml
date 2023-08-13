@@ -15,11 +15,6 @@ textapi:
     reg: 古诗名句
     desc: 随机一句古诗名句
     name: 古诗名句
-  # - url: https://xian.txma.cn/API/yiyan.php
-  #   data: 0
-  #   reg: 名人一言
-  #   desc: 随机发送名人的一句话
-  #   name: 名人一言
   - url: https://v.api.aa1.cn/api/api-wenan-ktff/index.php?type=5&format=json
     data: ["text"]
     reg: 口吐芬芳
@@ -81,6 +76,24 @@ textapi:
       - 个性
       - 搞笑
     replace: 签名
+  - url: http://api.yujn.cn/api/baoan.php?
+    data: 0
+    reg: 保安日记
+    desc: 保安日记，可能有小偷日记
+    name: 保安日记
+  - url: http://api.yujn.cn/api/duanzi.php?
+    data: 0
+    reg: 随机段子
+    desc: 随机段子
+    name: 随机段子
+  - url: http://api.yujn.cn/api/kfc.php?
+    data: 0
+    reg: 疯狂星期四
+    desc: 疯狂星期四
+    name: 疯狂星期四
+    cron: "0 0 12 ? * 4"
+    target: all
+    isGroup: true
   - url: https://xiaobai.klizi.cn/API/other/cqyl.php?data=&id=
     data: 0
     reg: (句子迷|快乐|开心|高兴|优秀|心声|诗歌|民国|最爱|深刻|美丽|感人|潇洒|经典|佛经|寂寞|爱情语录|女人|放弃|悲伤|梦想|感悟|哲理|歌词|QQ个性签名|经典台词|唯美|伤感|感伤|小说书摘|爱情|经典语录|忧伤|优美|甜蜜|随笔|失望|英语名言|励志|绝望|基督教|格言|离别|失恋|祝福语|动漫|思念|心语|佛语|温柔|心愿|希望|回忆|孤独|遥远|远方|魅力|成长|喜欢一个人)语录
