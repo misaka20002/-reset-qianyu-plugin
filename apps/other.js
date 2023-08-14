@@ -18,7 +18,7 @@ export default class other extends Video {
 
     async jxtu(e) {
         let url = e.url
-        if (!url || !this.Cfg.screenshot) {
+        if (!url || !this.Cfg.isscreenshot) {
             return false
         }
         this.reply(await puppeteer.urlScreenshot(encodeURI(url)))

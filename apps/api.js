@@ -86,6 +86,7 @@ export default class api extends Api {
         ]
         apilist = apilist.filter(item => item.list)
         this.reply(await this.render('api', { apilist: apilist, radom: lodash.random(1, 4) }))
+        istest = false
     }
 
 
