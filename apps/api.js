@@ -1,6 +1,7 @@
 import { Api } from "../model/api.js"
 import lodash from 'lodash'
 let videoing = false
+let istest = false
 export default class api extends Api {
     constructor() {
         super({
@@ -27,8 +28,6 @@ export default class api extends Api {
                 })
             }
         })
-        console.log(this.task);
-
     }
 
     getreg(list) {
@@ -53,7 +52,12 @@ export default class api extends Api {
 
     async apitest(e) {
         if (!e.isMaster) return true
+        if (istest) {
+            return this.reply("有正在进行的检测任务，请勿重复发送指令！")
+        }
         let list = this.getAllApilist()
+        this.reply("开始检测api....请稍后......")
+        istest = true
         for (let l in list) {
             if (!list[l]) continue
             list[l] = await this.testApi(list[l])
@@ -278,10 +282,21 @@ export default class api extends Api {
 
     async autoTask(name) {
         let api = this.getApiByname(name)
+        let down;
         await this.dealApi(api.type, api.reg, async (res) => {
             switch (api.type) {
                 case 'image':
                     if (!Array.isArray(res)) {
+                        if (api.isDown) {
+                            let result = await this.downfile.downImg({ url: res }, name + '.jpg')
+                            if (result) {
+                                res = this.Path.qianyuPath + 'resources/img/' + name + '.jpg'
+                                down = {
+                                    path: res,
+                                    isDetele: true
+                                }
+                            }
+                        }
                         res = this.segment.image(res)
                     } else {
                         let mes = []
@@ -302,6 +317,9 @@ export default class api extends Api {
                         await this.common.sleep(1000)
                     }
                 }
+            }
+            if (down && down.isDetele) {
+                this.File.deleteFile(down.path)
             }
         })
     }

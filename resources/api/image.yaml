@@ -105,6 +105,7 @@ imagelist:
     cron: "0 0 8 * * * "
     target: all
     isGroup: true
+    isDown: true
   - url: http://www.plapi.tk/api/hs.php
     data: 1
     reg: 黑丝
@@ -154,3 +155,8 @@ imagelist:
     name: p站渋图
     isRecall: true
     ishide: true
+  - url: https://wenxin110.top/api/mys/memes?type=
+    data: ["img"]
+    reg: 米游社表情包
+    desc: 米游社表情包
+    name: 米游社表情包

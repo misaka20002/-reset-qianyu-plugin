@@ -60,7 +60,8 @@ export class Api extends Base {
         }
         let networks = new this.networks({
             url: url, type: type,
-            isAgent: data.isAgent || false
+            isAgent: data.isAgent || false,
+            issignal: true
         })
         let fetch = await networks.getfetch()
         let code = fetch.status

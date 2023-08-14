@@ -59,7 +59,3 @@ class Timer {
 
 export default new Timer()
 
-
-
-
-console.log(Date());

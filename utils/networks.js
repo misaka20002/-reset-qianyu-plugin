@@ -1,5 +1,8 @@
 import fetch from "node-fetch";
 import https from 'https'
+import { Response } from 'node-fetch';
+let controller = new AbortController();
+let signal = controller.signal;
 export default class networks {
 
     constructor(data) {
@@ -12,34 +15,54 @@ export default class networks {
         this.agent = data.isAgent ? new https.Agent({
             rejectUnauthorized: false,
         }) : ''
+        this.signal = data.issignal ? signal : undefined
+        this.timeout = data.timeout || 15000
+        this.isGetResult = false
+    }
+
+    get config() {
+        return {
+            headers: this.headers,
+            method: this.method,
+            agent: this.agent,
+            signal: this.signal
+        }
     }
 
     async getfetch() {
         try {
-            let data = {
-                headers: this.headers,
-                method: this.method,
-                agent: this.agent
-            }
             if (this.method == 'post') {
                 data = { ...data, body: JSON.stringify(this.body) || '' }
             }
-            return await fetch(this.url, data)
+            let result = await this.returnResult()
+            if (result.status === 504) {
+                return result
+            }
+            this.isGetResult = true
+            return result
         } catch (error) {
-            console.log(err);
+            console.log(error);
             return false
         }
 
     }
 
+    async returnResult() {
+        if (this.timeout && this.signal) {
+            return Promise.race([this.timeoutPromise(this.timeout), fetch(this.url, this.config)])
+        }
+        return fetch(this.url, this.config)
+    }
+
     async getData(new_fetch = '') {
         try {
             if (!new_fetch) {
-                this.fetch = await fetch(this.url, {
-                    headers: this.headers,
-                    method: this.method,
-                    agent: this.agent
-                })
+                let result = await this.returnResult()
+                if (result.status === 504) {
+                    return result
+                }
+                this.fetch = result
+                this.isGetResult = true
             } else {
                 this.fetch = new_fetch
             }
@@ -85,4 +108,15 @@ export default class networks {
         this.fetch = await this.fetch.blob()
     }
 
+
+    timeoutPromise(timeout) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (!this.isGetResult) {
+                    resolve(new Response("timeout", { status: 504, statusText: "timeout " }));
+                    controller.abort();
+                }
+            }, timeout);
+        });
+    }
 }
