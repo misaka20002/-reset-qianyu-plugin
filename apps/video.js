@@ -66,7 +66,7 @@ export default class video extends Video {
     }
 
     async getRadomVideo(e) {
-        let msg = e.msg.replace("#随机", "")
+        let msg = e.msg.replace("#千羽随机", "")
         if (!this.isextisVideoJson(msg)) {
             e.reply("不存在视频目录，请先创建目录！");
         } else {
