@@ -4,7 +4,7 @@ import Path from "./Path.js";
 import Config from "./Config.js";
 import { qianyuVersion, packJson } from '../version.js'
 export default async function returnImg(name, data) {
-    const render = Render.render
+    let render = Render.render
     let mode = Config.GetCfg('system/puppeteer').mode
     if (mode === 'yunzai') {
         render = new Runtime().render
