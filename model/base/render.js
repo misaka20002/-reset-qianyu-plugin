@@ -1,8 +1,15 @@
 import Render from "../../utils/render.js";
+import Runtime from '../../../../lib/plugins/runtime.js'
 import Path from "./Path.js";
+import Config from "./Config.js";
 import { qianyuVersion, packJson } from '../version.js'
 export default async function returnImg(name, data) {
-    return await Render.render('reset-qianyu-plugin', `/html/${name}/${name}.html`, {
+    const render = Render.render
+    let mode = Config.GetCfg('system/puppeteer').mode
+    if (mode === 'yunzai') {
+        render = new Runtime().render
+    }
+    return await render('reset-qianyu-plugin', `/html/${name}/${name}.html`, {
         ...data,
     },
         {

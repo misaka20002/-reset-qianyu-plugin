@@ -19,15 +19,20 @@ export default class networks {
         this.timeout = data.timeout || 15000
         this.isGetResult = false
         this.timeout = ''
+        console.log(this.config);
     }
 
     get config() {
-        return {
+        let data = {
             headers: this.headers,
             method: this.method,
             agent: this.agent,
             signal: this.signal
         }
+        if (this.method == 'post') {
+            data = { ...data, body: JSON.stringify(this.body) || '' }
+        }
+        return data
     }
 
     async getfetch() {

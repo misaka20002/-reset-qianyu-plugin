@@ -51,15 +51,18 @@ export default class ai extends Base {
     async choieai(msg, ai) {
         let ailist = this.File.getYamlData('resources/api/ai.yaml').ailist
         let botname = this.Cfg.botname
+        let imglist = this.File.GetfileList('resources/img/noresult')
         let aida = ailist.find(list => list.name == ai)
         if (!aida) return
         if (!msg) {
-            let imglist = this.File.GetfileList('resources/img/noresult')
             return this.reply(this.segment.image(`${this.Path.qianyuPath}resources/img/noresult/${imglist[lodash.random(0, imglist.length - 1)]}`))
         }
         msg = msg.replace("#", "")
         let networks = new this.networks({ url: `${aida.url}${encodeURI(msg)}` })
         let data = await networks.getData()
+        if (!data || data?.status == 504) {
+            return this.reply(this.segment.image(`${this.Path.qianyuPath}resources/img/noresult/${imglist[lodash.random(0, imglist.length - 1)]}`))
+        }
         if (Array.isArray(aida.data)) {
             if (networks.type == 'text') {
                 data = JSON.parse(data)
