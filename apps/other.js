@@ -1,6 +1,6 @@
-import Video from '../model/video.js'
 import puppeteer from '../component/puppeteer/puppeteer.js'
-export default class other extends Video {
+import Base from '../model/base/Base.js'
+export default class other extends Base {
     constructor(e) {
         super({
             name: 'other',

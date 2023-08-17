@@ -170,7 +170,7 @@ class Puppeteer {
   }
 
 
-  async urlScreenshot(url) {
+  async urlScreenshot(url, path) {
     if (!await this.browserInit()) {
       return false
     }
@@ -186,7 +186,8 @@ class Puppeteer {
         type: 'jpeg',
         quality: 100,
         fullPage: true,
-        clip: ''
+        clip: '',
+        path: path || ''
       }
 
       buff = await body.screenshot(randData)

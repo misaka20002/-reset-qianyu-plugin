@@ -119,3 +119,12 @@ helplist:
       - title: "api检测"
         desc: 检测api是否能正常使用
         icon: "100"
+      - title: "#千羽开机|关机"
+        desc: 关闭千羽插件的所有功能
+        icon: "100"
+      - title: "#千羽群功能开启|关闭"
+        desc: 关闭千羽插件在当前群的所有功能
+        icon: "100"
+      - title: "#千羽管理"
+        desc: 管理千羽插件功能禁用和开启
+        icon: "100"
