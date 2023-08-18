@@ -3,7 +3,9 @@ import fs from 'fs'
 import lodash from 'lodash'
 import { segment } from 'icqq'
 import chokidar from 'chokidar'
+import Config from '../../model/base/Config.js'
 const _path = process.cwd() + "/"
+let cfg = Config.GetCfg("system/puppeteer")
 let qianyuPath = _path
 let puppeteer = {}
 class Puppeteer {
@@ -28,10 +30,10 @@ class Puppeteer {
       ]
     }
 
-    // if (cfg.bot?.chromium_path) {
-    //   /** chromium其他路径 */
-    //   this.config.executablePath = cfg.bot.chromium_path
-    // }
+    if (cfg?.chromium_path) {
+      /** chromium其他路径 */
+      this.config.executablePath = cfg.chromium_path
+    }
 
     this.html = {}
     this.watcher = {}

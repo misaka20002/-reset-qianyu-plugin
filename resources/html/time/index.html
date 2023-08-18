@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../common/common.css">
+    <link rel="stylesheet" href="./time.css">
+    <script src="./js/echarts.js"></script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="zbox"></div>
+        <div class="topbox">
+            <div class="imgbox">
+                <img src="https://q1.qlogo.cn/g?b=qq&s=0&nk=3483156709" alt="">
+                <div class="wk"></div>
+            </div>
+            <div class="infobox">
+                <h1>★★★★★ 绝密睡眠档案 ★★★★★</h1>
+                <hr size="10px" width="470px" color="#2b7dc1">
+                <h3>UUID: 3483156709</h3>
+                <h3>昵称：城.(已埋)</h3>
+                <h3>性别：魅魔小萝莉</h3>
+                <!-- <h3>签名：</h3>
+                <h3 class="qm">快来超我</h3> -->
+            </div>
+        </div>
+
+        <div class="timecharts"></div>
+    </div>
+    <script>
+        var mCharts = echarts.init(document.querySelector(".timecharts"))
+        var xdata = ['12日', '13日', '14日', '15日', '16日', '17日', '18日']
+        var ydata = ['', 3, 6, 5, 7, 6, 4]
+        var option = {
+            xAxis: {
+                type: 'category',
+                data: xdata,
+                name: '日期/2023-6'
+            },
+            yAxis: {
+                type: 'value',
+                name: '睡眠时长/小时'
+            },
+            series: [
+                {
+                    type: 'bar',
+                    data: ydata,
+                    color: 'rgba(139, 203, 248, 0.7)',
+                    label: {
+                        show: true,	// 是否可见
+                        // rotate: 60,	// 旋转角度
+                        position: 'top' // 显示位置
+                    }
+                },
+
+            ]
+        }
+        mCharts.setOption(option)
+    </script>
+</body>
+
+</html>
