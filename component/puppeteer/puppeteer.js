@@ -30,9 +30,9 @@ class Puppeteer {
       ]
     }
 
-    if (cfg?.chromium_path) {
+    if (cfg?.chromiumPath) {
       /** chromium其他路径 */
-      this.config.executablePath = cfg.chromium_path
+      this.config.executablePath = cfg.chromiumPath
     }
 
     this.html = {}
