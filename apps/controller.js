@@ -6,15 +6,15 @@ export default class controller extends Base {
             priority: -100,
             rule: [
                 {
-                    reg: '#千羽(关机|开机)',
+                    reg: '^#千羽(关机|开机)',
                     fnc: 'qianyuonoff'
                 },
                 {
-                    reg: '#千羽管理',
+                    reg: '^#千羽管理',
                     fnc: 'control'
                 },
                 {
-                    reg: '#千羽群功能',
+                    reg: '^#千羽群功能',
                     fnc: 'Groupcontrol'
                 },
             ],
