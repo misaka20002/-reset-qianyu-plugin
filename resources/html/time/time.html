@@ -1,0 +1,65 @@
+{{extend defaulthtml}}
+
+{{block 'css'}}
+<link rel="stylesheet" href="{{_res_path}}/html/time/time.css">
+<script src="{{_res_path}}/html/time/js/echarts.js"></script>
+{{/block}}
+
+{{block 'main'}}
+<div class="zbox" style="background-image: url({{_res_path}}/html/time/bg/{{img}})"></div>
+<div class="topbox">
+    <div class="imgbox">
+        <img src="https://q1.qlogo.cn/g?b=qq&s=0&nk={{info.user_id}}" alt="">
+        <div class="wk"></div>
+    </div>
+    <div class="infobox">
+        <h1>★★★★★ 绝密睡眠档案 ★★★★★</h1>
+        <hr size="10px" width="470px" color="#2b7dc1">
+        <h3>UUID: {{info.user_id}}</h3>
+        <h3>昵称：{{info.nickname}}</h3>
+        <h3>性别：{{info.sex}}</h3>
+        <h3>上次早安时间：{{userdata.mtime}}</h3>
+        <h3>上次晚安时间：{{userdata.ntime}}</h3>
+        <h3>平均睡眠时间：{{average===0?'本地无睡眠记录':`${average}小时`}}</h3>
+        <!-- <h3>签名：</h3>
+                <h3 class="qm">快来超我</h3> -->
+    </div>
+</div>
+
+<div class="timecharts"></div>
+<div class="advice">
+    <!-- 您的平均睡眠时间是5.3小时，睡眠时间非常不足，是不是整晚开银趴睡不着觉呢？ -->
+    这里是睡眠建议，请期待日后完善！
+</div>
+</div>
+<script>
+    var mCharts = echarts.init(document.querySelector(".timecharts"))
+    var xdata = JSON.parse(`{{@ daylist}}`)
+    var ydata = JSON.parse(`{{@ ntimelist}}`)
+    var option = {
+        xAxis: {
+            type: 'category',
+            data: xdata,
+            name: `日期/${new Date().getFullYear()}-${new Date().getMonth() + 1}`
+        },
+        yAxis: {
+            type: 'value',
+            name: '睡眠时长/小时'
+        },
+        series: [
+            {
+                type: 'bar',
+                data: ydata,
+                color: 'rgba(139, 203, 248, 0.7)',
+                label: {
+                    show: true,	// 是否可见
+                    // rotate: 60,	// 旋转角度
+                    position: 'top' // 显示位置
+                }
+            },
+
+        ]
+    }
+    mCharts.setOption(option)
+</script>
+{{/block}}

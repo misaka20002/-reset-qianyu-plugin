@@ -97,15 +97,15 @@ imagelist:
     reg: 必应每日一图
     desc: 必应每日一图
     name: 必应每日一图
-  - url: http://plugin.cunyx.cn/qianyu-plugin/zaobao
-    data: ["data", "image"]
-    reg: 寸幼萱早报|早报
-    desc: 寸幼萱早报
-    name: 寸幼萱早报
-    cron: "0 0 8 * * * "
-    target: all
-    isGroup: true
-    isDown: true
+  # - url: http://plugin.cunyx.cn/qianyu-plugin/zaobao
+  #   data: ["data", "image"]
+  #   reg: 寸幼萱早报|早报
+  #   desc: 寸幼萱早报
+  #   name: 寸幼萱早报
+  #   cron: "0 0 8 * * * "
+  #   target: all
+  #   isGroup: true
+  #   isDown: true
   - url: http://www.plapi.tk/api/hs.php
     data: 1
     reg: 黑丝

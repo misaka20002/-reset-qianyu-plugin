@@ -13,7 +13,6 @@
     left: 0px;
     position: absolute;
     z-index: -2;
-    background-image: url(./bg2.png);
     background-size: cover;
     opacity: .2;
 }
@@ -75,4 +74,15 @@
 .timecharts {
     width: 920px;
     height: 400px;
+}
+
+.advice {
+    width: 960px;
+    height: 100px;
+    margin: 10px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: 5px double rgb(248, 209, 81);
 }

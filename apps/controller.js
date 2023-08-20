@@ -22,6 +22,7 @@ export default class controller extends Base {
     }
 
     async control(e) {
+        if(!e.isMater)return false
         let key = e.msg.replace("#千羽管理", "")
         let ignore = ['controller', 'help', 'update']
         let noapp = this.Config.GetCfg('system/apps').noapp || []
@@ -66,12 +67,14 @@ export default class controller extends Base {
     }
 
     async qianyuonoff(e) {
+        if(!e.isMater)return false
         let onoff = e.msg.replace("#千羽", "")
         this.Config.SetCfg('system/apps', 'isonoff', onoff === '开机' ? false : true)
         this.reply(`千羽插件已${onoff}!`)
     }
 
     async Groupcontrol(e) {
+        if(!e.isMater)return false
         let onoff = e.msg.replace("#千羽群功能", "")
         let filterGroup = this.Config.GetCfg('system/apps').filterGroup || []
         if (onoff === '关闭') {

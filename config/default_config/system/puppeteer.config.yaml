@@ -1,4 +1,4 @@
 #浏览器模式 qianyu：使用千羽插件自带的截图  yunzai：使用云崽自带的截图
 mode: "qianyu"
 # chromium 地址，可填写系统的edge/chromium路径，例如（根据实际情况调整）：
-chromiumPath: ""
+chromiumPath:

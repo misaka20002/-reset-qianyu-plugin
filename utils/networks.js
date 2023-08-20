@@ -19,7 +19,6 @@ export default class networks {
         this.timeout = data.timeout || 15000
         this.isGetResult = false
         this.timeout = ''
-        console.log(this.config);
     }
 
     get config() {
