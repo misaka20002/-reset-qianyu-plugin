@@ -58,5 +58,24 @@
         "extraApps": [],
         "sourceAd": "",
         "extra": ""
+    },
+    "得意": {
+        "app": "com.tencent.imagetextbot",
+        "config": {
+            "autosize": 1,
+            "ctime": 1692523495,
+            "token": "edc34cff7fd9d7b4860b87c6d4058c52"
+        },
+        "meta": {
+            "robot": {
+                "cover": "https://qq.caonm.net/image/gchatpic_new/1765629830/860111915-2482769204-1C627B5825FA9B9F66B216459868E6DD/0?term=2",
+                "jump_url": "",
+                "subtitle": "",
+                "title": ""
+            }
+        },
+        "prompt": "[图转卡]-桑帛",
+        "ver": "1.0.0.14",
+        "view": "index"
     }
 }

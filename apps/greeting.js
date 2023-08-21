@@ -39,11 +39,11 @@ export default class greeting extends Base {
         let info = await Bot.getGroupMemberInfo(this.e.group_id, e.user_id)
         let imglist = this.File.GetfileList('resources/html/time/bg')
         let img = imglist[lodash.random(0, imglist.length - 1)]
-        if (info.sex === "male") {
+        if (info.sex == "male") {
             info.sex = "男"
-        } else if (info.sex === 'female') {
+        } else if (info.sex == 'female') {
             info.sex = "女"
-        } else if (info.sex === 'unknown') {
+        } else if (info.sex == 'unknown') {
             info.sex = '魅魔小萝莉'
         }
         let timelist = Object.values(userdata) || []
