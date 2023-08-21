@@ -25,12 +25,14 @@ export default class douyin extends Base {
             nickname: data.aweme_detail.author.nickname,
             short_id: data.aweme_detail.author.short_id,
             desc: data.aweme_detail.desc,
-            duration: data.aweme_detail.video.duration
+            datasize: ''
         }
         let datasize = data.aweme_detail.video.play_addr.data_size
+        info.datasize = datasize
         resulturl = data.aweme_detail.video.play_addr.url_list[0]
         if (datasize > 1024 * 1024 * 100) {
             resulturl = data.aweme_detail.video.play_addr_265.url_list[0]
+            info.datasize = data.aweme_detail.video.play_addr_265.data_size
         }
         if (resulturl)
             if (type == 'note') {
