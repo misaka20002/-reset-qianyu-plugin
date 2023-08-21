@@ -42,8 +42,10 @@ export default class douyin extends Douyin {
             return this.reply("解析失败！")
         }
         if (result.type == 'video') {
-            if (resultinfo.info.duration >= 1000 * 30 * 60)
-                this.changeVideo(resultinfo.resulturl, e)
+            if (resultinfo.info.duration >= 1000 * 30 * 60) {
+                return this.reply("不支持超过30分钟的视频解析")
+            }
+            this.changeVideo(resultinfo.resulturl, e)
         } else {
             if (Array.isArray(resultinfo.resulturl)) {
                 let meg = resultinfo.resulturl.map(item => {
