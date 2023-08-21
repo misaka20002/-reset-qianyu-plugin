@@ -30,7 +30,7 @@ export default class douyin extends Base {
         let datasize = data.aweme_detail.video.play_addr.data_size
         resulturl = data.aweme_detail.video.play_addr.url_list[0]
         if (datasize > 1024 * 1024 * 100) {
-            resulturl = data.aweme_detail.video.play_addr_265
+            resulturl = data.aweme_detail.video.play_addr_265.url_list[0]
         }
         if (resulturl)
             if (type == 'note') {
