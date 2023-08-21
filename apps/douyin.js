@@ -22,27 +22,38 @@ export default class douyin extends Douyin {
         if (!this.Cfg.isjx) return false
         let url = await this.dealUrl(e)
         if (!url) return false
-        let id;
+        let id, result;
         if (url.includes('v.douyin')) {
-            id = await this.getDouyinId(url)
-            if (!id) {
-                return this.reply("抖音解析只支持短链接分享！")
+            result = await this.getDouyinId(url)
+            if (!result) {
+                return this.reply("抖音链接错误！")
             }
         } else {
-            let reg = /video\/(.*?)\//g
-            if (Array.isArray(url.match(reg))) {
-                id = url.match(reg)[0].split("/")[1]
-            } else {
-                let r = url.match(reg).splite('\/')
-                id = r[1]
+            let reg = /(video|note)\/\d+/g
+            let id = url.match(reg)[0].split("/")[1]
+            result = { type: url.match(reg)[0].split("/")[0], id: id }
+        }
+        if (result) {
+            id = result.id
+        }
+        let resultinfo = await this.getDouyinVideo(`${id}`, result.type)
+        this.reply([`作者：${resultinfo.info.nickname}\n`, `描述：${resultinfo.info.desc}\n`, `解析类型：${result.type == 'video' ? '视频' : '图文'}`])
+        if (!resultinfo.resulturl) {
+            return this.reply("解析失败！")
+        }
+        if (result.type == 'video') {
+            if (resultinfo.info.duration >= 1000 * 30 * 60)
+                this.changeVideo(resultinfo.resulturl, e)
+        } else {
+            if (Array.isArray(resultinfo.resulturl)) {
+                let meg = resultinfo.resulturl.map(item => {
+                    return { content: this.segment.image(item) }
+                })
+                this.reply(await this.makeGroupMsg(resultinfo.info.desc, meg))
             }
 
         }
-        let videoUrl = await this.getDouyinVideo(`${id}`)
-        if (!videoUrl) {
-            return this.reply("解析失败！")
-        }
-        this.changeVideo(videoUrl, e)
+
     }
 
     async douyinSearch(e) {
@@ -91,7 +102,7 @@ export default class douyin extends Douyin {
         let douyin = await this.downDouyinFile(url, `douyin.mp4`, () => { })
         if (douyin) {
             let isSend = await this.sendVideo(videoPath, e, async () => {
-                await this.changeVideo(url, e)
+                this.reply("视频解析失败！")
             })
             if (isSend) {
                 this.File.deleteFile(videoPath)
