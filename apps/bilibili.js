@@ -1,6 +1,6 @@
-import { segment } from 'icqq'
 import Bili from '../model/bilibili.js'
 import moment from 'moment'
+import lodash from 'lodash'
 export default class bilibili extends Bili {
     constructor(e) {
         super({
@@ -17,10 +17,6 @@ export default class bilibili extends Bili {
                     fnc: 'historyBilibiliVideo'
                 },
                 {
-                    reg: '^#b站解析',
-                    fnc: 'setBilibili'
-                },
-                {
                     reg: '^#设置b站ck',
                     fnc: 'setCk'
                 },
@@ -29,22 +25,37 @@ export default class bilibili extends Bili {
                     fnc: 'deleteBilibili'
                 },
                 {
-                    reg: '^#订阅直播间',
-                    fnc: 'setLivePush'
+                    reg: '^#订阅列表$',
+                    fnc: 'getPushList'
                 },
                 {
-                    reg: '^#取消订阅直播间',
-                    fnc: 'delLivePush'
+                    reg: '^#订阅(UP|up|)(uid:|UID:|)',
+                    fnc: 'setUpPush'
+                },
+                {
+                    reg: '^#取消订阅(UP|up|)(uid:|UID:|)',
+                    fnc: 'delUpPush'
+                },
+                {
+                    reg: '^#查询UP最新动态',
+                    fnc: 'getmydynamic'
                 }
 
-            ],
-            task: {
-                name: 'bililive',
-                fnc: 'livepush',
-                cron: '0 */5 * * * *'
-            },
+
+            ]
         })
         this.e = e
+        this.task = [
+            {
+                name: 'pushdynamic',
+                fnc: 'pushdynamic',
+                cron: '0 * * * * *'
+            }, {
+                name: 'livepush',
+                fnc: 'livepush',
+                cron: '10 * * * * *'
+            }
+        ]
     }
 
 
@@ -61,6 +72,99 @@ export default class bilibili extends Bili {
         this.setContext('getBcookie', false, 120)
     }
 
+    async pushdynamic() {
+        let groupList = Bot.gl
+        for (let g of groupList) {
+            let updata = this.getBilibiUpPushData(g[0])
+            for (let item of Object.values(updata)) {
+                let data = await this.getUpdateDynamicData(item.uid)
+                if (!data) continue
+                if (data.id !== item.upuid) {
+                    let bglist = this.File.GetfileList('resources/html/bilibili/bg')
+                    let radom = bglist[lodash.random(0, bglist.length - 1)]
+                    Bot.pickGroup(g[0]).sendMsg(this.render('bilibili', { radom, ...data }))
+                    data = {
+                        nickname: data.author.nickname,
+                        upuid: data.id,
+                        uid: item.uid,
+                        pendantImg: data.author.pendantImg,
+                    }
+                    updata[item.uid] = data
+                    this.setBilibiUpPushData(g[0], updata)
+                }
+            }
+        }
+    }
+
+    async livepush() {
+        let groupList = Bot.gl
+        for (let g of groupList) {
+            let updata = this.getBilibiUpPushData(g[0])
+            for (let item of Object.values(updata)) {
+                let liveData = await this.getRoomInfobymid(item.uid)
+                let data = {}
+                if (liveData.live_status == 1 && !updata[item.uid].liveData) {
+                    let text = '', imglist = '', video, orig = '', liveInfo, comment = ''
+                    data.type = "直播"
+                    data.erm = "https://live.bilibili.com/" + liveData.room_id
+                    data.id = liveData.room_id
+                    updata[item.uid].liveData = liveData
+                    liveInfo = {
+                        cover: liveData.user_cover,
+                        title: liveData.title,
+                        area_name: liveData.area_name,
+                        watched_show: liveData.online
+                    }
+                    data.author = {
+                        nickname: updata[item.uid].nickname,
+                        img: updata[item.uid].img,
+                        pendantImg: updata[item.uid].pendantImg
+                    }
+                    let bglist = this.File.GetfileList('resources/html/bilibili/bg')
+                    let radom = bglist[lodash.random(0, bglist.length - 1)]
+                    data = { ...data, text, imglist, video, orig, liveInfo, comment, date: moment(liveData.live_time).format("YYYY年MM月DD日 HH:mm:ss") }
+                    Bot.pickGroup(g[0]).sendMsg(this.render('bilibili', { radom, ...data }))
+                }
+                if (liveData.live_status == 0) {
+                    delete updata[item.uid].liveData
+                }
+                this.setBilibiUpPushData(g[0], updata)
+            }
+        }
+    }
+
+    async getPushList(e) {
+        let updata = this.getBilibiUpPushData(e.group_id) || {}
+        let msg = '订阅列表如下：'
+        if (Object.keys(updata).length === 0) {
+            return this.reply("这个群还没订阅任何up主呢！")
+        }
+        Object.values(updata).forEach(item => {
+            msg += `\n昵称：${item.nickname}  uid:${item.uid}`
+        })
+        this.reply(msg)
+    }
+
+    async getmydynamic(e) {
+        let mid = e.msg.replace(new RegExp(e.reg), "")
+        if (isNaN(mid)) {
+            return this.reply("up主UID不正确，请输入数字！")
+        }
+        let data = await this.getUpdateDynamicData(mid)
+        let bglist = this.File.GetfileList('resources/html/bilibili/bg')
+        let radom = bglist[lodash.random(0, bglist.length - 1)]
+        this.reply(this.render('bilibili', { radom, ...data }))
+    }
+
+    async getUpdateDynamicData(mid) {
+        let data = await this.getUpdateDynamic(mid)
+        if (data.type == '直播') {
+            data.erm = data.liveInfo.liveurl
+            data.id = data.liveInfo.live_id
+        }
+        return data
+    }
+
     async getBcookie() {
         let msg = this.e.msg
         if (msg && msg.includes("SESSDATA")) {
@@ -75,64 +179,43 @@ export default class bilibili extends Bili {
     }
 
 
-    async setLivePush(e) {
-        let room_id = e.msg.replace("#订阅直播间", "")
-        if (isNaN(room_id)) {
-            return e.reply("直播间id格式不对！请输入数字！")
+    async setUpPush(e) {
+        let mid = e.msg.replace(new RegExp(e.reg), "")
+        if (isNaN(mid)) {
+            return this.reply("up主UID不正确，请输入数字！")
         }
-        let reslut = await this.getRoomInfo(room_id)
-        if (!reslut?.uid) {
-            return e.reply("不存在该直播间！")
+        let reslut = await this.getUpdateDynamic(mid)
+        let updata = this.getBilibiUpPushData(e.group_id) || {}
+        if (reslut?.code) {
+            return e.reply(reslut.msg)
         }
         let data = {
-            room_id: room_id,
-            group_id: e.group_id,
-            user_id: e.user_id
+            nickname: reslut.author.nickname,
+            upuid: reslut.id,
+            uid: mid,
+            img: reslut.author.img,
+            pendantImg: reslut.author.pendantImg
         }
-        this.setBilibiLiveData(data)
-        return e.reply("直播间订阅成功！")
-
+        updata[mid] = data
+        this.setBilibiUpPushData(e.group_id, updata)
+        return e.reply(`Up主${reslut.author.nickname}订阅成功！`)
     }
 
-    async livepush() {
-        let b = new Bili({ name: 'bilibili' })
-        let liveData = b.getBilibiLiveData()
-        liveData = Object.values(liveData)
-        for (let l of liveData) {
-            let room_id = l.room_id
-            let { uid, attention, online, live_status, user_cover, live_time, title } = await b.getRoomInfo(room_id)
-            let grouplist = Object.keys(l.group)
-            for (let g of grouplist) {
-                let isSendMsg = await redis.get(`bilibili_live_${room_id}_${g}`)
-                if (live_status == 1 && !isSendMsg) {
-                    let userlist = l.group[g].map(item => segment.at(item))
-                    redis.set(`bilibili_live_${room_id}_${g}`, JSON.stringify({ live_time: live_time }))
-                    Bot.pickGroup(Number(g)).sendMsg([...userlist, segment.image(user_cover), `标题：${title}\n`, `用户uid：${uid}\n`, `关注数量：${attention}\n`, `观看人数: ${online}\n`, `直播时间：${live_time}\n`, `直播间地址：https://live.bilibili.com/${room_id}`])
-                } else if (live_status == 0 && isSendMsg) {
-                    isSendMsg = JSON.parse(isSendMsg)
-                    Bot.pickGroup(Number(g)).sendMsg([segment.image(user_cover), '主播下播la~~~~\n', `本次直播时长：${new bilibili().getDealTime(moment(isSendMsg.live_time), moment())}`])
-                    redis.del(`bilibili_live_${room_id}_${g}`)
-                }
-            }
+    async delUpPush(e) {
+        let mid = e.msg.replace(new RegExp(e.reg), "")
+        if (isNaN(mid)) {
+            return this.reply("up主UID不正确，请输入数字！")
         }
-    }
-
-    async delLivePush(e) {
-        let room_id = e.msg.replace("#取消订阅直播间", "")
-        if (isNaN(room_id)) {
-            return e.reply("直播间id格式不对！请输入数字！")
+        let updata = this.getBilibiUpPushData(e.group_id)
+        let uplist = Object.keys(updata)
+        let result = updata[mid]
+        if (!uplist.includes(mid)) {
+            return e.reply("暂未订阅该up主！")
+        } else {
+            delete updata[mid]
         }
-        let reslut = this.getBilibiLiveData()
-
-        if (!reslut[room_id] || !reslut[room_id].group[e.group_id] || !reslut[room_id].group[e.group_id].includes(e.user_id)) {
-            return e.reply("你还没有订阅该直播间！")
-        }
-
-        this.delBilibiLiveData({
-            room_id: room_id,
-            user_id: e.user_id
-        })
-        return e.reply("取消直播间订阅成功！")
+        this.setBilibiUpPushData(e.group_id, updata)
+        return e.reply(`取消订阅Up主${result.nickname}成功！`)
     }
 
     async bili(e) {
@@ -168,31 +251,6 @@ export default class bilibili extends Bili {
         }
         return e.reply("b站视频删除成功！");
     }
-
-    async setBilibili(e) {
-        if (!e.isMaster) return true
-        let msg = e.msg.replace('#b站解析', "")
-        let keyList = { '卡片': 'card', '': 'isjx' }
-        if (msg.endsWith('关闭')) {
-            let str = msg.replace("关闭", "")
-            this.Cfg = {
-                key: keyList[str],
-                value: false
-            }
-            e.reply(`b站解析${str}关闭成功！`)
-        } else if (msg.endsWith('开启')) {
-            let str = msg.replace("开启", "")
-            this.Cfg = {
-                key: keyList[msg.replace("开启", "")],
-                value: true
-            }
-            e.reply(`b站解析${str}开启成功！`)
-        } else {
-            e.reply("无效设置！")
-        }
-        return true
-    }
-
 
     async historyBilibiliVideo(e) {
         let biliList = this.getGroupBilibiliData(e.group_id) || []

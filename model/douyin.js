@@ -47,7 +47,6 @@ export default class douyin extends Base {
     async getDouyinId(url = '') {
         let request = await new this.networks({ url, type: "text" })
         url = (await request.getfetch()).url
-        console.log(url);
         let reg = /(video|note)\/\d+/g
         let id = url.match(reg)[0].split("/")[1]
         return { type: url.match(reg)[0].split("/")[0], id: id }
