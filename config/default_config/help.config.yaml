@@ -12,14 +12,20 @@ helplist:
       - title: "qq小世界解析"
         desc: 检测到小世界分享卡片自动解析视频
         icon: "142"
+      - title: "快手解析"
+        desc: 检测到快手分享链接自动解析视频
+        icon: "142"
 
   - title: b站功能
     list:
-      - title: "#订阅直播间+直播间id"
-        desc: 订阅b站直播间，直播间开始时群里at提醒
-        icon: "142"
+      - title: "#订阅up+uid"
+        desc: 订阅up主的动态以及直播动态，在动态更新时推送
+        icon: "#取消订阅up+uid"
       - title: "#取消订阅直播间+直播间id"
-        desc: 取消订阅直播间
+        desc: 取消订阅up主的动态
+        icon: "142"
+      - title: "#订阅列表"
+        desc: 查看当前群所有订阅的up主
         icon: "142"
 
   - title: 群功能
@@ -41,6 +47,9 @@ helplist:
         icon: "141"
       - title: "早安/晚安"
         desc: 记录早晚安时间
+        icon: "141"
+      - title: "睡眠信息"
+        desc: 从早晚安记录的时间分析睡眠信息
         icon: "141"
 
   - title: 其他功能
