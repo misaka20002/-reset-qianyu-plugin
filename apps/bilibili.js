@@ -29,11 +29,11 @@ export default class bilibili extends Bili {
                     fnc: 'getPushList'
                 },
                 {
-                    reg: '^#订阅(UP|up|)(uid:|UID:|)',
+                    reg: '^#订阅(UP|up|)(动态|)(uid:|UID:|)',
                     fnc: 'setUpPush'
                 },
                 {
-                    reg: '^#取消订阅(UP|up|)(uid:|UID:|)',
+                    reg: '^#取消订阅(UP|up|)(动态|)(uid:|UID:|)',
                     fnc: 'delUpPush'
                 },
                 {
@@ -49,7 +49,7 @@ export default class bilibili extends Bili {
             {
                 name: 'pushdynamic',
                 fnc: 'pushdynamic',
-                cron: '0 * * * * *'
+                cron: '0 */5 * * * *'
             }, {
                 name: 'livepush',
                 fnc: 'livepush',
