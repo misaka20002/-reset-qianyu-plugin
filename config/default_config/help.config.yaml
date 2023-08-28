@@ -54,6 +54,9 @@ helplist:
       - title: "睡眠信息"
         desc: 从早晚安记录的时间分析睡眠信息
         icon: "141"
+      - title: "你主人是谁"
+        desc: 给机器人找找迷路的主人
+        icon: "141"
 
   - title: 其他功能
     list:

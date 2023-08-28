@@ -2,7 +2,6 @@ import moment from "moment"
 import lodash from 'lodash'
 import Base from '../model/base/Base.js'
 let monightlist = {}
-moment
 export default class greeting extends Base {
     constructor() {
         super({
@@ -56,8 +55,7 @@ export default class greeting extends Base {
         userdata.mtime = mlist[0]?.mtime ? moment(mlist[0].mtime).format("YYYY-MM-DD HH:mm") : "未获取到早安信息"
         userdata.ntime = nlist[0]?.ntime ? moment(nlist[0].ntime).format("YYYY-MM-DD HH:mm") : "未获取到晚安信息"
 
-        let ntimelist = this.getdiffHours(userdata)
-
+        let { ntimelist, daylist } = this.getdiffHours(userdata)
         let newnlist = ntimelist.filter(item => item !== 0)
         let average = newnlist.reduce((acc, val) => acc + val, 0) / newnlist.length || 0
         this.reply(await this.render('time', { info: info, userdata: userdata, daylist: JSON.stringify(daylist), ntimelist: JSON.stringify(ntimelist), average: average == 0 ? 0 : average.toFixed(1), img: img }))
@@ -164,18 +162,47 @@ export default class greeting extends Base {
     }
 
     getdiffHours(data) {
-        let day = moment().date()
-        let daylist = [`${day}日`]
-        let ntimelist = []
-        for (let i = 0; i < 7; i++) {
-            let t = userdata[moment().date(day - i).subtract(1, 'd').format("YYYY-MM-DD")]
-            daylist.unshift(`${moment().date(day - i).subtract(1, 'd').date()}日`)
-            ntimelist.unshift(this.getdiffHours(t) || 0)
-        }
         if (!data) return false
-        let diff = moment(data.ntime).diff(data.mtime)
+        let day = moment().date()
+        let daylist = [], ntimelist = []
+        for (let i = 0; i < 7; i++) {
+            //每天睡眠数据
+            let t = data[moment().date(day - i).format("YYYY-MM-DD")]
+            daylist.unshift(`${moment().date(day - i).date()}日`)
+            if (!t) {
+                ntimelist.push(0)
+                continue
+            }
+            if (t?.mtime) {
+                let yesterday = data[moment().date(day - i - 1).format("YYYY-MM-DD")]
+                if (t?.ntime && moment(t?.ntime).isAfter(t?.mtime)) {
+                    if (yesterday?.ntime) {
+                        ntimelist.push(this.diffTime(t.mtime, yesterday.ntime))
+                    } else {
+                        ntimelist.push(0)
+                    }
+                } else if (t?.ntime && moment(t?.mtime).isAfter(t?.ntime)) {
+                    ntimelist.push(this.diffTime(t.mtime, t.ntime))
+                } else if (!t.ntime) {
+                    let diff = moment(t.mtime).diff(yesterday.ntime)
+                    if (moment.duration(diff).days() >= 1) {
+                        ntimelist.push(0)
+                    } else {
+                        ntimelist.push(this.diffTime(t.mtime, yesterday.ntime))
+                    }
+                }
+            } else {
+                ntimelist.push(0)
+            }
+        }
+        return {
+            daylist, ntimelist
+        }
+    }
+
+    diffTime(date, date2) {
+        let diff = moment(date).diff(date2)
         let h = moment.duration(diff).hours()
-        console.log(moment.duration(diff).minutes());
         h += moment.duration(diff).minutes() / 60
         return Math.abs(h.toFixed(1))
     }
@@ -191,4 +218,3 @@ export default class greeting extends Base {
     }
 
 }
-
