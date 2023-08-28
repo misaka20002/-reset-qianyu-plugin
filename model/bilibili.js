@@ -102,6 +102,10 @@ export default class bilibili extends base {
         return await this.downfile.downVideo(data, path, suc)
     }
 
+    async getUserInfo(mid) {
+        return await BApi.getuserinfo(mid, this.ck)
+    }
+
     async getdynamiclistAllbymid(mid) {
         return await BApi.getdynamiclist(mid, this.ck)
     }
@@ -112,12 +116,18 @@ export default class bilibili extends base {
             return datalist
         }
         let data;
-        if (datalist[0].modules.module_tag?.text == '置顶' && moment().diff(datalist[0].modules.module_author.pub_ts * 1000, 'mint', true) > 5) {
+        if (datalist.length == 0) {
+            return {
+                code: '0',
+                message: 'up主还没有发布过动态！'
+            }
+        }
+        if (datalist[0].modules.module_tag?.text == '置顶' && parseInt(moment().diff(datalist[0].modules.module_author.pub_ts * 1000, 'minute', true)) > 10) {
             data = datalist[1]
-        } else if (datalist[0].type === "DYNAMIC_TYPE_LIVE_RCMD") {
-            return false
-        } else {
+        } else if (parseInt(moment().diff(datalist[0].modules.module_author.pub_ts * 1000, 'minute', true)) < 10 && datalist[0].type !== "DYNAMIC_TYPE_LIVE_RCMD") {
             data = datalist[0]
+        } else {
+            return false
         }
         return { ...this.dealDynamicData(data), datalist }
 

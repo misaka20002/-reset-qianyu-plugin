@@ -55,14 +55,9 @@ export default class greeting extends Base {
         });
         userdata.mtime = mlist[0]?.mtime ? moment(mlist[0].mtime).format("YYYY-MM-DD HH:mm") : "未获取到早安信息"
         userdata.ntime = nlist[0]?.ntime ? moment(nlist[0].ntime).format("YYYY-MM-DD HH:mm") : "未获取到晚安信息"
-        let day = moment().date()
-        let daylist = [`${day}日`]
-        let ntimelist = [this.getdiffHours(userdata[moment().format("YYYY-MM-DD")]) || 0]
-        for (let i = 0; i < 6; i++) {
-            let t = userdata[moment().date(day - i).subtract(1, 'd').format("YYYY-MM-DD")]
-            daylist.unshift(`${moment().date(day - i).subtract(1, 'd').date()}日`)
-            ntimelist.unshift(this.getdiffHours(t) || 0)
-        }
+
+        let ntimelist = this.getdiffHours(userdata)
+
         let newnlist = ntimelist.filter(item => item !== 0)
         let average = newnlist.reduce((acc, val) => acc + val, 0) / newnlist.length || 0
         this.reply(await this.render('time', { info: info, userdata: userdata, daylist: JSON.stringify(daylist), ntimelist: JSON.stringify(ntimelist), average: average == 0 ? 0 : average.toFixed(1), img: img }))
@@ -169,6 +164,14 @@ export default class greeting extends Base {
     }
 
     getdiffHours(data) {
+        let day = moment().date()
+        let daylist = [`${day}日`]
+        let ntimelist = []
+        for (let i = 0; i < 7; i++) {
+            let t = userdata[moment().date(day - i).subtract(1, 'd').format("YYYY-MM-DD")]
+            daylist.unshift(`${moment().date(day - i).subtract(1, 'd').date()}日`)
+            ntimelist.unshift(this.getdiffHours(t) || 0)
+        }
         if (!data) return false
         let diff = moment(data.ntime).diff(data.mtime)
         let h = moment.duration(diff).hours()
@@ -188,7 +191,4 @@ export default class greeting extends Base {
     }
 
 }
-
-
-
 

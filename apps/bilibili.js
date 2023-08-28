@@ -37,7 +37,7 @@ export default class bilibili extends Bili {
                     fnc: 'delUpPush'
                 },
                 {
-                    reg: '^#查询UP最新动态',
+                    reg: '^#查询(UP|up|)最新动态',
                     fnc: 'getmydynamic'
                 }
 
@@ -79,6 +79,7 @@ export default class bilibili extends Bili {
             for (let item of Object.values(updata)) {
                 let data = await this.getUpdateDynamicData(item.uid)
                 if (!data) continue
+                if (data.code) continue
                 if (data.id !== item.upuid) {
                     let bglist = this.File.GetfileList('resources/html/bilibili/bg')
                     let radom = bglist[lodash.random(0, bglist.length - 1)]
@@ -87,6 +88,7 @@ export default class bilibili extends Bili {
                         nickname: data.author.nickname,
                         upuid: data.id,
                         uid: item.uid,
+                        img: data.author.img,
                         pendantImg: data.author.pendantImg,
                     }
                     updata[item.uid] = data
@@ -151,6 +153,11 @@ export default class bilibili extends Bili {
             return this.reply("up主UID不正确，请输入数字！")
         }
         let data = await this.getUpdateDynamicData(mid)
+        if (data?.code && data.code != 0) {
+            return e.reply(reslut.message || reslut.msg)
+        } else if (data.code == 0) {
+            return this.reply("这个up还没发布过动态呢！")
+        }
         let bglist = this.File.GetfileList('resources/html/bilibili/bg')
         let radom = bglist[lodash.random(0, bglist.length - 1)]
         this.reply(this.render('bilibili', { radom, ...data }))
@@ -186,19 +193,31 @@ export default class bilibili extends Bili {
         }
         let reslut = await this.getUpdateDynamic(mid)
         let updata = this.getBilibiUpPushData(e.group_id) || {}
-        if (reslut?.code) {
-            return e.reply(reslut.msg)
+        if (reslut?.code && reslut.code != 0) {
+            return e.reply(reslut.message || reslut.msg)
         }
-        let data = {
-            nickname: reslut.author.nickname,
-            upuid: reslut.id,
-            uid: mid,
-            img: reslut.author.img,
-            pendantImg: reslut.author.pendantImg
+        let data;
+        if (!reslut.code) {
+            data = {
+                nickname: reslut.author.nickname,
+                upuid: reslut.id,
+                uid: mid,
+                img: reslut.author.img,
+                pendantImg: reslut.author.pendantImg
+            }
+        } else {
+            let authorInfo = await this.getUserInfo(mid)
+            data = {
+                nickname: authorInfo.name,
+                upuid: 0,
+                uid: mid,
+                img: authorInfo.face,
+                pendantImg: authorInfo.pendant?.image
+            }
         }
         updata[mid] = data
         this.setBilibiUpPushData(e.group_id, updata)
-        return e.reply(`Up主${reslut.author.nickname}订阅成功！`)
+        return e.reply(`Up主${data.nickname}订阅成功！`)
     }
 
     async delUpPush(e) {

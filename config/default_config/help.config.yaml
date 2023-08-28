@@ -27,6 +27,9 @@ helplist:
       - title: "#订阅列表"
         desc: 查看当前群所有订阅的up主
         icon: "142"
+      - title: "#查询up最新动态+uid"
+        desc: 查看up主的最新动态
+        icon: "142"
 
   - title: 群功能
     list:

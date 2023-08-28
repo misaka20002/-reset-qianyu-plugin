@@ -12,15 +12,13 @@ export default class other extends Base {
                     log: false
                 },
                 {
-                    reg: '#撤回',
+                    reg: '^#撤回',
                     fnc: 'che'
-                },
+                }
             ]
         })
         this.e = e
     }
-
-
 
     async jxtu(e) {
         let url = e.url
@@ -41,7 +39,5 @@ export default class other extends Base {
                 this.reply("伦家不是管理员，不能撤回超过2分钟的消息呢~")
             }
         }
-
     }
-
 }

@@ -21,7 +21,11 @@ export default class prefix extends Base {
                 {
                     reg: '^#设置尾缀',
                     fnc: 'setendPrefix',
-                }
+                },
+                {
+                    reg: '你(的|)主人是(谁|哪个)',
+                    fnc: 'whoismaster'
+                },
             ]
         })
     }
@@ -57,6 +61,30 @@ export default class prefix extends Base {
     SetCfg(name, key, value) {
         let Cfg = new YamlReader(`${process.cwd()}/config/config/${name}.yaml`)
         Cfg.set(key, value)
+    }
+
+    async whoismaster(e) {
+        if (!e.atme) return false
+        let map = await e.group.getMemberMap()
+        let other = new YamlReader(`${process.cwd()}/config/config/other.yaml`).jsonData
+        let memberlist = [...map].map(item => item[0])
+        let msg = ['我的主人是']
+        if (Array.isArray(other.masterQQ)) {
+            let isinGroup = false
+            other.masterQQ.forEach(item => {
+                if (memberlist.includes(item)) {
+                    isinGroup = true
+                    msg.push(this.segment.at(item))
+                }
+            })
+            if (!isinGroup) {
+                return this.reply(`我的主人不在这个群，主人qq号为:${other.masterQQ.join('、')}`)
+            }
+        } else {
+            return this.reply("我是一枚野生的机器人呢！")
+        }
+        return this.reply(msg)
+
     }
 
 
