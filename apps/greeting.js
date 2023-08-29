@@ -170,7 +170,7 @@ export default class greeting extends Base {
             let t = data[moment().date(day - i).format("YYYY-MM-DD")]
             daylist.unshift(`${moment().date(day - i).date()}日`)
             if (!t) {
-                ntimelist.push(0)
+                ntimelist.unshift(0)
                 continue
             }
             if (t?.mtime) {
