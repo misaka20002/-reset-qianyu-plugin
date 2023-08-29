@@ -127,7 +127,7 @@ export default class bilibili extends Bili {
                     data = { ...data, text, imglist, video, orig, liveInfo, comment, date: moment(liveData.live_time).format("YYYY年MM月DD日 HH:mm:ss") }
                     Bot.pickGroup(g[0]).sendMsg(this.render('bilibili', { radom, ...data }))
                 }
-                if (liveData.live_status == 0) {
+                if (liveData.live_status != 1) {
                     delete updata[item.uid].liveData
                 }
                 this.setBilibiUpPushData(g[0], updata)
@@ -152,7 +152,7 @@ export default class bilibili extends Bili {
         if (isNaN(mid)) {
             return this.reply("up主UID不正确，请输入数字！")
         }
-        let data = await this.getUpdateDynamicData(mid)
+        let data = await this.getUpdateDynamicData(mid, 0)
         if (data?.code && data.code != 0) {
             return e.reply(reslut.message || reslut.msg)
         } else if (data.code == 0) {
@@ -163,8 +163,8 @@ export default class bilibili extends Bili {
         this.reply(this.render('bilibili', { radom, ...data }))
     }
 
-    async getUpdateDynamicData(mid) {
-        let data = await this.getUpdateDynamic(mid)
+    async getUpdateDynamicData(mid, index) {
+        let data = await this.getUpdateDynamic(mid, index)
         if (data.type == '直播') {
             data.erm = data.liveInfo.liveurl
             data.id = data.liveInfo.live_id
@@ -191,7 +191,7 @@ export default class bilibili extends Bili {
         if (isNaN(mid)) {
             return this.reply("up主UID不正确，请输入数字！")
         }
-        let reslut = await this.getUpdateDynamic(mid)
+        let reslut = await this.getUpdateDynamic(mid, 0)
         let updata = this.getBilibiUpPushData(e.group_id) || {}
         if (reslut?.code && reslut.code != 0) {
             return e.reply(reslut.message || reslut.msg)

@@ -106,11 +106,11 @@ export default class bilibili extends base {
         return await BApi.getuserinfo(mid, this.ck)
     }
 
-    async getdynamiclistAllbymid(mid) {
+    async getdynamiclistAllbymid(mid, index) {
         return await BApi.getdynamiclist(mid, this.ck)
     }
 
-    async getUpdateDynamic(mid) {
+    async getUpdateDynamic(mid, index) {
         let datalist = await this.getdynamiclistAllbymid(mid)
         if (datalist.code) {
             return datalist
@@ -122,13 +122,25 @@ export default class bilibili extends base {
                 message: 'up主还没有发布过动态！'
             }
         }
-        if (datalist[0].modules.module_tag?.text == '置顶' && parseInt(moment().diff(datalist[0].modules.module_author.pub_ts * 1000, 'minute', true)) > 10) {
-            data = datalist[1]
-        } else if (parseInt(moment().diff(datalist[0].modules.module_author.pub_ts * 1000, 'minute', true)) < 10 && datalist[0].type !== "DYNAMIC_TYPE_LIVE_RCMD") {
-            data = datalist[0]
-        } else {
+
+        let datalist2 = datalist.filter(item => item.type !== "DYNAMIC_TYPE_LIVE_RCMD")
+
+        if (parseInt(moment().diff(datalist2[0].modules.module_author.pub_ts * 1000, 'minute', true)) < 10) {
+            data = datalist2[0]
+        } else if (parseInt(moment().diff(datalist2[1].modules.module_author.pub_ts * 1000, 'minute', true)) < 10) {
+            data = datalist2[1]
+        }
+        if (index != undefined) {
+            if (datalist[0].type === "DYNAMIC_TYPE_DRAW" && datalist[0].modules.module_author.pub_ts < datalist[1].modules.module_author.pub_ts) {
+                data = datalist[1]
+            } else {
+                data = datalist[0]
+            }
+        }
+        if (!data) {
             return false
         }
+
         return { ...this.dealDynamicData(data), datalist }
 
     }
