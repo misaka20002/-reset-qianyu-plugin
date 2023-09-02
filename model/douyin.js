@@ -13,14 +13,19 @@ export default class douyin extends Base {
         return this.Cfg.ck
     }
 
+    set ck(cookie) {
+        this.Cfg = { key: 'ck', value: cookie }
+    }
+
     async getDouyinVideo(id = '', type = 'video') {
-        let headers = { "cookie": this.ck, ...this.headers, referer: "https://www.douyin.com/" }
+        let headers = { "cookie": this.ck || '', ...this.headers, referer: "https://www.douyin.com/" }
         let url = `https://www.douyin.com/aweme/v1/web/aweme/detail/?device_platform=webapp&aid=6383&channel=channel_pc_web&aweme_id=${id}&pc_client_type=1&version_code=190500&version_name=19.5.0&cookie_enabled=true&screen_width=1536&screen_height=864&browser_language=zh-CN&browser_platform=Win32&browser_name=Edge&browser_version=115.0&browser_online=true&engine_name=Blink&engine_version=115.0&os_name=Windows&os_version=10&cpu_core_num=8&device_memory=&platform=PC&webid=7221112461945194044&msToken=3ai6kSEr0OLFsxD5cGDIt5X3Mtzo25eOBe3Nr--qEWSx_CupXmkvEmrirBcvJVtxbPLi1xcRpVbLZ6XchZo6c4HWUF5VRNy4FD7N2HGP-jv3cJc_wwIJ`
         let data = await new this.networks({
             url: `${url}&X-Bogus=${this.getParm(url)}`,
             headers, type: "json"
         }).getData()
         let resulturl, info;
+        if (!data.aweme_detail) return false
         info = {
             nickname: data.aweme_detail.author.nickname,
             short_id: data.aweme_detail.author.short_id,

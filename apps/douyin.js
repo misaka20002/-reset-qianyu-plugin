@@ -10,12 +10,41 @@ export default class douyin extends Douyin {
                     fnc: 'douyinSearch',
                 },
                 {
+                    reg: '^#设置抖音ck',
+                    fnc: 'setCk',
+                },
+                {
+                    reg: '^抖音ck帮助',
+                    fnc: 'douyinckhelp',
+                },
+                {
                     reg: '',
                     fnc: 'doujx',
                     log: false
                 },
+
             ],
         })
+    }
+
+    async douyinckhelp(e) {
+        this.reply('抖音cookie获取流程：\n【腾讯文档】抖音cookie获取教程https://docs.qq.com/doc/DSXlCckx1d0FxSkZE')
+    }
+
+    async setCk(e) {
+        if (!e.isMaster) return true
+        if (e.isGroup) {
+            return e.reply("请私聊发送cookie")
+        }
+        e.reply("请发送抖音cookie")
+        this.setContext('geDycookie', false, 120)
+    }
+
+    async geDycookie() {
+        let msg = this.e.msg
+        this.ck = msg
+        this.finish('geDycookie')
+        return this.e.reply("抖音cookie设置成功!")
     }
 
     async doujx(e) {
@@ -37,10 +66,11 @@ export default class douyin extends Douyin {
             id = result.id
         }
         let resultinfo = await this.getDouyinVideo(`${id}`, result.type)
-        this.reply([`作者：${resultinfo.info.nickname}\n`, `描述：${resultinfo.info.desc}\n`, `解析类型：${result.type == 'video' ? '视频' : '图文'}`])
-        if (!resultinfo.resulturl) {
-            return this.reply("解析失败！")
+        if (!resultinfo?.resulturl) {
+            return this.reply("解析失败！可能是cookie失效，请发送'抖音ck帮助'设置cookie!")
+
         }
+        this.reply([`作者：${resultinfo.info.nickname}\n`, `描述：${resultinfo.info.desc}\n`, `解析类型：${result.type == 'video' ? '视频' : '图文'}`])
         if (result.type == 'video') {
             if (resultinfo.info.datasize >= 1024 * 1024 * 100) {
                 return this.reply("视频过大，不支持解析！")

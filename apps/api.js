@@ -188,9 +188,13 @@ export default class api extends Api {
 
     async gettextapi(e) {
         let msg = e.msg
-        await this.dealApi('text', msg, async (res) => {
-            if (!res) {
+        await this.dealApi('text', msg, async (res, api) => {
+            if (res === false) {
                 return this.reply("请求失败！")
+            }
+            res = `${res}`
+            if (api.reply) {
+                res = api.reply.replace("{value}", res)
             }
             let remsg = res.trim();
             remsg = remsg.replace(/\\n/g, "\n").replace(/&nbsp;/g, " ").replace(/<br>/g, '\n')

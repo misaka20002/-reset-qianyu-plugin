@@ -1,16 +1,20 @@
 import lodash from 'lodash'
-import Base from '../model/base/Base.js'
-export default class ai extends Base {
+import AI from '../model/ai.js'
+export default class ai extends AI {
     constructor() {
         super({
             name: 'ai',
             priority: 1000,
             rule: [
+                // {
+                //     reg: '^文心',
+                //     fnc: 'wenxin',
+                // },
                 {
                     reg: '',
                     fnc: 'ffai',
                     log: false
-                }
+                },
             ]
         })
 
@@ -75,6 +79,20 @@ export default class ai extends Base {
         return await this.reply(`${data.replace(/菲菲|小思|小爱|思知|ChatGPT/g, botname ? botname : ai)}`)
     }
 
+
+    async wenxin() {
+        if (this.e.user_id != 1765629830) return false
+        let pro = this.e.msg.replace("文心", "")
+        let res = await this.getWenxinAi(pro)
+        let msg = []
+        if (res.text) {
+            msg.push(res.text.replace(/<br>/g, "\n").replace(/<img[^>]*\bsrc\s*=\s*['"]([^'"]*)['"][^>]*>/g, "").trim())
+        }
+        if (res.image) {
+            msg.push(this.segment.image(res.image))
+        }
+        this.reply(msg)
+    }
 
 
 }
