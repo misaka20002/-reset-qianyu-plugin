@@ -1,5 +1,5 @@
 import Base from "./base/Base.js";
-import { headless } from './ai/wenxinai.js'
+//import { headless } from './ai/wenxinai.js'
 export default class ai extends Base {
     constructor(data) {
         super(data)
