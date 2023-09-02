@@ -1,8 +1,8 @@
-import puppeteer, { KnownDevices } from 'puppeteer'
 import common from '../../utils/common.js';
 let Browser, Page
 export async function headless({ cookie, timeout = 1000 * 60, headless = false, prompt }) {
     try {
+        let { puppeteer, KnownDevices } = await getPuppeteer()
         if (!Browser) {
             Browser = await puppeteer.launch({
                 headless,
@@ -79,6 +79,11 @@ export async function headless({ cookie, timeout = 1000 * 60, headless = false, 
     } finally {
 
     }
+}
+
+async function getPuppeteer() {
+    let puppeteer = await import('puppeteer')
+    return { puppeteer, KnownDevices: puppeteer.KnownDevices }
 }
 
 function parse_cookie(cookie) {
