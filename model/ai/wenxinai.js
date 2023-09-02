@@ -1,4 +1,4 @@
-//import puppeteer, { KnownDevices } from 'puppeteer'
+import puppeteer, { KnownDevices } from 'puppeteer'
 import common from '../../utils/common.js';
 let Browser, Page
 export async function headless({ cookie, timeout = 1000 * 60, headless = false, prompt }) {

@@ -238,6 +238,7 @@ export default class bilibili extends Bili {
     }
 
     async bili(e) {
+        if (!e.isGroup) return false
         if (!this.Cfg.isjx) return false
         let bv = await this.dealUrl(e)
         if (!bv) return false

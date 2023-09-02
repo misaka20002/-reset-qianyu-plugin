@@ -48,6 +48,7 @@ export default class douyin extends Douyin {
     }
 
     async doujx(e) {
+        if (!e.isGroup) return false
         if (!this.Cfg.isjx) return false
         let url = await this.dealUrl(e)
         if (!url) return false

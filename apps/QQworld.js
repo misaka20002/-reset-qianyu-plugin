@@ -16,6 +16,7 @@ export default class QQworld extends Video {
     }
 
     async xuijx(e) {
+        if (!e.isGroup) return false
         let url = await this.dealUrl(e)
         if (!url) {
             return false
