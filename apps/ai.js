@@ -84,6 +84,9 @@ export default class ai extends AI {
         if (this.e.user_id != 1765629830) return false
         let pro = this.e.msg.replace("文心", "")
         let res = await this.getWenxinAi(pro)
+        if (res.error == 0) {
+            return this.reply(res.msg)
+        }
         let msg = []
         if (res.text) {
             msg.push(res.text.replace(/<br>/g, "\n").replace(/<img[^>]*\bsrc\s*=\s*['"]([^'"]*)['"][^>]*>/g, "").trim())

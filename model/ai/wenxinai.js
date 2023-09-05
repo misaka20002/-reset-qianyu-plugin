@@ -2,7 +2,14 @@ import common from '../../utils/common.js';
 let Browser, Page
 export async function headless({ cookie, timeout = 1000 * 60, headless = false, prompt }) {
     try {
-        let { puppeteer, KnownDevices } = await getPuppeteer()
+        let Puppeteer = await getPuppeteer()
+        if (!Puppeteer) {
+            return {
+                error: 0,
+                msg: 'puppeteer版本需要大于v19.0,请升级puppeteer依赖后崽使用此功能！'
+            }
+        }
+        let { puppeteer, KnownDevices } = Puppeteer
         if (!Browser) {
             Browser = await puppeteer.launch({
                 headless,
@@ -41,7 +48,10 @@ export async function headless({ cookie, timeout = 1000 * 60, headless = false, 
                 return body_text.includes('登录') && (body_text.includes('加入体验') || body_text.includes('开始体验'))
             })
             if (need_login) {
-                throw new Error('cookie失效, 请重新登录')
+                return {
+                    error: 0,
+                    msg: 'cookie失效, 请重新登录'
+                }
             }
             Page = page
         }
@@ -83,6 +93,7 @@ export async function headless({ cookie, timeout = 1000 * 60, headless = false, 
 
 async function getPuppeteer() {
     let puppeteer = await import('puppeteer')
+    if (!puppeteer.KnownDevices) return false
     return { puppeteer, KnownDevices: puppeteer.KnownDevices }
 }
 

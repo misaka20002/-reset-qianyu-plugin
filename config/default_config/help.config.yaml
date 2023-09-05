@@ -21,7 +21,7 @@ helplist:
       - title: "#订阅up+uid"
         desc: 订阅up主的动态以及直播动态，在动态更新时推送
         icon: "#取消订阅up+uid"
-      - title: "#取消订阅直播间+直播间id"
+      - title: "#取消订阅up+uid"
         desc: 取消订阅up主的动态
         icon: "142"
       - title: "#订阅列表"

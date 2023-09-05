@@ -42,9 +42,7 @@ class Puppeteer {
 
   async initPupp() {
     if (!lodash.isEmpty(puppeteer)) return puppeteer
-
     puppeteer = (await import('puppeteer')).default
-
     return puppeteer
   }
 
@@ -71,6 +69,7 @@ class Puppeteer {
     if (this.getversion() >= 20) {
       this.config.headless = 'new'
     }
+
     logger.mark('puppeteer Chromium 启动中...')
 
     /** 初始化puppeteer */

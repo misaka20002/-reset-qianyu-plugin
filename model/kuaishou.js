@@ -2,7 +2,6 @@ import Base from "./base/Base.js";
 export default class kuaishou extends Base {
     constructor(data) {
         super(data)
-
     }
 
     get ck() {

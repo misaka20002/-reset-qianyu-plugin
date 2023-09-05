@@ -268,7 +268,12 @@ export default class worldColud extends Base {
         this.File.CreatDir('data/groupface')
         let newData = {}
         for (let g of groupList) {
-            let data = await this.getGroupHistoryMsg(moment().subtract(1, 'd').hour(0).minute(0).second(0), moment().hour(0).minute(0).second(0), Cfg, g[0])
+            let data;
+            try {
+                data = await this.getGroupHistoryMsg(moment().subtract(1, 'd').hour(0).minute(0).second(0), moment().hour(0).minute(0).second(0), Cfg, g[0])
+            } catch (error) {
+                continue;
+            }
             if (!face[g[0]]) {
                 face[g[0]] = {}
             }
