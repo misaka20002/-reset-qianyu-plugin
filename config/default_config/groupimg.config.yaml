@@ -2,3 +2,5 @@
 learnTimes: 10
 #学习完表情包后是否在转发群消息
 isSendMsg: true
+#群随机表情包概率
+random: 10

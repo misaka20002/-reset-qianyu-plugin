@@ -85,7 +85,7 @@ groupimg:
       def: 10
       range: [1, 100]
       type: Number
-      desc: 群聊表情包学习的次数
+      desc: 群聊中表情包重复出现的次数，超过这个次数才进行学习
       reg: "#千羽设置表情包学习次数10"
     isSendMsg:
       title: 表情包学习提醒
@@ -93,6 +93,13 @@ groupimg:
       type: Boolean
       desc: 每天凌晨发送学习的表情包合集
       reg: "#千羽设置表情包学习提醒开启/关闭"
+    random:
+      title: 随机表情包概率
+      def: 10
+      range: [0, 100]
+      type: Number
+      desc: 触发随机表情包的概率
+      reg: "#千羽设置随机表情包概率10"
   GroupSet:
     isOpen:
       title: 群随机表情

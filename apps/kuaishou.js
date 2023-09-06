@@ -15,7 +15,7 @@ export default class kuaishou extends Kuaishou {
                     fnc: 'setCk',
                 },
                 {
-                    reg: '^快手ck帮助',
+                    reg: '^#快手ck帮助',
                     fnc: 'kuaishouckhelp',
                 },
             ],
@@ -51,7 +51,7 @@ export default class kuaishou extends Kuaishou {
         }
         let videourl = await this.getKuaishouVideo(url)
         if (!videourl) {
-            return this.reply("解析失败！可能是cookie失效，请发送'快手ck帮助'设置cookie!")
+            return this.reply("解析失败！可能是cookie失效，请发送'#快手ck帮助'设置cookie!")
         }
         await this.changeVideo(videourl, e)
     }

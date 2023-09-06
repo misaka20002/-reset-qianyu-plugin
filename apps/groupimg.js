@@ -1,9 +1,7 @@
 import moment from 'moment'
 import Base from '../model/base/Base.js'
 import lodash from 'lodash'
-let msg = {
-    time: 0
-}
+let msg = {}
 let groupList = []
 export default class groupimg extends Base {
     constructor() {
@@ -12,7 +10,7 @@ export default class groupimg extends Base {
             priority: 50,
             rule: [
                 {
-                    reg: '#查看所有表情',
+                    reg: '^#查看所有表情',
                     fnc: 'seeface'
                 },
                 {
@@ -29,7 +27,7 @@ export default class groupimg extends Base {
             task: {
                 name: 'sendimg',
                 fnc: 'sendimg',
-                cron: '0 * * * * *'
+                cron: '0 */5 * * * *'
             },
         })
         let fileterList = ['learnTimes', 'isSendMsg']
@@ -45,9 +43,22 @@ export default class groupimg extends Base {
 
     async uxmsg(e) {
         if (!e.isGroup) return false
-        if (groupList.includes(e.group_id)) {
-            msg[e.group_id] = {}
-            msg[e.group_id] = e
+        let random = lodash.random(0, 100)
+        if (groupList.includes(`${e.group_id}`)) {
+            msg[e.group_id] = msg[e.group_id] || {}
+            msg[e.group_id] = { ...msg[e.group_id], ...e }
+            msg[e.group_id].sum = msg[e.group_id].sum ? ++msg[e.group_id].sum : 1
+        }
+        if (random < this.Cfg.random && this.Cfg[e.group_id].isOpen) {
+            let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
+            if (imgData.length === 0) return false
+            let img = imgData[lodash.random(0, imgData.length - 1)]
+            let rs = await this.reply(img.content)
+            let m = (await e.group.getChatHistory(rs.seq, 1))[0]
+            msg[e.group_id] = { ...msg[e.group_id], ...m }
+            msg[e.group_id].sum = ++msg[e.group_id].sum
+            msg[e.group_id].sendimgsum = msg[e.group_id].sendimgsum ? ++msg[e.group_id].sendimgsum : 1
+            return true
         }
         return false
     }
@@ -79,19 +90,29 @@ export default class groupimg extends Base {
     }
 
     async sendimg() {
-        if (moment().hours() >= 8) {
-            let random = lodash.random(5, 30)
+        if (moment().hours() >= 0) {
+            let rdtime = lodash.random(5, 30)
             for (let g of groupList) {
                 if (this.Cfg[g].isOpen) {
-                    let time = msg[g]?.time || 0
-                    if (moment().unix() >= time + (random * 60)) {
-                        let imgData = this.Data.getDataJson(`groupface/${g}-face`) || []
-                        if (imgData.length === 0) return false
-                        let img = imgData[lodash.random(0, imgData.length - 1)]
-                        msg[g] = {}
-                        msg[g].time = moment().unix()
-                        Bot.pickGroup(g).sendMsg(img.content)
+                    let imgData = this.Data.getDataJson(`groupface/${g}-face`) || []
+                    if (imgData.length === 0) return false
+                    let img = imgData[lodash.random(0, imgData.length - 1)]
+                    msg[g] = msg[g] ? msg[g] : {}
+                    if (msg[g]?.user_id === Bot.uin) {
+                        //暂未定
+                    } else {
+                        let time = msg[g]?.time || 0
+                        let sum = msg[g].sum ? ++msg[g].sum : 1
+                        if (moment().unix() >= time + (rdtime * 60)) {
+                            //冷群时间
+                            let rs = await Bot.pickGroup(g).sendMsg(img.content)
+                            let m = (await Bot.pickGroup(g).getChatHistory(rs.seq, 1))[0]
+                            msg[g] = { ...msg[g], ...m }
+                            msg[g].sum = sum
+                            msg[g].sendimgsum = msg[g].sendimgsum ? ++msg[g].sendimgsum : 1
+                        }
                     }
+
                 }
             }
 

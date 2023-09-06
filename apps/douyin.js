@@ -14,7 +14,7 @@ export default class douyin extends Douyin {
                     fnc: 'setCk',
                 },
                 {
-                    reg: '^抖音ck帮助',
+                    reg: '^#抖音ck帮助',
                     fnc: 'douyinckhelp',
                 },
                 {
@@ -68,7 +68,7 @@ export default class douyin extends Douyin {
         }
         let resultinfo = await this.getDouyinVideo(`${id}`, result.type)
         if (!resultinfo?.resulturl) {
-            return this.reply("解析失败！可能是cookie失效，请发送'抖音ck帮助'设置cookie!")
+            return this.reply("解析失败！可能是cookie失效，请发送'#抖音ck帮助'设置cookie!")
 
         }
         this.reply([`作者：${resultinfo.info.nickname}\n`, `描述：${resultinfo.info.desc}\n`, `解析类型：${result.type == 'video' ? '视频' : '图文'}`])

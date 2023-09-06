@@ -7,7 +7,7 @@ export default class help extends Base {
     constructor() {
         super({
             name: 'help',
-            priority: 50,
+            priority: 10,
             rule: [
                 {
                     reg: '^(#|)千羽帮助$',
@@ -70,13 +70,11 @@ export default class help extends Base {
         let configList = this.Config.config.filter(item => !filterCfg.includes(item))
         configList.forEach(item => {
             Cfg[item] = this.Config.GetCfg(item) || {}
-            // if (Cfg[item]) {
             Object.keys(Cfg[item]).map(key => {
                 if (filterList.includes(key)) {
                     delete Cfg[item][key]
                 }
             })
-            // }
         })
         let result;
         if (!e.isGroup) {
@@ -155,10 +153,8 @@ export default class help extends Base {
             case 'Number':
                 if (isNaN(value) && Obj.type === 'Number') {
                     result.msg = '设置的值必须是数字！'
-                    break
                 } else if (!isNaN(value) && Obj.range && value < Obj?.range[0] || value > Obj?.range[1]) {
                     result.msg = `数字范围不合理，值应该为${Obj?.range[0]}到${Obj?.range[1]}！`
-                    break;
                 }
                 break;
             case 'Boolean':
@@ -166,15 +162,16 @@ export default class help extends Base {
                     result.value = isBolean[value]
                 } else if (!Object.keys(isBolean).includes(value)) {
                     result.msg = '你要干什么值不对啊！'
-                    break
                 }
                 break;
             case 'String':
                 if (Obj.range && !Obj.range.includes(value)) {
                     result.msg = `只能设置为${Obj.range.join("、")}之中的一种！`
-                    break;
                 }
                 break;
+        }
+        if (!value) {
+            result.msg = `设置的值不能为空！`
         }
         return result
     }

@@ -65,6 +65,7 @@ export class Api extends Base {
         })
         let fetch = await networks.getfetch()
         let code = fetch.status
+        console.log(code);
         if (code !== 200) {
             return suc(false)
         }

@@ -264,14 +264,20 @@ export default class api extends Api {
                 const reg2 = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
                 res = res.match(reg2)[0]
             }
-            let result = await this.downVideoFile({ url: res, isAgent: video.isAgent }, `${msg}.mp4`, async () => {
+            let isfaith;
+            let result = await this.downVideoFile({ url: res, isAgent: video.isAgent }, `${msg}.mp4`, async (res) => {
+                if (!res) {
+                    videoing = false
+                    isfaith = true
+                    return this.reply("请求错误！请重试！")
+                }
                 Bot.pickGroup(this.e.group_id).sendMsg(this.segment.video(`${this.Path.qianyuPath}resources/video/${msg}.mp4`)).catch(err => {
                     videoing = false
                     return e.reply("视频解析失败！")
                 })
             })
             videoing = false
-            if (!result) {
+            if (!result && !isfaith) {
                 return e.reply("视频下载失败！")
             }
         })
