@@ -176,19 +176,15 @@ export default class greeting extends Base {
             if (t?.mtime) {
                 let yesterday = data[moment().date(day - i - 1).format("YYYY-MM-DD")]
                 if (t?.ntime && moment(t?.ntime).isAfter(t?.mtime)) {
-                    if (yesterday?.ntime) {
-                        ntimelist.unshift(this.diffTime(t.mtime, yesterday.ntime))
-                    } else {
-                        ntimelist.unshift(0)
-                    }
+                    yesterday?.ntime ? ntimelist.unshift(this.diffTime(t.mtime, yesterday.ntime)) : ntimelist.unshift(0)
                 } else if (t?.ntime && moment(t?.mtime).isAfter(t?.ntime)) {
                     ntimelist.unshift(this.diffTime(t.mtime, t.ntime))
                 } else if (!t.ntime) {
-                    let diff = moment(t.mtime).diff(yesterday.ntime)
-                    if (moment.duration(diff).days() >= 1) {
-                        ntimelist.unshift(0)
+                    if (yesterday?.ntime) {
+                        let diff = moment(t.mtime).diff(yesterday.ntime)
+                        moment.duration(diff).days() >= 1 ? ntimelist.unshift(0) : ntimelist.unshift(this.diffTime(t.mtime, yesterday.ntime))
                     } else {
-                        ntimelist.unshift(this.diffTime(t.mtime, yesterday.ntime))
+                        ntimelist.unshift(0)
                     }
                 }
             } else {
