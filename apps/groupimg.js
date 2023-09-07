@@ -49,7 +49,7 @@ export default class groupimg extends Base {
             msg[e.group_id] = { ...msg[e.group_id], ...e }
             msg[e.group_id].sum = msg[e.group_id].sum ? ++msg[e.group_id].sum : 1
         }
-        if (random < this.Cfg.random && this.Cfg[e.group_id].isOpen) {
+        if (random < this.Cfg.random && this.Cfg[e.group_id]?.isOpen) {
             let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
             if (imgData.length === 0) return false
             let img = imgData[lodash.random(0, imgData.length - 1)]
