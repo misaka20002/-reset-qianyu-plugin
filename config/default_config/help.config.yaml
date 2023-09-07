@@ -30,6 +30,9 @@ helplist:
       - title: "#查询up最新动态+uid"
         desc: 查看up主的最新动态
         icon: "142"
+      - title: "#(取消)直播推送全体+uid"
+        desc: 直播推送是否@全体成员
+        icon: "142"
 
   - title: 群功能
     list:

@@ -39,6 +39,10 @@ export default class bilibili extends Bili {
                 {
                     reg: '^#查询(UP|up|)最新动态',
                     fnc: 'getmydynamic'
+                },
+                {
+                    reg: '^#(取消|)直播推送全体',
+                    fnc: 'livepushall'
                 }
 
 
@@ -114,6 +118,7 @@ export default class bilibili extends Bili {
                     liveInfo = {
                         cover: liveData.user_cover,
                         title: liveData.title,
+                        live_time: liveData.live_time,
                         area_name: liveData.area_name,
                         watched_show: liveData.online
                     }
@@ -122,17 +127,43 @@ export default class bilibili extends Bili {
                         img: updata[item.uid].img,
                         pendantImg: updata[item.uid].pendantImg
                     }
+                    let isatall = updata[item.uid]?.isatall ? this.segment.at('all') : ''
+                    let msg = isatall ? `  ${updata[item.uid].nickname}开播啦！小伙伴们快去围观吧！` : '';
                     let bglist = this.File.GetfileList('resources/html/bilibili/bg')
                     let radom = bglist[lodash.random(0, bglist.length - 1)]
                     data = { ...data, text, imglist, video, orig, liveInfo, comment, date: moment(liveData.live_time).format("YYYY年MM月DD日 HH:mm:ss") }
-                    Bot.pickGroup(g[0]).sendMsg(this.render('bilibili', { radom, ...data }))
+                    Bot.pickGroup(g[0]).sendMsg([isatall, msg, this.render('bilibili', { radom, ...data })])
                 }
                 if (liveData.live_status != 1) {
+                    updata[item.uid].liveData?.live_time ? Bot.pickGroup(g[0]).sendMsg([this.segment.image(liveData.user_cover), '主播下播la~~~~\n', `本次直播时长：${this.getDealTime(moment(updata[item.uid].liveData.live_time), moment())}`]) : ''
                     delete updata[item.uid].liveData
                 }
                 this.setBilibiUpPushData(g[0], updata)
             }
         }
+    }
+
+    async livepushall(e) {
+        let mid = e.msg.replace(/#(取消|)直播推送全体/g, "")
+        let isatall = true
+        if (isNaN(mid)) {
+            return this.reply("up主UID不正确，请输入数字！")
+        }
+
+        let updata = this.getBilibiUpPushData(e.group_id) || {}
+        if (!updata[mid]) {
+            return this.reply("你还没订阅这个up主呢！")
+        }
+        let info = await Bot.getGroupMemberInfo(e.group_id, Bot.uin)
+        if (info.role != 'owner' && info.role != 'admin') {
+            return this.reply("我不是管理员不能@全体呢！")
+        }
+        if (e.msg.includes("取消")) {
+            isatall = false
+        }
+        updata[mid] = { ...updata[mid], isatall: isatall }
+        this.setBilibiUpPushData(e.group_id, updata)
+        this.reply(`已${isatall ? '设置' : '取消'}${updata[mid].nickname}的直播推送@全体！`)
     }
 
     async getPushList(e) {

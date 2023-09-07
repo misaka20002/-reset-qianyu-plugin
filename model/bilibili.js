@@ -205,6 +205,23 @@ export default class bilibili extends base {
                 content: interaction.items[0].desc.rich_text_nodes[1].text,
             }
         }
+        if (major?.opus) {
+            let richnodes = major.opus?.summary?.rich_text_nodes
+            text = richnodes.map(item => {
+                if (item.type == 'RICH_TEXT_NODE_TYPE_EMOJI') {
+                    return `<img src='${item.emoji.icon_url}' class='face'/>`
+                }
+                if (item.type == "RICH_TEXT_NODE_TYPE_LOTTERY" || item.type == "RICH_TEXT_NODE_TYPE_TOPIC" || item.type == "RICH_TEXT_NODE_TYPE_AT") {
+                    return `<span style="color:#178bcf">${item.orig_text}</span>`
+                }
+                return item.orig_text.replace(/\n/g, "<br>")
+            })?.join('') || ''
+            if (major.opus?.pics) {
+                imglist = major.opus?.pics.map(item => {
+                    return item.url
+                })
+            }
+        }
 
         if (data.orig) {
             orig = {}
@@ -248,6 +265,24 @@ export default class bilibili extends base {
                     watched_show: live_play_info.desc_second
                 }
             }
+            if (odata.module_dynamic.major?.opus) {
+                let richnodes = odata.module_dynamic.major.opus?.summary?.rich_text_nodes
+                orig.text = richnodes.map(item => {
+                    if (item.type == 'RICH_TEXT_NODE_TYPE_EMOJI') {
+                        return `<img src='${item.emoji.icon_url}' class='face'/>`
+                    }
+                    if (item.type == "RICH_TEXT_NODE_TYPE_LOTTERY" || item.type == "RICH_TEXT_NODE_TYPE_TOPIC" || item.type == "RICH_TEXT_NODE_TYPE_AT") {
+                        return `<span style="color:#178bcf">${item.orig_text}</span>`
+                    }
+                    return item.orig_text.replace(/\n/g, "<br>")
+                })?.join('') || ''
+                if (odata.module_dynamic.major.opus?.pics) {
+                    orig.imglist = odata.module_dynamic.major.opus?.pics.map(item => {
+                        return item.url
+                    })
+                }
+            }
+
         }
         const typeMap = {
             DYNAMIC_TYPE_AV: "视频",
