@@ -131,7 +131,7 @@ export default class bilibili extends base {
             data = datalist2[1]
         }
         if (index != undefined) {
-            if (datalist[0].type === "DYNAMIC_TYPE_DRAW" && datalist[0].modules.module_author.pub_ts < datalist[1].modules.module_author.pub_ts) {
+            if (datalist[0].modules?.module_tag?.text == "置顶" && datalist[0].modules.module_author.pub_ts < datalist[1].modules.module_author.pub_ts) {
                 data = datalist[1]
             } else {
                 data = datalist[0]

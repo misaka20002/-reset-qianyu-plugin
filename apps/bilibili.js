@@ -80,6 +80,7 @@ export default class bilibili extends Bili {
         let groupList = Bot.gl
         for (let g of groupList) {
             let updata = this.getBilibiUpPushData(g[0])
+            if (Object.keys(updata).length == 0) continue
             for (let item of Object.values(updata)) {
                 let data = await this.getUpdateDynamicData(item.uid)
                 if (!data) continue
@@ -100,7 +101,7 @@ export default class bilibili extends Bili {
                         })
                     }
                     if (imglist.length > 0) {
-                        await Bot.pickGroup(g[0]).sendMsg(this.makeGroupMsg('动态图片', imglist, true))
+                        await Bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('动态图片', imglist, true, g[0]))
                     }
                     data = {
                         nickname: data.author.nickname,
@@ -198,6 +199,7 @@ export default class bilibili extends Bili {
             return this.reply("up主UID不正确，请输入数字！")
         }
         let data = await this.getUpdateDynamicData(mid, 0)
+        console.log(data);
         if (data?.code && data.code != 0) {
             return e.reply(reslut.message || reslut.msg)
         } else if (data.code == 0) {
@@ -218,7 +220,7 @@ export default class bilibili extends Bili {
             })
         }
         if (imglist.length > 0) {
-            await this.reply(this.makeGroupMsg('动态图片', imglist, true))
+            await this.reply(await this.makeGroupMsg('动态图片', imglist, true))
         }
     }
 
@@ -481,6 +483,50 @@ export default class bilibili extends Bili {
         str += tempTime.hours() ? tempTime.hours() + '小时' : ''
         str += tempTime.minutes() ? tempTime.minutes() + '分钟' : ''
         return str
+    }
+
+    async makeGroupMsg2(title, msg, isfk = false, group_id, user_id) {
+        let nickname = Bot.nickname
+        let uid = user_id ? user_id : Bot.uin
+        let userInfo = {
+            user_id: uid,
+            nickname
+        }
+        let forwardMsg = []
+        msg.forEach(item => {
+            forwardMsg.push({
+                ...userInfo,
+                message: item.content,
+                time: item.time || ''
+            })
+        });
+        /** 制作转发内容 */
+        if (Bot.pickGroup(group_id).makeForwardMsg) {
+            forwardMsg = await Bot.pickGroup(group_id).makeForwardMsg(forwardMsg)
+        } else {
+            return msg.join('\n')
+        }
+
+        if (title) {
+            /** 处理描述 */
+            if (typeof (forwardMsg.data) === 'object') {
+                let detail = forwardMsg.data?.meta?.detail
+                if (detail) {
+                    detail.news = [{ text: title }]
+                }
+            } else {
+                if (isfk) {
+                    forwardMsg.data = forwardMsg.data
+                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
+                }
+                forwardMsg.data = forwardMsg.data
+                    .replace(/\n/g, '')
+                    .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                    .replace(/___+/, `<title color="#777777" size="26">${title}</title>`)
+            }
+        }
+
+        return forwardMsg
     }
 
 
