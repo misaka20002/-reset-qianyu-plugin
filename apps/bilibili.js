@@ -87,7 +87,21 @@ export default class bilibili extends Bili {
                 if (data.id !== item.upuid) {
                     let bglist = this.File.GetfileList('resources/html/bilibili/bg')
                     let radom = bglist[lodash.random(0, bglist.length - 1)]
-                    Bot.pickGroup(g[0]).sendMsg(this.render('bilibili', { radom, ...data }))
+                    await Bot.pickGroup(g[0]).sendMsg(this.render('bilibili', { radom, ...data }))
+                    let imglist = [];
+                    if (data.imglist) {
+                        imglist = data.imglist.map(item => {
+                            return { content: this.segment.image(item) }
+                        })
+                    }
+                    if (data.orig?.imglist) {
+                        data.orig?.imglist.forEach(item => {
+                            imglist.push({ content: this.segment.image(item) })
+                        })
+                    }
+                    if (imglist.length > 0) {
+                        await Bot.pickGroup(g[0]).sendMsg(this.makeGroupMsg('动态图片', imglist, true))
+                    }
                     data = {
                         nickname: data.author.nickname,
                         upuid: data.id,
@@ -191,7 +205,21 @@ export default class bilibili extends Bili {
         }
         let bglist = this.File.GetfileList('resources/html/bilibili/bg')
         let radom = bglist[lodash.random(0, bglist.length - 1)]
-        this.reply(this.render('bilibili', { radom, ...data }))
+        await this.reply(this.render('bilibili', { radom, ...data }))
+        let imglist = [];
+        if (data.imglist) {
+            imglist = data.imglist.map(item => {
+                return { content: this.segment.image(item) }
+            })
+        }
+        if (data.orig?.imglist) {
+            data.orig?.imglist.forEach(item => {
+                imglist.push({ content: this.segment.image(item) })
+            })
+        }
+        if (imglist.length > 0) {
+            await this.reply(this.makeGroupMsg('动态图片', imglist, true))
+        }
     }
 
     async getUpdateDynamicData(mid, index) {
