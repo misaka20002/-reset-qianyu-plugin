@@ -121,8 +121,10 @@ export default class bilibili extends Bili {
         let groupList = Bot.gl
         for (let g of groupList) {
             let updata = this.getBilibiUpPushData(g[0])
+            if (Object.keys(updata).length == 0) continue
             for (let item of Object.values(updata)) {
                 let liveData = await this.getRoomInfobymid(item.uid)
+                if (!liveData) continue
                 let data = {}
                 if (liveData.live_status == 1 && !updata[item.uid].liveData) {
                     let text = '', imglist = '', video, orig = '', liveInfo, comment = ''
@@ -149,7 +151,7 @@ export default class bilibili extends Bili {
                     data = { ...data, text, imglist, video, orig, liveInfo, comment, date: moment(liveData.live_time).format("YYYY年MM月DD日 HH:mm:ss") }
                     Bot.pickGroup(g[0]).sendMsg([isatall, msg, this.render('bilibili', { radom, ...data })])
                 }
-                if (liveData.live_status != 1) {
+                if (liveData?.live_status !== 1) {
                     updata[item.uid].liveData?.live_time ? Bot.pickGroup(g[0]).sendMsg([this.segment.image(liveData.user_cover), '主播下播la~~~~\n', `本次直播时长：${this.getDealTime(moment(updata[item.uid].liveData.live_time), moment())}`]) : ''
                     delete updata[item.uid].liveData
                 }
@@ -199,7 +201,6 @@ export default class bilibili extends Bili {
             return this.reply("up主UID不正确，请输入数字！")
         }
         let data = await this.getUpdateDynamicData(mid, 0)
-        console.log(data);
         if (data?.code && data.code != 0) {
             return e.reply(reslut.message || reslut.msg)
         } else if (data.code == 0) {
