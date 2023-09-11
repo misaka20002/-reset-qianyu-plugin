@@ -7,7 +7,7 @@ import Path from './Path.js'
 import common from '../../utils/common.js'
 import timer from '../../utils/Timer.js'
 import render from './render.js'
-import { segment } from 'icqq'
+import { segment } from '../../component/icqq/index.js'
 let stateArr = {}
 export default class Base {
     constructor(data) {

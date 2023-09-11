@@ -2,7 +2,6 @@ import Base from '../model/base/Base.js'
 import { changelogs } from '../model/version.js'
 import lodash from 'lodash'
 import YamlReader from '../utils/YamlReader.js'
-import { Api } from "../model/api.js"
 export default class help extends Base {
     constructor() {
         super({

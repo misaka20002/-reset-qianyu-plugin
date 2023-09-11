@@ -110,6 +110,12 @@ export default class bilibili extends base {
         return await BApi.getdynamiclist(mid, this.ck)
     }
 
+    async getBilibiliUpBymedal(str) {
+        let medalData = this.File.getFileDataToJson('resources/medal.json')
+        return medalData.find(item => item[str])
+
+    }
+
     async getUpdateDynamic(mid, index) {
         let datalist = await this.getdynamiclistAllbymid(mid)
         if (datalist.code) {
@@ -299,3 +305,4 @@ export default class bilibili extends base {
         }
     }
 }
+

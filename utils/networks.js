@@ -18,7 +18,6 @@ export default class networks {
         this.signal = data.issignal ? signal : undefined
         this.timeout = data.timeout || 15000
         this.isGetResult = false
-        this.timeout = ''
     }
 
     get config() {

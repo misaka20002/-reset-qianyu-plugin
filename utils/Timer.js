@@ -51,7 +51,7 @@ class Timer {
      * @return {*} promise
      * @use: 
      */
-    sleep(ms) {
+    async sleep(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms))
     }
 

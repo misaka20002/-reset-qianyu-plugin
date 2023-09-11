@@ -104,6 +104,7 @@ export default class bilibili extends Bili {
                         await Bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('动态图片', imglist, true, g[0]))
                     }
                     data = {
+                        ...updata[item.uid],
                         nickname: data.author.nickname,
                         upuid: data.id,
                         uid: item.uid,

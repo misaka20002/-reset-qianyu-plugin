@@ -44,7 +44,7 @@ export default class QQworld extends Video {
         })
         if (!result) return false
         let res = await Bot.getMsg(result.message_id)
-        if (res.message[0].fid.length < 3) {
+        if (res?.message[0].fid.length < 3) {
             e.group.recallMsg(result.message_id)
             await this.common.sleep(1000)
             await this.sendVideo(videoPath, e)
