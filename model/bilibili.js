@@ -131,13 +131,13 @@ export default class bilibili extends base {
 
         let datalist2 = datalist.filter(item => item.type !== "DYNAMIC_TYPE_LIVE_RCMD")
 
-        if (parseInt(moment().diff(datalist2[0].modules.module_author.pub_ts * 1000, 'minute', true)) < 10) {
+        if (parseInt(moment().diff(datalist2[0]?.modules?.module_author?.pub_ts * 1000 || 0, 'minute', true)) < 10) {
             data = datalist2[0]
-        } else if (parseInt(moment().diff(datalist2[1].modules.module_author.pub_ts * 1000, 'minute', true)) < 10) {
+        } else if (parseInt(moment().diff(datalist2[1]?.modules?.module_author?.pub_ts * 1000 || 0, 'minute', true)) < 10) {
             data = datalist2[1]
         }
         if (index != undefined) {
-            if (datalist[0].modules?.module_tag?.text == "置顶" && datalist[0].modules.module_author.pub_ts < datalist[1].modules.module_author.pub_ts) {
+            if (datalist[0]?.modules?.module_tag?.text == "置顶" && datalist[0]?.modules?.module_author?.pub_ts < datalist[1]?.modules?.module_author?.pub_ts) {
                 data = datalist[1]
             } else {
                 data = datalist[0]

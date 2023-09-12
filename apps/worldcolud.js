@@ -271,47 +271,47 @@ export default class worldColud extends Base {
             let data;
             try {
                 data = await this.getGroupHistoryMsg(moment().subtract(1, 'd').hour(0).minute(0).second(0), moment().hour(0).minute(0).second(0), Cfg, g[0])
-            } catch (error) {
-                continue;
-            }
-            if (!face[g[0]]) {
-                face[g[0]] = {}
-            }
-            if (!data) continue;
-            newData = { allcount: data.allcount, botcount: data.botcount }
-            for (let d in data) {
-                if (d == 'allcount' || d == 'botcount') continue
-                newData[d] = { ...data[d], msglist: [] }
-                if (!msgList[g[0]]) {
-                    msgList[g[0]] = []
+                if (!face[g[0]]) {
+                    face[g[0]] = {}
                 }
-                for (let m of data[d].msglist) {
-                    for (let c of m.content) {
-                        if (c.type == 'image' && c.asface) {
-                            msgList[g[0]].push(c)
+                if (!data) continue;
+                newData = { allcount: data.allcount, botcount: data.botcount }
+                for (let d in data) {
+                    if (d == 'allcount' || d == 'botcount') continue
+                    newData[d] = { ...data[d], msglist: [] }
+                    if (!msgList[g[0]]) {
+                        msgList[g[0]] = []
+                    }
+                    for (let m of data[d].msglist) {
+                        for (let c of m.content) {
+                            if (c.type == 'image' && c.asface) {
+                                msgList[g[0]].push(c)
+                            }
                         }
                     }
                 }
-            }
-            let date = moment().subtract(1, 'd').format("YYYY-MM-DD")
-            this.Data.setDataJson(newData, `groupMsgRand/${g[0]}/${date}`)
-            if (!msgList[g[0]]) continue;
-            for (let m of msgList[g[0]]) {
-                if (!face[g[0]][m.file]) {
-                    face[g[0]][m.file] = {
-                        content: m,
-                        times: 1
+                let date = moment().subtract(1, 'd').format("YYYY-MM-DD")
+                this.Data.setDataJson(newData, `groupMsgRand/${g[0]}/${date}`)
+                if (!msgList[g[0]]) continue;
+                for (let m of msgList[g[0]]) {
+                    if (!face[g[0]][m.file]) {
+                        face[g[0]][m.file] = {
+                            content: m,
+                            times: 1
+                        }
                     }
+                    face[g[0]][m.file].times++
                 }
-                face[g[0]][m.file].times++
-            }
-            faceList = Object.values(face[g[0]]).filter(item => item.times >= this.Config.GetCfg('groupimg').learnTimes)
-            let oldList = this.Data.getDataJson(`groupface/${g[0]}-face`) || []
-            faceList = faceList.filter(item => !oldList.some(it => it.content.file === item.content.file))
-            let facelist = [...oldList, ...faceList]
-            this.Data.setDataJson(facelist, `groupface/${g[0]}-face`)
-            if (faceList.length > 0 && this.Config.GetCfg('groupimg').isSendMsg) {
-                Bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('昨日学习表情包', faceList, true, g[0]))
+                faceList = Object.values(face[g[0]]).filter(item => item.times >= this.Config.GetCfg('groupimg').learnTimes)
+                let oldList = this.Data.getDataJson(`groupface/${g[0]}-face`) || []
+                faceList = faceList.filter(item => !oldList.some(it => it.content.file === item.content.file))
+                let facelist = [...oldList, ...faceList]
+                this.Data.setDataJson(facelist, `groupface/${g[0]}-face`)
+                if (faceList.length > 0 && this.Config.GetCfg('groupimg').isSendMsg) {
+                    Bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('昨日学习表情包', faceList, true, g[0]))
+                }
+            } catch (error) {
+                continue;
             }
 
         }

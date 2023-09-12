@@ -15,6 +15,10 @@ export default class other extends Base {
                     reg: '^#撤回',
                     fnc: 'che'
                 }
+                // {
+                //     reg: '^#取直链',
+                //     fnc: 'zhilian'
+                // }
             ]
         })
         this.e = e
@@ -40,4 +44,22 @@ export default class other extends Base {
             }
         }
     }
+
+    // async zhilian(e) {
+    //     if (!e.source) {
+    //         return false
+    //     }
+    //     let m = (await e.group.getChatHistory(e.source.seq, 1))[0]
+    //     console.log(m);
+    //     let msg = m.message
+    //     if (!msg) return false
+    //     msg = msg.map(element => {
+    //         if (element.type == 'image') {
+    //             return element.url
+    //         }
+    //     });
+    //     return this.reply("图片直链为：" + msg)
+
+
+    // }
 }
