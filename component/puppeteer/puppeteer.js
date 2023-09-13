@@ -1,7 +1,7 @@
 import template from 'art-template'
 import fs from 'fs'
 import lodash from 'lodash'
-import { segment } from 'icqq'
+import { segment } from '../icqq/index.js'
 import chokidar from 'chokidar'
 import Config from '../../model/base/Config.js'
 const _path = process.cwd() + "/"
