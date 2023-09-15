@@ -118,6 +118,12 @@ export default class bilibili extends base {
 
     async getUpdateDynamic(mid, index) {
         let datalist = await this.getdynamiclistAllbymid(mid)
+        if (!datalist) {
+            return {
+                code: '500',
+                message: "未知错误！"
+            }
+        }
         if (datalist.code) {
             return datalist
         }
