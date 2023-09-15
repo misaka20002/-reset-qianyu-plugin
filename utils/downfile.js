@@ -29,7 +29,7 @@ class downfile {
 
     async downImg(data, path, suc = () => { }) {
         return new Promise(async (resolve, reject) => {
-            new networks({
+            new Networks({
                 url: data.url,
                 headers: data.headers,
                 type: 'arrayBuffer'
