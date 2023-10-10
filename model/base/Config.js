@@ -21,6 +21,7 @@ class Config {
             this.file.CopyDir(this.defCfg_path, this.cfg_path)
             return
         }
+        //复制不同文件
         const copyDifferFile = (path, path2) => {
             let list1 = this.file.GetfileList(path)
             let list2 = this.file.GetfileList(path2)
@@ -56,17 +57,39 @@ class Config {
     }
 
     get default_config() {
-        return this.file.GetfileList(this.defCfg_path).filter((item) => item.endsWith('.yaml')).map((item) => { return item.replace('.config.yaml', "") })
+        return this.getCfgList(this.defCfg_path)
     }
 
     get config() {
-        return this.file.GetfileList(this.cfg_path).filter((item) => item.endsWith('.yaml')).map((item) => { return item.replace('.config.yaml', "") })
+        return this.getCfgList(this.cfg_path)
     }
 
+    getCfgList(cfg_path) {
+        let cfglist = []
+        this.file.GetfileList(cfg_path, true).map((item) => {
+            if (item.isDirectory()) {
+                this.file.GetfileList(`${cfg_path}/${item.name}`).filter(i => i.endsWith('.yaml')).map((m) => {
+                    cfglist.push(`${item.name}.${m.replace('.config.yaml', "")}`)
+                })
+            } else if (item.name.endsWith('.yaml')) {
+                cfglist.push(item.name.replace('.config.yaml', ""))
+            }
+        })
+        return cfglist
+    }
+
+    //复制不同的key
     CopyDifference() {
         for (let d of this.default_config) {
-            let defultData = new YamlReader(`${Path.qianyuPath}${this.defCfg_path}/${d}.config.yaml`).jsonData
-            let data = new YamlReader(`${Path.qianyuPath}${this.cfg_path}/${d}.config.yaml`).jsonData
+            let defultData, data;
+            if (d.includes(".")) {
+                let dlist = d.replace('.', "/")
+                defultData = new YamlReader(`${Path.qianyuPath}${this.defCfg_path}/${dlist}.config.yaml`).jsonData
+                data = new YamlReader(`${Path.qianyuPath}${this.cfg_path}/${dlist}.config.yaml`).jsonData
+            } else {
+                defultData = new YamlReader(`${Path.qianyuPath}${this.defCfg_path}/${d}.config.yaml`).jsonData
+                data = new YamlReader(`${Path.qianyuPath}${this.cfg_path}/${d}.config.yaml`).jsonData
+            }
             let keylist = this.differenceKey(defultData, data)
             for (let k of keylist) {
                 if (!defultData) continue
@@ -77,14 +100,9 @@ class Config {
 
     GetCfg(name = '', config = 'config') {
         config = config === 'config' ? this.cfg_path : this.defCfg_path
-        let path = `${config}/${name}.config.yaml`
+        let path = name.includes(".") ? name.replace(".", "/") : name
         if (this.Cfg[name]) return this.Cfg[name].jsonData
-        if (!this.file.ExistsFile(path)) {
-            this.Cfg[name] = new YamlReader(`${Path.qianyuPath}${config}/${this.dir + '/' + name}.config.yaml`)
-        } else {
-            this.Cfg[name] = new YamlReader(`${Path.qianyuPath}${config}/${name}.config.yaml`)
-        }
-
+        this.Cfg[name] = new YamlReader(`${Path.qianyuPath}${config}/${path}.config.yaml`)
         if (this.isWatcher && !this.Watcher[name]) {
             this.watch(name)
         }

@@ -16,6 +16,13 @@ export default class messageEvent extends EventListener {
 
   dealUrl(e) {
     let msg = e.msg
+    if (!e.msg) {
+      e.message.forEach(element => {
+        if (element.type == 'text') {
+          msg += element.text.trim()
+        }
+      });
+    }
     if (!msg) return
     const regurl = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
     let url = msg.match(regurl)

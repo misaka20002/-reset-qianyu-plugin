@@ -1,6 +1,7 @@
 import moment from 'moment'
 import Base from '../model/base/Base.js'
 import lodash from 'lodash'
+import fetch from 'node-fetch'
 let msg = {}
 let groupList = []
 export default class groupimg extends Base {
@@ -16,12 +17,17 @@ export default class groupimg extends Base {
                 {
                     reg: '^(哒|达)咩$',
                     fnc: 'deleteface'
+                }, {
+                    reg: '^#删除过期表情包',
+                    fnc: 'filterimg',
                 },
+
                 {
                     reg: '',
                     fnc: 'uxmsg',
                     log: false
                 }
+
 
             ],
             task: {
@@ -35,11 +41,43 @@ export default class groupimg extends Base {
     }
     async seeface(e) {
         let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
+        let page = this.e.msg.replace("#查看所有表情", "") || 1
+        let bqsum = imgData.length
         if (imgData.length == 0) {
             return this.reply("还没有在该群学习过表情包")
         }
-        this.reply(this.makeGroupMsg('查看所有表情', imgData, true))
+        if (imgData.length >= 100) {
+            imgData = this.changeArrGroup(imgData, 50)
+            imgData[page - 1].push({ content: `共${imgData.length}页，第${page}页` })
+        }
+        this.reply(await this.makeGroupMsg(`查看所有表情第${page}页，总共${bqsum}张表情包`, imgData[page - 1], true))
     }
+
+    async filterimg(e) {
+        let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
+        this.reply("开始检测中，请稍等一段时间...")
+        let deletetime = 0
+        for (let i in imgData) {
+            let rsp = await fetch(imgData[i].content.url)
+            if (rsp.status != 200) {
+                deletetime++
+                imgData.splice(i, 1)
+            }
+        }
+        this.reply(`共有${imgData.length}张表情包，删除过期表情包${deletetime}个！`)
+        this.Data.setDataJson(imgData, `groupface/${e.group_id}-face`)
+    }
+
+
+    changeArrGroup(arr, newArrLength) {
+        let changeIndex = 0;
+        let secondArr = [];
+        while (changeIndex < arr.length) {
+            secondArr.push(arr.slice(changeIndex, changeIndex += newArrLength))
+        }
+        return secondArr;
+    }
+
 
     async uxmsg(e) {
         if (!e.isGroup) return false
@@ -104,7 +142,7 @@ export default class groupimg extends Base {
                         let time = msg[g]?.time || 0
                         let sum = msg[g].sum ? ++msg[g].sum : 1
                         if (moment().unix() >= time + (rdtime * 60)) {
-                            //冷群时间
+                            //冷群时间了
                             let rs = await Bot.pickGroup(g).sendMsg(img.content)
                             let m = (await Bot.pickGroup(g).getChatHistory(rs.seq, 1))[0]
                             msg[g] = { ...msg[g], ...m }

@@ -18,6 +18,7 @@ export default class networks {
         this.signal = data.issignal ? signal : undefined
         this.timeout = data.timeout || 15000
         this.isGetResult = false
+        this.timer = ''
     }
 
     get config() {
@@ -54,7 +55,8 @@ export default class networks {
     async returnResult() {
         if (this.timeout && this.signal) {
             return Promise.race([this.timeoutPromise(this.timeout), fetch(this.url, this.config)]).then(res => {
-                clearTimeout(this.timeout);
+                console.log(this.timer);
+                clearTimeout(this.timer);
                 return res
             })
         }
@@ -118,7 +120,8 @@ export default class networks {
 
     timeoutPromise(timeout) {
         return new Promise((resolve, reject) => {
-            this.timeout = setTimeout(() => {
+            this.timer = setTimeout(() => {
+                console.log("执行力");
                 resolve(new Response("timeout", { status: 504, statusText: "timeout " }));
                 controller.abort()
             }, timeout);

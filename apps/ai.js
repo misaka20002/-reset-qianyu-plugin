@@ -6,10 +6,10 @@ export default class ai extends AI {
             name: 'ai',
             priority: 1000,
             rule: [
-                // {
-                //     reg: '^文心',
-                //     fnc: 'wenxin',
-                // },
+                {
+                    reg: '^文心',
+                    fnc: 'wenxin',
+                },
                 {
                     reg: '',
                     fnc: 'ffai',

@@ -134,3 +134,13 @@ other:
       type: Boolean
       desc: 检测到网址自动解析
       reg: "#千羽设置网页截图开启/关闭"
+system.puppeteer:
+  title: 浏览器模式
+  set:
+    mode:
+      title: 浏览器模式
+      def: "qianyu"
+      type: String
+      range: [qianyu, yunzai]
+      desc: 截图所选择的浏览器,qianyu为插件功能截图，yunzai为bot原生截图
+      reg: "#千羽设置浏览器模式qianyu"

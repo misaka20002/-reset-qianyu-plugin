@@ -112,11 +112,14 @@ export default class Base {
         }
         let forwardMsg = []
         msg.forEach(item => {
-            forwardMsg.push({
+            let obj = {
                 ...userInfo,
                 message: item.content,
-                time: item.time
-            })
+            }
+            if (item.time) {
+                obj.time = item.time
+            }
+            forwardMsg.push(obj)
         });
         /** 制作转发内容 */
         if (this.e?.group?.makeForwardMsg) {

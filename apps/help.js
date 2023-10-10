@@ -65,7 +65,7 @@ export default class help extends Base {
         let Cfg = {}
         let SetCfg = this.Config.GetCfg('set')
         let filterCfg = ['set']
-        let filterList = ['ck', 'cookie', 'aiList', 'helplist']
+        let filterList = ['ck', 'CK', 'cookie', 'aiList', 'helplist']
         let configList = this.Config.config.filter(item => !filterCfg.includes(item))
         configList.forEach(item => {
             Cfg[item] = this.Config.GetCfg(item) || {}

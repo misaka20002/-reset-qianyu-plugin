@@ -67,9 +67,9 @@ class Puppeteer {
     if (this.browser) return this.browser
     if (this.lock) return false
     this.lock = true
-    // if (this.getversion() >= 20) {
-    //   this.config.headless = 'new'
-    // }
+    if (this.getversion() >= 20) {
+      this.config.headless = 'new'
+    }
 
     logger.mark('puppeteer Chromium 启动中...')
 
