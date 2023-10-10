@@ -18,7 +18,7 @@ export default class groupimg extends Base {
                     reg: '^(哒|达)咩$',
                     fnc: 'deleteface'
                 }, {
-                    reg: '^#删除过期表情包',
+                    reg: '^#(删除|清理)过期表情包',
                     fnc: 'filterimg',
                 },
 
@@ -46,8 +46,14 @@ export default class groupimg extends Base {
         if (imgData.length == 0) {
             return this.reply("还没有在该群学习过表情包")
         }
-        if (imgData.length >= 100) {
+        if (imgData.length >= 50) {
             imgData = this.changeArrGroup(imgData, 50)
+            if (isNaN(page)) {
+                return this.reply("页码必须是数字！")
+            }
+            if (page < 1 || page > imgData.length) {
+                return this.reply("页码错误！")
+            }
             imgData[page - 1].push({ content: `共${imgData.length}页，第${page}页` })
         }
         this.reply(await this.makeGroupMsg(`查看所有表情第${page}页，总共${bqsum}张表情包`, imgData[page - 1], true))
