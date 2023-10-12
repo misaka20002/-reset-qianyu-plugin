@@ -91,7 +91,6 @@ textapi:
     reg: 疯狂星期四
     desc: 疯狂星期四
     name: 疯狂星期四
-    cron: "0 0 12 ? * 4"
     target: all
     isGroup: true
   - url: https://xiaobai.klizi.cn/API/other/cqyl.php?data=&id=
