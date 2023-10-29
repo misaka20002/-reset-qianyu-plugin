@@ -56,7 +56,7 @@ export default class groupimg extends Base {
             }
             imgData[page - 1].push({ content: `共${imgData.length}页，第${page}页` })
         }
-        this.reply(await this.makeGroupMsg(`查看所有表情第${page}页，总共${bqsum}张表情包`, imgData[page - 1], true))
+        this.reply(await this.makeGroupMsg(`查看所有表情第${page}页，总共${bqsum}张表情包`, imgData.length >= 50 ? imgData[page - 1] : imgData, true))
     }
 
     async filterimg(e) {

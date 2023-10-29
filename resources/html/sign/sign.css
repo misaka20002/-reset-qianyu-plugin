@@ -1,4 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
+body {
+    --bgcolor: rgb(173, 75, 75);
+    background-color: var(--bgcolor);
 }
