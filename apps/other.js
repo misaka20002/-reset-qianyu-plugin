@@ -63,4 +63,3 @@ export default class other extends Base {
 
     // }
 }
-await puppeteer.urlScreenshot(encodeURI('http://www.baidu.com'))
