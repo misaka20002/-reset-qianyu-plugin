@@ -182,17 +182,15 @@ class Puppeteer {
 
     try {
       const page = await this.browser.newPage()
-      await page.goto(url)
-      let body = await page.$('body')
+      await page.goto(url, { waitUntil: 'domcontentloaded' })
       let randData = {
         type: 'jpeg',
         quality: 100,
         fullPage: true,
-        clip: '',
         path: path || ''
       }
 
-      buff = await body.screenshot(randData)
+      buff = await page.screenshot(randData)
 
       page.close().catch((err) => logger.error(err))
     } catch (error) {
