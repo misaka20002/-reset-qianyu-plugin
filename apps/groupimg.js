@@ -15,7 +15,7 @@ export default class groupimg extends Base {
                     fnc: 'seeface'
                 },
                 {
-                    reg: '^(哒|达)咩$',
+                    reg: '^#?(哒|达)咩$',
                     fnc: 'deleteface'
                 }, {
                     reg: '^#(删除|清理)过期表情包',
