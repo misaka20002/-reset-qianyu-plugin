@@ -12,14 +12,17 @@ export default class groupimg extends Base {
             rule: [
                 {
                     reg: '^#查看所有表情',
-                    fnc: 'seeface'
+                    fnc: 'seeface',
+                    permission: 'master'
                 },
                 {
                     reg: '^#?(哒|达)咩$',
-                    fnc: 'deleteface'
+                    fnc: 'deleteface',
+                    permission: 'master'
                 }, {
                     reg: '^#(删除|清理)过期表情包',
                     fnc: 'filterimg',
+                    permission: 'master'
                 },
 
                 {
