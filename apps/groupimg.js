@@ -18,11 +18,10 @@ export default class groupimg extends Base {
                 {
                     reg: '^#?(哒|达)咩$',
                     fnc: 'deleteface',
-                    permission: 'master'
-                }, {
+                },
+                {
                     reg: '^#(删除|清理)过期表情包',
                     fnc: 'filterimg',
-                    permission: 'master'
                 },
 
                 {
@@ -129,9 +128,9 @@ export default class groupimg extends Base {
             if (!isdelete) return false
             let res = await e.group.recallMsg(m.message_id)
             if (!res) {
-                this.reply("伦家不是管理员，不能撤回超过2分钟的消息呢~")
+                this.reply("人家不是管理员，不能撤回超过2分钟的消息呢~")
             }
-            Bot.pickGroup(e.group_id).sendMsg("呜呜呜~我错了，以后不发了~呜")
+            Bot.pickGroup(e.group_id).sendMsg("呜呜呜~派蒙错了，以后不发了~呜")
             this.Data.setDataJson(imgData, `groupface/${e.group_id}-face`)
         }
     }
