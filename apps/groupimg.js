@@ -130,7 +130,7 @@ export default class groupimg extends Base {
             if (!res) {
                 this.reply("人家不是管理员，不能撤回超过2分钟的消息呢~")
             }
-            Bot.pickGroup(e.group_id).sendMsg("呜呜呜~派蒙错了，以后不发了~呜")
+            Bot.pickGroup(e.group_id).sendMsg("呜呜呜~人家错了，以后不发了~呜")
             this.Data.setDataJson(imgData, `groupface/${e.group_id}-face`)
         }
     }
