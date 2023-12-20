@@ -22,7 +22,7 @@ export default async function returnImg(name, data) {
                     _res_path: resPath,
                     version: qianyuVersion,
                     botname: packJson.name,
-                    imgType: 'jpeg'
+                    imgType: 'png'
                 }
             }
         }

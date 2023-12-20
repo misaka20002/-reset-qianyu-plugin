@@ -4,7 +4,8 @@ import lodash from 'lodash'
 import { segment } from '../icqq/index.js'
 import chokidar from 'chokidar'
 import Config from '../../model/base/Config.js'
-const _path = process.cwd() + "/"
+import path from 'path'
+const _path = process.cwd()
 let cfg = Config.GetCfg("system/puppeteer")
 let qianyuPath = _path
 let puppeteer = {}
@@ -18,16 +19,12 @@ class Puppeteer {
     /** 截图次数 */
     this.renderNum = 0
     this.config = {
-      headless: true,
+      headless: false,
       args: [
         '--disable-gpu',
-        '--disable-dev-shm-usage',
         '--disable-setuid-sandbox',
-        '--no-first-run',
         '--no-sandbox',
-        '--no-zygote',
-        '--single-process',
-        '--disable-features=site-per-process'
+        '--no-zygote'
       ]
     }
 
@@ -38,7 +35,7 @@ class Puppeteer {
 
     this.html = {}
     this.watcher = {}
-    this.createDir(qianyuPath + 'data/html')
+    this.createDir(qianyuPath + '/data/html')
   }
 
   async initPupp() {
@@ -129,7 +126,6 @@ class Puppeteer {
       let body = await page.$('#container') || await page.$('body')
 
       let randData = {
-        // encoding: 'base64',
         type: data.imgType || 'jpeg',
         omitBackground: data.omitBackground || false,
         quality: data.quality || 100,
@@ -178,8 +174,6 @@ class Puppeteer {
     }
     let buff = ''
     let start = Date.now()
-
-
     try {
       const page = await this.browser.newPage()
       await page.goto(url, { waitUntil: 'domcontentloaded' })
@@ -224,11 +218,11 @@ class Puppeteer {
   /** 模板 */
   dealTpl(name, data) {
     let { tplFile, saveId = name } = data
-    let savePath = qianyuPath + `data/html/${name}/${saveId}.html`
+    let savePath = qianyuPath + path.join(`/data/html/${name}/${saveId}.html`)
     /** 读取html模板 */
     if (!this.html[tplFile]) {
-      this.createDir(qianyuPath + `./data/html/${name}`)
-      tplFile = qianyuPath + tplFile
+      this.createDir(qianyuPath + `/data/html/${name}`)
+      tplFile = qianyuPath + path.join(`/${tplFile}`)
       try {
         this.html[tplFile] = fs.readFileSync(tplFile, 'utf8')
 
