@@ -42,7 +42,7 @@ export class Api extends Base {
             let api = await this.dealType(url, element, (code) => {
                 code = code || 500
                 return { name: element.name, code: code }
-            }, 'test')
+            }, 'test', element.name)
             newlist.push(api)
         }
         return newlist
@@ -51,7 +51,7 @@ export class Api extends Base {
 
 
 
-    async dealType(url, data, suc, test = '') {
+    async dealType(url, data, suc, test = '', name) {
         let type = 'json'
         if (data.data === 1 && test !== 'test') {
             return suc(url)
@@ -61,11 +61,11 @@ export class Api extends Base {
         let networks = new this.networks({
             url: url, type: type,
             isAgent: data.isAgent || false,
-            issignal: true
+            issignal: true,
+            name: name
         })
         let fetch = await networks.getfetch()
         let code = fetch.status
-        console.log(code);
         if (code !== 200) {
             return suc(false)
         }
@@ -123,3 +123,4 @@ export class Api extends Base {
         return await this.downfile.downVideo(data, path, suc)
     }
 }
+//console.log(await new Api({ name: 'api' }).testApi(new Api({ name: 'api' }).getApiList('video')));
