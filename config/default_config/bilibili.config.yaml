@@ -9,4 +9,4 @@ card: true
 #b站动态推送时间间隔（最小为1,最大为60）单位分钟
 dynamicTime: 5
 #b站直播推送时间间隔（最小为1,最大为60）单位分钟
-liveTime: 5
+liveTime: 1

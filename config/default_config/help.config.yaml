@@ -18,11 +18,11 @@ helplist:
 
   - title: b站功能
     list:
-      - title: "#订阅up+uid"
-        desc: 订阅up主的动态以及直播动态，在动态更新时推送
+      - title: "#订阅(直播|文字|图文|视频|转发|专栏)up+uid"
+        desc: 订阅up主的动态以及直播动态，有指定类型时仅推送当前类别的动态，默认为全部推送,在动态更新时推送
         icon: "#取消订阅up+uid"
-      - title: "#取消订阅up+uid"
-        desc: 取消订阅up主的动态
+      - title: "#取消订阅(直播|文字|图文|视频|转发|专栏)up+uid"
+        desc: 取消订阅up主的动态，不指定类型为全部动态
         icon: "142"
       - title: "#订阅列表"
         desc: 查看当前群所有订阅的up主
