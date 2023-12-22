@@ -26,7 +26,7 @@ export default class bilibili extends base {
             DYNAMIC_TYPE_DRAW: "图文",
             DYNAMIC_TYPE_ARTICLE: "专栏",
             DYNAMIC_TYPE_FORWARD: "转发",
-            DYNAMIC_TYPE_LIVE_RCMD: "直播",
+            DYNAMIC_TYPE_LIVE_RCMD: "直播"
         }
     }
 
@@ -85,8 +85,10 @@ export default class bilibili extends base {
 
     //获取up主直播间相关信息
     async getRoomInfobymid(mid) {
-        let { room_id } = await BApi.getRoomInfobyMid(mid, this.ck)
-        return await this.getRoomInfo(room_id)
+        let data = await BApi.getRoomInfobyMid(mid, this.ck)
+        if (data) {
+            return await this.getRoomInfo(data.room_id)
+        }
     }
 
     //检查FFmpeg环境
@@ -150,6 +152,13 @@ export default class bilibili extends base {
     async getBilibiliUpBymedal(str) {
         let medalData = this.File.getFileDataToJson('resources/medal.json')
         return medalData.find(item => item[str])
+    }
+
+    async getSearchUser(name, num = 1, order = 'fans') {
+        let data = await BApi.getsearch(name, 'bili_user', order, this.ck)
+        if (data) {
+            return num == 1 ? data[0] : data.slice(0, num)
+        }
     }
 
     //获取用户动态(只取一条)(mode:update最新(10分钟)，first第一条（非置顶,有置顶不是最新跳过),Top置顶动态（非置顶动态不获取）)
@@ -358,6 +367,9 @@ export default class bilibili extends base {
                 if (item.type == "RICH_TEXT_NODE_TYPE_LOTTERY" || item.type == "RICH_TEXT_NODE_TYPE_TOPIC" || item.type == "RICH_TEXT_NODE_TYPE_AT") {
                     return `<span style="color:#178bcf">${item.orig_text}</span>`
                 }
+                if (item.orig_text === '互动抽奖') {
+                    type = "抽奖"
+                }
                 return item.orig_text.replace(/\n/g, "<br>")
             }) || ''
             orig.text = orig.text ? orig.text.join('') : ""
@@ -395,6 +407,9 @@ export default class bilibili extends base {
                     }
                     if (item.type == "RICH_TEXT_NODE_TYPE_LOTTERY" || item.type == "RICH_TEXT_NODE_TYPE_TOPIC" || item.type == "RICH_TEXT_NODE_TYPE_AT") {
                         return `<span style="color:#178bcf">${item.orig_text}</span>`
+                    }
+                    if (item.orig_text === '互动抽奖') {
+                        type = "抽奖"
                     }
                     return item.orig_text.replace(/\n/g, "<br>")
                 })?.join('') || ''
@@ -434,4 +449,7 @@ export default class bilibili extends base {
         return dynamicList[0]
     }
 }
+// let b = new bilibili({ name: 'bilibili' })
+// // console.log(await b.getDynamicByType('401742377', '文字'));
+// console.log(await b.getUpdateDynamic('401742377'));
 

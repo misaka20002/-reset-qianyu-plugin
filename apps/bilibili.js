@@ -29,11 +29,11 @@ export default class bilibili extends Bili {
                     fnc: 'getPushList'
                 },
                 {
-                    reg: '^#订阅(UP|up|)(直播|文字|图文|视频|转发|专栏|)(动态|)(uid:|UID:|)',
+                    reg: '^#订阅(UP|up|)(直播|文字|图文|视频|转发|抽奖|专栏|)(动态|)(uid:|UID:|)',
                     fnc: 'setUpPush'
                 },
                 {
-                    reg: '^#取消订阅(UP|up|)(直播|文字|图文|视频|转发|专栏|)(动态|)(uid:|UID:|)',
+                    reg: '^#取消订阅(UP|up|)(直播|文字|图文|视频|抽奖|转发|专栏|)(动态|)(uid:|UID:|)',
                     fnc: 'delUpPush'
                 },
                 {
@@ -43,6 +43,10 @@ export default class bilibili extends Bili {
                 {
                     reg: '^#(取消|)直播推送全体',
                     fnc: 'livepushall'
+                },
+                {
+                    reg: '^#搜索b站用户',
+                    fnc: 'searchUser'
                 }
 
 
@@ -134,6 +138,20 @@ export default class bilibili extends Bili {
     //删除b站up动态推送
     async delUpPush(e) {
         await delUpPush.call(this, e)
+    }
+
+    //搜索用户
+    async searchUser(e) {
+        let name = e.msg.replace("#搜索b站用户", "")
+        if (!name) {
+            return e.reply("你还没有输入用户昵称呢！")
+        }
+        let data = await this.getSearchUser(name)
+        if (!data) {
+            return e.reply("没有找到该用户呢！")
+        }
+        let { uname, usign, fans, videos, upic, level, room_id } = data
+        e.reply([this.segment.image("https:" + upic), `昵称:${uname}\n`, `等级：${level}\n`, `粉丝量：${this.computew(fans)}\n`, `视频量：${videos}\n`, `简介：${usign}`, room_id != 0 ? `\n直播间：https://live.bilibili.com/${room_id}` : ''])
     }
 
     //b站视频解析

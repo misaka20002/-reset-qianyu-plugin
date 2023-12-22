@@ -1,4 +1,5 @@
 import networks from "../../utils/networks.js"
+// import bilibili from "../bilibili.js"
 class BApi {
 
     get ck() {
@@ -14,41 +15,55 @@ class BApi {
 
     getUrlMap = (data = {}) => {
         let UrlMap = {
+            //视频信息
             videoInfo: {
                 url: `http://api.bilibili.com/x/web-interface/view?bvid=${data.bv}`
             },
+            //视频数据
             videoData: {
                 url: `https://www.bilibili.com/video/${data.bv}`,
                 headers: { ...this.headers, referer: 'https://www.bilibili.com', cookie: data.ck || this.ck },
                 type: 'text'
             },
+            //低配画质不合成
             videoLow: {
                 url: `https://api.bilibili.com/x/player/playurl?bvid=${data.bv}&cid=${data.cid}&qn=64`
             },
+            //up直播间信息
             midRoom: {
                 url: `https://api.live.bilibili.com/live_user/v1/Master/info?uid=${data.mid}`,
-                headers: { Cooke: data.ck || this.ck },
+                headers: { Cookie: data.ck || this.ck },
                 type: 'json'
             },
+            //直播间信息
             liveRoomInfo: {
                 url: `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${data.room_id}`,
-                headers: { Cooke: data.ck || this.ck },
+                headers: { Cookie: data.ck || this.ck },
                 type: 'json'
             },
+            //动态列表
             dynamiclist: {
                 url: `https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?offset=&host_mid=${data.mid}&timezone_offset=-480&features=itemOpusStyle`,
-                headers: { ...this.headers, cookie: data.ck || this.ck },
+                headers: { ...this.headers, Cookie: data.ck || this.ck },
                 type: 'json'
             },
+            //用户信息
             userInfo: {
                 url: `https://api.bilibili.com/x/web-interface/card?mid=${data.mid}&photo=false`,
-                headers: { ...this.headers, Cooke: data.ck || this.ck },
+                headers: { ...this.headers, Cookie: data.ck || this.ck },
                 type: 'json'
             },
+            //专栏文章信息
             article: {
                 url: `https://www.bilibili.com/read/${data.id}/?spm_id_from=333.999.list.card_opus.click`,
-                headers: { ...this.headers, Cooke: data.ck || this.ck },
+                headers: { ...this.headers, Cookie: data.ck || this.ck },
                 type: 'text'
+            },
+            //分类搜索
+            search: {
+                url: `https://api.bilibili.com/x/web-interface/wbi/search/type?__refresh__=true&_extra=&order=${data.order}&context=&page=1&page_size=42&from_source=&from_spmid=333.337&platform=pc&highlight=1&single_column=0&keyword=${data.keyword}&qv_id=ZINfg344aj8e6MOSKXaaIcBPyKJsU07m&ad_resource=5654&source_tag=3&gaia_vtoken=&category_id=&search_type=${data.search_type}&dynamic_offset=36&w_rid=57354046d4011cae09e94c624e9dc9ba&wts=1678541433`,
+                headers: { ...this.headers, Cookie: data.ck || this.ck, 'referer': 'https://www.bilibili.com/', },
+                type: 'json'
             }
 
         }
@@ -129,6 +144,13 @@ class BApi {
         return JSON.parse(data)
     }
 
+    async getsearch(keyword, search_type, order, ck) {
+        let res = await new networks(this.getUrlMap({ type: 'search', keyword: keyword, order: order, search_type: search_type, ck: ck })).getData()
+        if (res.code == 0) {
+            return res.data.result
+        }
+    }
 }
 
 export default new BApi()
+// console.log(await new BApi().getdynamiclist('401742377', new bilibili({ name: 'bilibili' }).ck))

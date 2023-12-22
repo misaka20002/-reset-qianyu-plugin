@@ -8,22 +8,26 @@ const dynamicType = {
     av: '视频',
     forward: '转发',
     article: '专栏',
-    all: '全部'
+    raffle: '抽奖'
 }
 
 /*设置up推送，设置的时候带值为仅推送某一项
  * dynamicType："all"为全部动态推送，live为仅直播推送，text文字，image图片，draw图文
  */
 async function setUpPush(e) {
-    //获取up主uid
-    let dtype = e.msg.match(/直播|文字|图文|视频|转发|专栏/g)?.[0] || '全部'
+    let dtype = e.msg.match(/直播|文字|图文|视频|转发|抽奖|专栏/g)?.[0] || '全部'
     let mid = e.msg.replace(new RegExp(e.reg), "").trim()//纯数字
-    if (isNaN(mid)) {
-        return this.reply("up主UID不正确，请输入数字！")
+    if (!mid) {
+        return e.reply("订阅不能为空，请输入用户id或者用户昵称！")
     }
-    //获取up信息和最新动态id并写入本地
-    let reslut = await this.getUpdateDynamic(mid, 0)
-    //获取群的推送信息
+    if (isNaN(mid)) {
+        let data = await this.getSearchUser(mid)
+        if (!data) {
+            return e.reply("没有找到该用户呢！")
+        }
+        mid = data.mid
+    }
+    let reslut = await this.getUpdateDynamic(mid)
     let updata = this.getBilibiUpPushData(e.group_id) || {}
     //发送错误信息
     if (reslut?.code && reslut.code != 0) {
@@ -33,8 +37,7 @@ async function setUpPush(e) {
         return e.reply(reslut.message || reslut.msg)
     }
     let data, type;
-    //判断type是否存在
-    type = Object.entries(dynamicType).find(item => item[1] == dtype)[0]
+    type = Object.entries(dynamicType).find(item => item[1] == dtype)?.[0]
 
     if (!reslut.code) {
         data = {
@@ -57,24 +60,35 @@ async function setUpPush(e) {
             dynamicType: updata[mid]?.dynamicType ? [...updata[mid]?.dynamicType, type] : [type]
         }
     }
+    if (!type) {
+        delete data.dynamicType
+        type = 'all'
+    }
     updata[mid] = data
     this.setBilibiUpPushData(e.group_id, updata)
-    return e.reply(type == 'all' ? `订阅Up主${data.nickname}成功！` : `已订阅Up主${data.nickname}的${dynamicType[type]}推送！`)
+    return e.reply([this.segment.image(data.img), `昵称：${data.nickname}\n`, type == 'all' ? `订阅Up主${data.nickname}成功！` : `已订阅Up主${data.nickname}的${dynamicType[type]}推送！`])
 }
 
 /*取消b站up动态推送（默认为取消全部推送），带值为仅取消推送某一类型
 *
 */
 async function delUpPush(e) {
-    let dtype = e.msg.match(/直播|文字|图文|视频|转发|专栏/g)?.[0] || '全部'
+    let dtype = e.msg.match(/直播|文字|图文|视频|转发|抽奖|专栏/g)?.[0]
     let mid = e.msg.replace(new RegExp(e.reg), "")
+    if (!mid) {
+        return e.reply("请输入B站用户id或者用户昵称！")
+    }
     if (isNaN(mid)) {
-        return this.reply("up主UID不正确，请输入数字！")
+        let data = await this.getSearchUser(mid)
+        if (!data) {
+            return e.reply("没有找到该用户呢！")
+        }
+        mid = `${data.mid}`
     }
     let updata = this.getBilibiUpPushData(e.group_id)
     let uplist = Object.keys(updata)
     let result = updata[mid]
-    let type = Object.entries(dynamicType).find(item => item[1] == dtype)[0]
+    let type = Object.entries(dynamicType).find(item => item[1] == dtype)?.[0] || 'all'
     if (!uplist.includes(mid)) {
         return e.reply("暂未订阅该up主！")
     } else if (type == 'all') {
@@ -98,10 +112,7 @@ async function pushdynamic() {
         for (let item of Object.values(updata)) {
             //获取最新的推送数据
             let data = await this.getUpdateDynamic(item.uid)
-            console.log(data);
-            //有要求限定动态并且不等于全部，当相对应的动态不同不进行推送
-            if (item.dynamicType && !item.dynamicType.includes(Object.keys(dynamicType).find(i => dynamicType[i] === data.type)) && item.dynamicType !== 'all') continue
-            //不要某一种动态，如果动态包含在排除在列表中则跳过
+            if (item.dynamicType && !item.dynamicType.includes(Object.keys(dynamicType).find(i => dynamicType[i] === data.type))) continue
             if (item.unpush && item.unpush.includes(Object.keys(dynamicType).find(i => dynamicType[i] === data.type))) continue
             if (!data) continue
             if (data.code) continue
@@ -151,7 +162,7 @@ async function livepush() {
         for (let item of Object.values(updata)) {
             let liveData = await this.getRoomInfobymid(item.uid)
             if (!liveData) continue
-            if (item.dynamicType && !item.dynamicType.includes(Object.keys(dynamicType).find(item => dynamicType[item] === 'live')) && item.dynamicType !== 'all') continue
+            if (item.dynamicType && !item.dynamicType.includes('live')) continue
             if (item.unpush && item.unpush.includes('live')) continue
             let data = {}
             if (liveData.live_status == 1 && !updata[item.uid].liveData) {
@@ -218,10 +229,13 @@ async function getPushList(e) {
         return this.reply("这个群还没订阅任何up主呢！")
     }
     Object.values(updata).forEach(item => {
-        msg += `\n昵称：${item.nickname}  uid:${item.uid}(${item?.dynamicType?.map(t => {
-            return dynamicType[t]
-        }).join('、') || '全部'})`
+        msg += `\n昵称：${item.nickname} (${((item?.dynamicType?.map(t => {
+            return t !== 'all' ? dynamicType[t] + '√' : ''
+        }).join('、') || '') + (item?.unpush?.map(t => {
+            return dynamicType[t] + 'X'
+        }).join('、') || '')) || '全部'})`
     })
+    msg += '\n√表示只推送的类型，X代表禁止推送的类型'
     this.reply(msg)
 }
 

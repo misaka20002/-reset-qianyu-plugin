@@ -91,15 +91,12 @@ export class update extends Base {
 
         let type = '更新'
 
-        if (plugin) {
-            cm = `git -C ./plugins/${plugin}/ pull ${this.e.msg.includes('强制') ? '' : '--no-rebase'}`
-        }
-
         if (this.e.msg.includes('强制')) {
             type = '强制更新'
-            cm = `git fetch --all && git reset --hard origin/master && ${cm}`
+            cm = `git reset --hard && git pull --rebase --allow-unrelated-histories`
         }
 
+        if (plugin) cm = `cd "plugins/${plugin}" && ${cm}`
 
         this.oldCommitId = await this.getcommitId(plugin)
 

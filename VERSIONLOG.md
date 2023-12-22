@@ -1,12 +1,3 @@
-<!--
- * @Author: 时先思
- * @Date: 2023-12-20 20:25:29
- * @LastEditTime: 2023-12-20 20:25:35
- * @LastEditors: 时先思
- * @Description: 
- * @FilePath: \千羽插件\reset-qianyu-plugin\VERSIONLOG.md
- * 版权声明
--->
 # 2.4.3
 * 更新动态推送功能
     * 可以仅指定某一类动态进行推送，如`#订阅直播23333`，那就是只订阅该up的直播动态，详细的类别有直播、图文、专栏、文字、转发、视频。
