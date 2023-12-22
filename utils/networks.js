@@ -29,8 +29,6 @@ export default class networks {
     async getfetch() {
         return new Promise((resolve, reject) => {
             this.timeOut(this.timeout).then(response => {
-                console.log(response);
-
                 if (response.ok) {
                     resolve(response)
                 }

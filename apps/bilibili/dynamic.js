@@ -8,8 +8,7 @@ const dynamicType = {
     av: '视频',
     forward: '转发',
     article: '专栏',
-    raffle: '抽奖',
-    all: '全部'
+    raffle: '抽奖'
 }
 
 async function setUpPush(e) {
@@ -34,7 +33,7 @@ async function setUpPush(e) {
         return e.reply(reslut.message || reslut.msg)
     }
     let data, type;
-    type = Object.entries(dynamicType).find(item => item[1] == dtype)[0]
+    type = Object.entries(dynamicType).find(item => item[1] == dtype)?.[0]
 
     if (!reslut.code) {
         data = {
@@ -56,13 +55,17 @@ async function setUpPush(e) {
             dynamicType: updata[mid]?.dynamicType ? [...updata[mid]?.dynamicType, type] : [type]
         }
     }
+    if (!type) {
+        delete data.dynamicType
+        type = 'all'
+    }
     updata[mid] = data
     this.setBilibiUpPushData(e.group_id, updata)
     return e.reply([this.segment.image(data.img), `昵称：${data.nickname}\n`, type == 'all' ? `订阅Up主${data.nickname}成功！` : `已订阅Up主${data.nickname}的${dynamicType[type]}推送！`])
 }
 
 async function delUpPush(e) {
-    let dtype = e.msg.match(/直播|文字|图文|视频|转发|抽奖|专栏/g)?.[0] || '全部'
+    let dtype = e.msg.match(/直播|文字|图文|视频|转发|抽奖|专栏/g)?.[0]
     let mid = e.msg.replace(new RegExp(e.reg), "")
     if (!mid) {
         return e.reply("请输入B站用户id或者用户昵称！")
@@ -77,7 +80,7 @@ async function delUpPush(e) {
     let updata = this.getBilibiUpPushData(e.group_id)
     let uplist = Object.keys(updata)
     let result = updata[mid]
-    let type = Object.entries(dynamicType).find(item => item[1] == dtype)[0]
+    let type = Object.entries(dynamicType).find(item => item[1] == dtype)?.[0] || 'all'
     if (!uplist.includes(mid)) {
         return e.reply("暂未订阅该up主！")
     } else if (type == 'all') {
@@ -96,7 +99,7 @@ async function pushdynamic() {
         if (Object.keys(updata).length == 0) continue
         for (let item of Object.values(updata)) {
             let data = await this.getUpdateDynamic(item.uid)
-            if (item.dynamicType && !item.dynamicType.includes(Object.keys(dynamicType).find(i => dynamicType[i] === data.type)) && item.dynamicType !== 'all') continue
+            if (item.dynamicType && !item.dynamicType.includes(Object.keys(dynamicType).find(i => dynamicType[i] === data.type))) continue
             if (item.unpush && item.unpush.includes(Object.keys(dynamicType).find(i => dynamicType[i] === data.type))) continue
             if (!data) continue
             if (data.code) continue
@@ -141,7 +144,7 @@ async function livepush() {
         for (let item of Object.values(updata)) {
             let liveData = await this.getRoomInfobymid(item.uid)
             if (!liveData) continue
-            if (item.dynamicType && !item.dynamicType.includes(Object.keys(dynamicType).find(item => dynamicType[item] === 'live')) && item.dynamicType !== 'all') continue
+            if (item.dynamicType && !item.dynamicType.includes('live')) continue
             if (item.unpush && item.unpush.includes('live')) continue
             let data = {}
             if (liveData.live_status == 1 && !updata[item.uid].liveData) {
@@ -207,7 +210,7 @@ async function getPushList(e) {
     }
     Object.values(updata).forEach(item => {
         msg += `\n昵称：${item.nickname} (${((item?.dynamicType?.map(t => {
-            return t !== 'all' ?  dynamicType[t]+'√' : ''
+            return t !== 'all' ? dynamicType[t] + '√' : ''
         }).join('、') || '') + (item?.unpush?.map(t => {
             return dynamicType[t] + 'X'
         }).join('、') || '')) || '全部'})`
