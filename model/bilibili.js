@@ -449,7 +449,7 @@ export default class bilibili extends base {
         return dynamicList[0]
     }
 }
-// let b = new bilibili({ name: 'bilibili' })
-// // console.log(await b.getDynamicByType('401742377', '文字'));
-// console.log(await b.getUpdateDynamic('401742377'));
+let b = new bilibili({ name: 'bilibili' })
+// console.log(await b.getDynamicByType('401742377', '文字'));
+console.log(await b.getFirstDynamic('401742377'));
 
