@@ -164,7 +164,7 @@ export default class bilibili extends base {
     //获取用户动态(只取一条)(mode:update最新(10分钟)，first第一条（非置顶,有置顶不是最新跳过),Top置顶动态（非置顶动态不获取）)
     async getDynamic(mid, mode) {
         let dynamicList = await this.getdynamiclistAllbymid(mid)
-        if (!dynamicList || dynamicList.code) {
+        if (!dynamicList || dynamicList.code || !Array.isArray(dynamicList)) {
             return {
                 code: dynamicList?.code || '500',
                 message: dynamicList?.message || "未知错误！"
@@ -449,7 +449,7 @@ export default class bilibili extends base {
         return dynamicList[0]
     }
 }
-let b = new bilibili({ name: 'bilibili' })
-// console.log(await b.getDynamicByType('401742377', '文字'));
-console.log(await b.getFirstDynamic('401742377'));
+// let b = new bilibili({ name: 'bilibili' })
+// // console.log(await b.getDynamicByType('401742377', '文字'));
+// console.log(await b.getFirstDynamic('401742377'));
 
