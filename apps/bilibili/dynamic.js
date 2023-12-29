@@ -201,10 +201,16 @@ async function livepush() {
 async function livepushall(e) {
     let mid = e.msg.replace(/#(取消|)直播推送全体/g, "")
     let isatall = true
-    if (isNaN(mid)) {
-        return this.reply("up主UID不正确，请输入数字！")
+    if (!mid) {
+        return e.reply("请输入B站用户id或者用户昵称！")
     }
-
+    if (isNaN(mid)) {
+        let data = await this.getSearchUser(mid)
+        if (!data) {
+            return e.reply("没有找到该用户呢！")
+        }
+        mid = `${data.mid}`
+    }
     let updata = this.getBilibiUpPushData(e.group_id) || {}
     if (!updata[mid]) {
         return this.reply("你还没订阅这个up主呢！")
@@ -242,8 +248,15 @@ async function getPushList(e) {
 //获取up最新动态
 async function getupdateDynamic(e) {
     let mid = e.msg.replace(new RegExp(e.reg), "")
+    if (!mid) {
+        return e.reply("请输入B站用户id或者用户昵称！")
+    }
     if (isNaN(mid)) {
-        return this.reply("up主UID不正确，请输入数字！")
+        let data = await this.getSearchUser(mid)
+        if (!data) {
+            return e.reply("没有找到该用户呢！")
+        }
+        mid = `${data.mid}`
     }
     let data = await this.getFirstDynamic(mid)
     if (data?.code && data.code != 0) {

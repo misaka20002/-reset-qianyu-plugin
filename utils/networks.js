@@ -39,6 +39,10 @@ export default class networks {
         })
     }
 
+    async redirectUrl() {
+        return (await fetch(this.url, this.config)).url
+    }
+
     async timeOut(time = 5000) {
         return Promise.race([fetch(this.url, this.config), new Promise((resolve, reject) => {
             setTimeout(() => reject({ message: "请求超时", status: 504 }), time);

@@ -38,7 +38,7 @@ export default class bilibili extends Bili {
                 },
                 {
                     reg: '^#查询(UP|up|)最新动态',
-                    fnc: 'getUpdateDynamic'
+                    fnc: 'getupdateDynamic'
                 },
                 {
                     reg: '^#(取消|)直播推送全体',
