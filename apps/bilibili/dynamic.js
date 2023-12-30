@@ -106,7 +106,7 @@ async function pushdynamic() {
             if (data.id !== item.upuid) {
                 let bglist = this.File.GetfileList('resources/html/bilibili/bg')
                 let radom = bglist[lodash.random(0, bglist.length - 1)]
-                await Bot.pickGroup(g[0]).sendMsg(this.render('bilibili', { radom, ...data }))
+                await Bot.pickGroup(g[0]).sendMsg(await this.render('bilibili', { radom, ...data }))
                 let imglist = [];
                 if (data.imglist) {
                     imglist = data.imglist.map(item => {

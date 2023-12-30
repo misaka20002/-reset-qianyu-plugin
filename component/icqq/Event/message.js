@@ -19,7 +19,7 @@ export default class messageEvent extends EventListener {
     if (!e.msg) {
       e.message.forEach(element => {
         if (element.type == 'text') {
-          msg += element.text.trim()
+          msg += element?.text?.trim()
         }
       });
     }
