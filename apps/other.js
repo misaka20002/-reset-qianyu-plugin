@@ -4,7 +4,7 @@ export default class other extends Base {
     constructor(e) {
         super({
             name: 'other',
-            priority: 200,
+            priority: 8000,
             rule: [
                 {
                     reg: '',
