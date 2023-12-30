@@ -4,7 +4,7 @@ export default class other extends Base {
     constructor(e) {
         super({
             name: 'other',
-            priority: 8000,
+            priority: 3000,
             rule: [
                 {
                     reg: '',
@@ -14,7 +14,6 @@ export default class other extends Base {
                 // {
                 //     reg: '^#撤回',
                 //     fnc: 'che',
-                //     permission: 'master'
                 // },
                 // {
                 //     reg: '^#取直链',
