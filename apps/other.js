@@ -13,8 +13,9 @@ export default class other extends Base {
                 },
                 {
                     reg: '^#撤回',
-                    fnc: 'che'
-                }
+                    fnc: 'che',
+                    permission: 'master'
+                },
                 // {
                 //     reg: '^#取直链',
                 //     fnc: 'zhilian'
@@ -24,12 +25,15 @@ export default class other extends Base {
         this.e = e
     }
 
-    async jxtu(e) {
-        let url = e.url
-        if (!url || !this.Cfg.isscreenshot) {
+    /**网页截图 */
+    async jxtu(e) {        
+        if (!this.Cfg.isscreenshot) {
             return false
-        }
-        this.reply(await puppeteer.urlScreenshot(encodeURI(url)))
+        } else {
+            let url = e.url
+            if (!url) return false
+            else this.reply(await puppeteer.urlScreenshot(encodeURI(url)))
+        }        
     }
 
     async che(e) {
