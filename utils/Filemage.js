@@ -5,7 +5,7 @@ import YamlReader from './YamlReader.js'
 export default class Filemage {
 
     constructor(RootPath) {
-        this.RootPath = RootPath ? Path.qianyuPath + RootPath + '/' : Path.qianyuPath
+        this.RootPath = RootPath||process.cwd()
     }
 
     //获取文件内容

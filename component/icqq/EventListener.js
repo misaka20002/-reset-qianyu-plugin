@@ -1,6 +1,7 @@
 import Filemage from '../../utils/Filemage.js'
 import lodash from 'lodash'
 import pluginLoader from '../../lib/pluginLoader.js'
+import Path from '../../model/base/Path.js'
 await pluginLoader.getApps()
 export default class EventListener {
     /**
@@ -29,7 +30,8 @@ class ListenerLoader {
      */
     async load(client) {
         this.client = client
-        let filemag = new Filemage('./component/icqq/Event')
+        pluginLoader.Bot = client
+        let filemag = new Filemage(Path.qianyuPath + './component/icqq/Event')
         const files = filemag.GetfileList().filter(file => file.endsWith('.js'))
         for (let File of files) {
             try {

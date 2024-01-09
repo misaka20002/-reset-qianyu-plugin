@@ -28,10 +28,6 @@ export default class worldColud extends Base {
 
     init() {
         this.File.CreatDir('data/groupMsgRand')
-        let groupList = Bot.gl
-        for (let g of groupList) {
-            this.File.CreatDir(`data/groupMsgRand/${g[0]}`)
-        }
     }
 
     async usermsg(e) {
@@ -173,7 +169,7 @@ export default class worldColud extends Base {
         let isover;
         let CharList = {}
         let data = {}
-        let CharHistory = await Bot.pickGroup(group_id).getChatHistory(0, 1);
+        let CharHistory = await this.bot.pickGroup(group_id).getChatHistory(0, 1);
         let seq = CharHistory[0]?.seq;
         if (!seq) return false
         let centerTime = endTime ? moment(endTime).unix() : moment().hour(0).minute(0).second(0).unix()
@@ -186,7 +182,7 @@ export default class worldColud extends Base {
             centerTime = moment().hour(0).minute(0).second(0).unix()
         }
         for (let i = seq; i > 0; i = i - 20) {
-            let CharTemp = await Bot.pickGroup(group_id).getChatHistory(i, 20);
+            let CharTemp = await this.bot.pickGroup(group_id).getChatHistory(i, 20);
             CharTemp = lodash.orderBy(CharTemp, 'time', 'desc')
             if (i == seq && CharTemp.length == 0) {
                 return false
@@ -221,7 +217,7 @@ export default class worldColud extends Base {
                 if (CharTemp[key].time > endTime) {
                     continue;
                 }
-                if (CharTemp[key].user_id == Bot.uin) {
+                if (CharTemp[key].user_id == this.bot.uin) {
                     Cfg.iscountBot ? data.botcount++ : ''
                     Cfg.iscountByDay ? data[moment(t).format("YYYY-MM-DD")].botcount++ : ""
                     continue;
@@ -260,7 +256,7 @@ export default class worldColud extends Base {
     }
 
     async learnGroupImg() {
-        let groupList = Bot.gl
+        let groupList = this.bot.gl
         let Cfg = { iscountBot: true, iscountAll: true, isMsgInfo: true }
         let msgList = {}
         let face = {}
@@ -308,7 +304,7 @@ export default class worldColud extends Base {
                 let facelist = [...oldList, ...faceList]
                 this.Data.setDataJson(facelist, `groupface/${g[0]}-face`)
                 if (faceList.length > 0 && this.Config.GetCfg('groupimg').isSendMsg) {
-                    Bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('昨日学习表情包', faceList, true, g[0]))
+                    this.bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('昨日学习表情包', faceList, true, g[0]))
                 }
             } catch (error) {
                 continue;
@@ -318,8 +314,8 @@ export default class worldColud extends Base {
     }
 
     async makeGroupMsg2(title, msg, isfk = false, group_id, user_id) {
-        let nickname = Bot.nickname
-        let uid = user_id ? user_id : Bot.uin
+        let nickname = this.bot.nickname
+        let uid = user_id ? user_id : this.bot.uin
         let userInfo = {
             user_id: uid,
             nickname
@@ -333,8 +329,8 @@ export default class worldColud extends Base {
             })
         });
         /** 制作转发内容 */
-        if (Bot.pickGroup(group_id).makeForwardMsg) {
-            forwardMsg = await Bot.pickGroup(group_id).makeForwardMsg(forwardMsg)
+        if (this.bot.pickGroup(group_id).makeForwardMsg) {
+            forwardMsg = await this.bot.pickGroup(group_id).makeForwardMsg(forwardMsg)
         } else {
             return msg.join('\n')
         }

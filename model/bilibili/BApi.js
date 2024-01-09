@@ -140,7 +140,7 @@ class BApi {
     async getarticle(id, ck) {
         let res = await new networks(this.getUrlMap({ type: 'article', id: id, ck: ck })).getData()
         let data = res.match(/<script>window\.__INITIAL_STATE__=({.*})<\/script>/)?.[1]
-        data = data.split(';')[0]
+        data = data.split('(function()')?.[0]?.replace(/;/g, "")
         return JSON.parse(data)
     }
 

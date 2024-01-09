@@ -116,6 +116,11 @@
     color: rgba(0, 173, 234, 1);
 }
 
+.article img {
+    width: 800px;
+    max-height: 400px;
+}
+
 .content .imgbox {
     width: 200px;
     max-height: 400px;

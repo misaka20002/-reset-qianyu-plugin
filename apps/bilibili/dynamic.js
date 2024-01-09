@@ -35,26 +35,27 @@ async function setUpPush(e) {
     let data, type;
     type = Object.entries(dynamicType).find(item => item[1] == dtype)?.[0]
 
-    if (!reslut.code) {
-        data = {
-            nickname: reslut.author.nickname,
-            upuid: reslut.id,
-            uid: mid,
-            img: reslut.author.img,
-            pendantImg: reslut.author.pendantImg,
-            dynamicType: updata[mid]?.dynamicType ? [...updata[mid]?.dynamicType, type] : [type]
-        }
-    } else {
+    data = {
+        nickname: reslut?.author?.nickname,
+        upuid: reslut?.id || 0,
+        uid: mid,
+        img: reslut?.author?.img,
+        pendantImg: reslut?.author?.pendantImg,
+        dynamicType: updata[mid]?.dynamicType ? [...updata[mid]?.dynamicType, type] : [type]
+    }
+
+    if (reslut?.code == 0) {
         let authorInfo = await this.getUserInfo(mid)
         data = {
+            ...data,
             nickname: authorInfo.name,
-            upuid: 0,
-            uid: mid,
             img: authorInfo.face,
             pendantImg: authorInfo.pendant?.image,
             dynamicType: updata[mid]?.dynamicType ? [...updata[mid]?.dynamicType, type] : [type]
         }
     }
+
+
     if (!type) {
         delete data.dynamicType
         type = 'all'
@@ -93,9 +94,8 @@ async function delUpPush(e) {
 }
 
 async function pushdynamic() {
-    let groupList = Bot.gl
-    for (let g of groupList) {
-        let updata = this.getBilibiUpPushData(g[0])
+    for (let g of this.getBilibiliGroupList()) {
+        let updata = this.getBilibiUpPushData(g)
         if (Object.keys(updata).length == 0) continue
         for (let item of Object.values(updata)) {
             let data = await this.getUpdateDynamic(item.uid)
@@ -106,7 +106,7 @@ async function pushdynamic() {
             if (data.id !== item.upuid) {
                 let bglist = this.File.GetfileList('resources/html/bilibili/bg')
                 let radom = bglist[lodash.random(0, bglist.length - 1)]
-                await Bot.pickGroup(g[0]).sendMsg(await this.render('bilibili', { radom, ...data }))
+                await this.bot.pickGroup(g).sendMsg(await this.render('bilibili', { radom, ...data }))
                 let imglist = [];
                 if (data.imglist) {
                     imglist = data.imglist.map(item => {
@@ -119,7 +119,7 @@ async function pushdynamic() {
                     })
                 }
                 if (imglist.length > 0) {
-                    await Bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('动态图片', imglist, true, g[0]))
+                    await this.bot.pickGroup(g).sendMsg(await this.makeGroupMsg2('动态图片', imglist, true, g))
                 }
                 data = {
                     ...updata[item.uid],
@@ -130,16 +130,15 @@ async function pushdynamic() {
                     pendantImg: data.author.pendantImg,
                 }
                 updata[item.uid] = data
-                this.setBilibiUpPushData(g[0], updata)
+                this.setBilibiUpPushData(g, updata)
             }
         }
     }
 }
 
 async function livepush() {
-    let groupList = Bot.gl
-    for (let g of groupList) {
-        let updata = this.getBilibiUpPushData(g[0])
+    for (let g of this.getBilibiliGroupList()) {
+        let updata = this.getBilibiUpPushData(g)
         if (Object.keys(updata).length == 0) continue
         for (let item of Object.values(updata)) {
             let liveData = await this.getRoomInfobymid(item.uid)
@@ -168,13 +167,13 @@ async function livepush() {
                 let isatall = updata[item.uid]?.isatall ? this.segment.at('all') : ''
                 let msg = [`${updata[item.uid].nickname}开播啦！小伙伴们快去围观吧！`]
                 data = { ...data, text, imglist, video, orig, liveInfo, comment, date: moment(liveData.live_time).format("YYYY年MM月DD日 HH:mm:ss") }
-                Bot.pickGroup(g[0]).sendMsg([isatall, msg, this.segment.image(liveData.user_cover), `标题：${liveInfo.title}\n`, `分区：${liveInfo.area_name}\n`, `直播间地址：${data.url}`])
+                await this.bot.pickGroup(g).sendMsg([isatall, msg, this.segment.image(liveData.user_cover), `标题：${liveInfo.title}\n`, `分区：${liveInfo.area_name}\n`, `直播间地址：${data.url}`])
             }
             if (liveData?.live_status !== 1) {
-                updata[item.uid].liveData?.live_time ? Bot.pickGroup(g[0]).sendMsg([this.segment.image(liveData.user_cover), '主播下播la~~~~\n', `本次直播时长：${this.getDealTime(moment(updata[item.uid].liveData.live_time), moment())}`]) : ''
+                updata[item.uid].liveData?.live_time ? await this.bot.pickGroup(g).sendMsg([this.segment.image(liveData.user_cover), '主播下播la~~~~\n', `本次直播时长：${this.getDealTime(moment(updata[item.uid].liveData.live_time), moment())}`]) : ''
                 delete updata[item.uid].liveData
             }
-            this.setBilibiUpPushData(g[0], updata)
+            this.setBilibiUpPushData(g, updata)
         }
     }
 }
@@ -224,6 +223,7 @@ async function getPushList(e) {
     msg += '\n√表示只推送的类型，X代表禁止推送的类型'
     this.reply(msg)
 }
+
 async function getupdateDynamic(e) {
     let mid = e.msg.replace(new RegExp(e.reg), "")
     if (!mid) {
@@ -244,7 +244,7 @@ async function getupdateDynamic(e) {
     }
     let bglist = this.File.GetfileList('resources/html/bilibili/bg')
     let radom = bglist[lodash.random(0, bglist.length - 1)]
-    await this.reply(this.render('bilibili', { radom, ...data }))
+    await this.reply(await this.render('bilibili', { radom, ...data }))
     let imglist = [];
     if (data.imglist) {
         imglist = data.imglist.map(item => {

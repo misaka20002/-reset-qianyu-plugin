@@ -64,7 +64,7 @@ export default class prefix extends Base {
     }
 
     async whoismaster(e) {
-        if (!e.atme) return false
+        if (!e.atme && !e.atBot) return false
         let map = await e.group.getMemberMap()
         let other = new YamlReader(`${process.cwd()}/config/config/other.yaml`).jsonData
         let memberlist = [...map].map(item => item[0])

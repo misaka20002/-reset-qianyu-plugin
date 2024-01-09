@@ -9,7 +9,7 @@ class Config {
         this.Cfg = {}//配置存储
         this.Watcher = {}//修改监听
         this.isWatcher = isWatcher
-        this.file = new Filemage()
+        this.file = new Filemage(Path.qianyuPath)
         this.cfg_path = '/config/config'
         this.defCfg_path = '/config/default_config'
         this.init()//初始化

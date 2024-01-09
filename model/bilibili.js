@@ -35,12 +35,17 @@ export default class bilibili extends base {
     }
 
     setBilibiUpPushData(group_id, data) {
-        this.Data.setDataJson(data, `bilibili/${group_id}`) || {}
+        this.Data.setDataJson(data, `/bilibili/${group_id}`) || {}
+    }
+
+    //获取推送群列表
+    getBilibiliGroupList() {
+        return this.File.GetfileList('/data/bilibili').map(i => i.replace(".json", ""))
     }
 
     //获取推送up数据
     getBilibiUpPushData(group_id) {
-        return this.Data.getDataJson(`bilibili/${group_id}`) || {}
+        return this.Data.getDataJson(`/bilibili/${group_id}`) || {}
     }
 
     //删除推送up数据
@@ -150,7 +155,7 @@ export default class bilibili extends base {
 
     //查询b站粉丝牌（未实装）
     async getBilibiliUpBymedal(str) {
-        let medalData = this.File.getFileDataToJson('resources/medal.json')
+        let medalData = this.File.getFileDataToJson('/resources/medal.json')
         return medalData.find(item => item[str])
     }
 
@@ -215,6 +220,7 @@ export default class bilibili extends base {
         }
         if (cid) {
             dynamic.article = await this.getArticle(cid)
+            dynamic.article.readInfo.content = dynamic.article?.readInfo?.content.replace(/<img data-src="/g, '<img src="https:')
         }
         return dynamic
     }
@@ -450,6 +456,6 @@ export default class bilibili extends base {
     }
 }
 // let b = new bilibili({ name: 'bilibili' })
-// // console.log(await b.getDynamicByType('401742377', '文字'));
+// console.log(await b.getBilibiliGroupList())
 // console.log(await b.getFirstDynamic('401742377'));
 
