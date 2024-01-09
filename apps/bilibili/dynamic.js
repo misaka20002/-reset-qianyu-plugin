@@ -118,7 +118,7 @@ async function pushdynamic() {
                         imglist.push({ content: this.segment.image(item) })
                     })
                 }
-                if (imglist.length > 0) {
+                if (imglist.length > 0 && data.type != '专栏') {
                     await this.bot.pickGroup(g).sendMsg(await this.makeGroupMsg2('动态图片', imglist, true, g))
                 }
                 data = {
@@ -256,7 +256,7 @@ async function getupdateDynamic(e) {
             imglist.push({ content: this.segment.image(item) })
         })
     }
-    if (imglist.length > 0) {
+    if (imglist.length > 0 && data.type != '专栏') {
         await this.reply(await this.makeGroupMsg('动态图片', imglist, true))
     }
 }
