@@ -148,10 +148,12 @@ export default class worldColud extends Base {
         })
         let bclist = lodash.orderBy(CharArray, 'facestime', 'desc')
         CharArray = CharArray.slice(0, CharArray.length > 10 ? 10 : CharArray.length);
+        console.log(CharArray);
         for (let i in CharArray) {
             CharArray[i].Percentage = (CharArray[i].times / groupMsglist.allcount * 100).toFixed(2)
         }
         issqtj = false
+        console.log(bclist);
         return this.reply(await this.render(`list`, { charlist: CharArray, dsw: CharArray[0], bqd: bclist[0], shwz: memberlist[0], type: 'png', botcount: groupMsglist.botcount, allcount: groupMsglist.allcount, day: day }))
     }
 
@@ -165,17 +167,16 @@ export default class worldColud extends Base {
     * Cfg.iscountAll 是否获取总消息统计
     * Cfg.iscountByDay 是否根据天数分割
     */
-    async getGroupHistoryMsg(startTime, endTime, Cfg = { isMsgInfo: false, iscountBot: false, iscountAll: false }, group_id = this.e.group_id) {
+    async getGroupHistoryMsg(startTime, endTime, Cfg = {}, group_id = this.e.group_id) {
         let isover;
         let CharList = {}
         let data = {}
         let CharHistory = await this.bot.pickGroup(group_id).getChatHistory(0, 1);
-        let seq = CharHistory[0]?.seq;
+        let seq = CharHistory[0]?.seq || CharHistory[0]?.real_id;
         if (!seq) return false
         let centerTime = endTime ? moment(endTime).unix() : moment().hour(0).minute(0).second(0).unix()
         Cfg.iscountBot ? data.botcount = 0 : ''
         Cfg.iscountAll ? data.allcount = 0 : ''
-
         startTime = startTime ? moment(startTime).unix() : moment().hour(0).minute(0).second(0).unix()
         endTime = endTime ? moment(endTime).unix() : moment().unix()
         if (moment(endTime * 1000) != moment().hour(0).minute(0).second(0)) {
@@ -184,9 +185,7 @@ export default class worldColud extends Base {
         for (let i = seq; i > 0; i = i - 20) {
             let CharTemp = await this.bot.pickGroup(group_id).getChatHistory(i, 20);
             CharTemp = lodash.orderBy(CharTemp, 'time', 'desc')
-            if (i == seq && CharTemp.length == 0) {
-                return false
-            }
+            if (i == seq && CharTemp.length == 0) return false
             if (CharTemp.length == 0) {
                 if (Cfg.iscountByDay) {
                     data[moment().format("YYYY-MM-DD")] = { ...data[moment().format("YYYY-MM-DD")], ...CharList }
@@ -251,6 +250,7 @@ export default class worldColud extends Base {
                 data = Cfg.iscountByDay ? { ...data } : { ...CharList, ...data }
                 break;
             }
+
         }
         return { ...data }
     }

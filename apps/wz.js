@@ -44,9 +44,9 @@ export default class wz extends Base {
         let InitiatorInfo = JSON.parse(await redis.get('qianyu:wz:InitiatorInfo'))
         if (iswz) {
             if (myuserinfo) {
-                await Bot.setAvatar(`${this.Path.qianyuPath}resources/img/${myuserinfo.user_id}.jpg`)
-                await Bot.setNickname(myuserinfo.nickname)
-                Bot.pickGroup(InitiatorInfo.group_id).setCard(myuserinfo.user_id, myuserinfo.nickname)
+                await this.bot.setAvatar(`${this.Path.qianyuPath}resources/img/${myuserinfo.user_id}.jpg`)
+                await this.bot.setNickname(myuserinfo.nickname)
+                this.bot.pickGroup(InitiatorInfo.group_id).setCard(myuserinfo.user_id, myuserinfo.nickname)
             }
             await redis.del('qianyu:wz:iswz')
             await redis.del('qianyu:wz:atuserinfo')
@@ -146,14 +146,14 @@ export default class wz extends Base {
                 this.Config.SetCfg('wz', `cishu`, cishu)
             }
         }
-        let atuserinfo = await Bot.pickMember(e.group_id, e.at).getSimpleInfo()
-        atuserinfo.avatar = await Bot.pickMember(e.group_id, e.at).getAvatarUrl()
-        atuserinfo.group_name = await Bot.pickMember(e.group_id, e.at).card
+        let atuserinfo = await this.bot.pickMember(e.group_id, e.at).getSimpleInfo()
+        atuserinfo.avatar = await this.bot.pickMember(e.group_id, e.at).getAvatarUrl()
+        atuserinfo.group_name = await this.bot.pickMember(e.group_id, e.at).card
         atuserinfo.group_id = e.group_id
         if (!myuserinfo) {
-            myuserinfo = await Bot.pickMember(e.group_id, e.self_id).getSimpleInfo()
+            myuserinfo = await this.bot.pickMember(e.group_id, e.self_id).getSimpleInfo()
             //头像
-            myuserinfo.avatar = await Bot.pickMember(e.group_id, e.self_id).getAvatarUrl()
+            myuserinfo.avatar = await this.bot.pickMember(e.group_id, e.self_id).getAvatarUrl()
 
             await redis.set('qianyu:wz:myinfo', JSON.stringify(myuserinfo))
             let result = await this.downfile.downImg({ url: myuserinfo.avatar }, `${e.self_id}.jpg`)
@@ -165,9 +165,9 @@ export default class wz extends Base {
             group_id: e.group_id
         }))
         await redis.set('qianyu:wz:iswz', '1')
-        await Bot.setAvatar(atuserinfo.avatar)
-        await Bot.setNickname(atuserinfo.nickname)
-        Bot.pickGroup(e.group_id).setCard(e.self_id, atuserinfo.group_name)
+        await this.bot.setAvatar(atuserinfo.avatar)
+        await this.bot.setNickname(atuserinfo.nickname)
+        this.bot.pickGroup(e.group_id).setCard(e.self_id, atuserinfo.group_name)
         this.reply(`伪装任务开始！我已经伪装成指定目标，接下来${this.Cfg.wztime}分钟，我会模仿伪装目标说话！！`)
         await this.wztask(e)
     }
@@ -191,7 +191,7 @@ export default class wz extends Base {
                     break;
                 case 'text':
                     if (e.source != undefined) {
-                        Bot.sendGroupMsg(e.group_id, [segment.at(e.source.user_id), " ", m.text], e.source)
+                        this.bot.sendGroupMsg(e.group_id, [segment.at(e.source.user_id), " ", m.text], e.source)
                     } else {
                         sendmsg.push(m.text)
                     }
@@ -208,7 +208,7 @@ export default class wz extends Base {
             }
         }
         if (!e.source) {
-            Bot.pickGroup(e.group_id).sendMsg(sendmsg)
+            this.bot.pickGroup(e.group_id).sendMsg(sendmsg)
         }
         return true
     }
@@ -228,9 +228,9 @@ export default class wz extends Base {
         if (InitiatorInfo.group_id != e.group_id) {
             return this.reply("只有发起的群才能结束伪装！")
         }
-        await Bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}.jpg`)
-        await Bot.setNickname(myuserinfo.nickname)
-        Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
+        await this.bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}.jpg`)
+        await this.bot.setNickname(myuserinfo.nickname)
+        this.bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
         await redis.del('qianyu:wz:iswz')
         await redis.del('qianyu:wz:InitiatorInfo')
         await this.timer.CancelTimeTask('wz');
@@ -246,9 +246,9 @@ export default class wz extends Base {
     async wztask(e) {
         await this.timer.SetTimeTask('wz', moment().add(this.Cfg.wztime, 'm').format(), async () => {
             let myuserinfo = JSON.parse(await redis.get('qianyu:wz:myinfo'))
-            await Bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}.jpg`)
-            await Bot.setNickname(myuserinfo.nickname)
-            Bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
+            await this.bot.setAvatar(this.Path.qianyuPath + `resources/img/${e.self_id}.jpg`)
+            await this.bot.setNickname(myuserinfo.nickname)
+            this.bot.pickGroup(e.group_id).setCard(e.self_id, myuserinfo.nickname)
             redis.del('qianyu:wz:iswz')
             redis.del('qianyu:wz:InitiatorInfo')
             e.reply(`伪装任务已结束！伪装进入${this.Cfg.wzcd}分钟冷却cd！（主人除外！）`)

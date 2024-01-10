@@ -195,7 +195,7 @@ async function livepushall(e) {
     if (!updata[mid]) {
         return this.reply("你还没订阅这个up主呢！")
     }
-    let info = await Bot.getGroupMemberInfo(e.group_id, Bot.uin)
+    let info = await this.bot.getGroupMemberInfo(e.group_id, this.bot.uin)
     if (info.role != 'owner' && info.role != 'admin') {
         return this.reply("我不是管理员不能@全体呢！")
     }
@@ -242,7 +242,7 @@ async function getupdateDynamic(e) {
     } else if (data.code == 0) {
         return this.reply("这个up还没发布过动态呢！")
     }
-    let bglist = this.File.GetfileList('resources/html/bilibili/bg')
+    let bglist = this.File.GetfileList('/resources/html/bilibili/bg')
     let radom = bglist[lodash.random(0, bglist.length - 1)]
     await this.reply(await this.render('bilibili', { radom, ...data }))
     let imglist = [];

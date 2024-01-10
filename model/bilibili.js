@@ -8,7 +8,7 @@ let video = new Video({ name: 'video' })
 export default class bilibili extends base {
     constructor(data) {
         super(data)
-        this.File.CreatDir('data/bilibili')
+        this.File.CreatDir('/data/bilibili')
     }
 
     get ck() {
@@ -213,14 +213,15 @@ export default class bilibili extends base {
         let cid;
         if (dynamic?.type == "DYNAMIC_TYPE_ARTICLE") {
             let ulist = dynamic?.modules?.module_dynamic?.major?.opus?.jump_url.split('/')
-            cid = ulist[ulist.length - 2]
+            cid = ulist[ulist.includes('opus') ? ulist.length - 1 : ulist.length - 2]
         }
         if (dynamic) {
             dynamic = this.dealDynamicData(dynamic)
         }
         if (cid) {
             dynamic.article = await this.getArticle(cid)
-            dynamic.article.readInfo.content = dynamic.article?.readInfo?.content.replace(/<img data-src="/g, '<img src="https:')
+            console.log(dynamic.article);
+            dynamic.article.content = dynamic.article?.content.replace(/<img src="/g, '<img src="https:')
         }
         return dynamic
     }
@@ -456,6 +457,6 @@ export default class bilibili extends base {
     }
 }
 // let b = new bilibili({ name: 'bilibili' })
-// console.log(await b.getBilibiliGroupList())
+// console.log(await b.getArticle('28826547'))
 // console.log(await b.getFirstDynamic('401742377'));
 

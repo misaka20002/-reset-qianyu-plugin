@@ -1,5 +1,5 @@
 import networks from "../../utils/networks.js"
-// import bilibili from "../bilibili.js"
+//import bilibili from "../bilibili.js"
 class BApi {
 
     get ck() {
@@ -55,9 +55,9 @@ class BApi {
             },
             //专栏文章信息
             article: {
-                url: `https://www.bilibili.com/read/${data.id}/?spm_id_from=333.999.list.card_opus.click`,
+                url: `https://api.bilibili.com/x/article/view?id=${data.id}&gaia_source=main_web&web_location=333.976&w_rid=a55bc106ab28ca2cf261ea0493d16a68&wts=1704863751`,
                 headers: { ...this.headers, Cookie: data.ck || this.ck },
-                type: 'text'
+                type: 'json'
             },
             //分类搜索
             search: {
@@ -138,10 +138,11 @@ class BApi {
     }
 
     async getarticle(id, ck) {
+        id = id.includes('cv') ? id.replace("cv", "") : id
         let res = await new networks(this.getUrlMap({ type: 'article', id: id, ck: ck })).getData()
-        let data = res.match(/<script>window\.__INITIAL_STATE__=({.*})<\/script>/)?.[1]
-        data = data.split('(function()')?.[0]?.replace(/;/g, "")
-        return JSON.parse(data)
+        if (res.code == 0) {
+            return res.data
+        }
     }
 
     async getsearch(keyword, search_type, order, ck) {
@@ -153,4 +154,4 @@ class BApi {
 }
 
 export default new BApi()
-// console.log(await new BApi().getdynamiclist('401742377', new bilibili({ name: 'bilibili' }).ck))
+// console.log(await new BApi().getarticle('28826547', new bilibili({ name: 'bilibili' }).ck))

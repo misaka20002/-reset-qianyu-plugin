@@ -37,9 +37,9 @@ export class update extends Base {
             let msg = `重启成功：耗时${time.toFixed(2)}秒`
 
             if (restart.isGroup) {
-                Bot.pickGroup(restart.id).sendMsg(msg)
+                this.bot.pickGroup(restart.id).sendMsg(msg)
             } else {
-                Bot.pickUser(restart.id).sendMsg(msg)
+                this.bot.pickUser(restart.id).sendMsg(msg)
             }
             redis.del(this.key)
         }
