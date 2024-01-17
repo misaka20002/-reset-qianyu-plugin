@@ -4,17 +4,17 @@ export default class other extends Base {
     constructor(e) {
         super({
             name: 'other',
-            priority: 200,
+            priority: 3000,
             rule: [
                 {
                     reg: '',
                     fnc: 'jxtu',
                     log: false
                 },
-                {
-                    reg: '^#撤回',
-                    fnc: 'che'
-                }
+                // {
+                //     reg: '^#撤回',
+                //     fnc: 'che',
+                // },
                 // {
                 //     reg: '^#取直链',
                 //     fnc: 'zhilian'
@@ -24,26 +24,29 @@ export default class other extends Base {
         this.e = e
     }
 
-    async jxtu(e) {
-        let url = e.url
-        if (!url || !this.Cfg.isscreenshot) {
+    /**网页截图 */
+    async jxtu(e) {        
+        if (!this.Cfg.isscreenshot) {
             return false
-        }
-        this.reply(await puppeteer.urlScreenshot(encodeURI(url)))
+        } else {
+            let url = e.url
+            if (!url) return false
+            else this.reply(await puppeteer.urlScreenshot(encodeURI(url)))
+        }        
     }
 
-    async che(e) {
-        if (!e.source) {
-            return e.reply("不存在消息源！")
-        }
-        if (e.source.user_id == e.self_id) {
-            let msgid = (await e.group.getChatHistory(e.source.seq, 1))[0].message_id
-            let res = await e.group.recallMsg(msgid)
-            if (!res) {
-                this.reply("伦家不是管理员，不能撤回超过2分钟的消息呢~")
-            }
-        }
-    }
+    // async che(e) {
+    //     if (!e.source) {
+    //         return e.reply("不存在消息源！")
+    //     }
+    //     if (e.source.user_id == e.self_id) {
+    //         let msgid = (await e.group.getChatHistory(e.source.seq, 1))[0].message_id
+    //         let res = await e.group.recallMsg(msgid)
+    //         if (!res) {
+    //             this.reply("伦家不是管理员，不能撤回超过2分钟的消息呢~")
+    //         }
+    //     }
+    // }
 
     // async zhilian(e) {
     //     if (!e.source) {
