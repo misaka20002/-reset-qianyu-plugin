@@ -40,7 +40,7 @@ export default class groupimg extends Base {
         groupList = this.Cfg !== null ? Object.keys(this.Cfg).filter(item => !fileterList.includes(item)) : []
     }
     async seeface(e) {
-        let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
+        let imgData = this.Data.getDataJson(`/groupface/${e.group_id}-face`) || []
         let page = this.e.msg.replace("#查看所有表情", "") || 1
         let bqsum = imgData.length
         let imglist = [];

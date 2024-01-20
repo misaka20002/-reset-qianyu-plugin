@@ -3,7 +3,7 @@ import Path from './Path.js'
 export default class Data {
     constructor(type) {
         this.type = type
-        this.filemage = new Filemage(Path.qianyuPath + 'data')
+        this.filemage = new Filemage(Path.qianyuPath + 'data/')
         this.filemage.CreatDir()
     }
 
