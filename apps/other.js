@@ -17,7 +17,7 @@ export default class other extends Base {
                 // },
                 // {
                 //     reg: '^#取直链',
-                //     fnc: 'zhilian'
+                //     fnc: 'zhilian' 
                 // }
             ]
         })
