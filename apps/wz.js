@@ -168,7 +168,7 @@ export default class wz extends Base {
         await this.bot.setAvatar(atuserinfo.avatar)
         await this.bot.setNickname(atuserinfo.nickname)
         this.bot.pickGroup(e.group_id).setCard(e.self_id, atuserinfo.group_name)
-        this.reply([`伪装任务开始！我已经伪装成指定目标，接下来${this.Cfg.wztime}分钟，我会模仿伪装目标说话！！`,segment.at('this.e.user_id')])
+        this.reply([`伪装任务开始！我已经伪装成指定目标，接下来${this.Cfg.wztime}分钟，我会模仿伪装目标说话！！`,this.segment.at(this.e.user_id)])
         await this.wztask(e)
     }
 
