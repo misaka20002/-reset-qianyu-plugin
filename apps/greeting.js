@@ -24,7 +24,7 @@ export default class greeting extends Base {
             task: {
                 name: '早晚安',
                 fnc: "clearTime",
-                cron: '10 0 0 * * ?'
+                cron: '0 10 2 * * ?'
             }
         })
     }
