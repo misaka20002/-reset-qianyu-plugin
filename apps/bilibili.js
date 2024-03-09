@@ -286,13 +286,15 @@ export default class bilibili extends Bili {
 
     //发送视频
     async sendVideo(bv, e, videoPath, data, faith = () => { }) {
-        let result = await Bot.pickGroup(e.group_id).sendMsg(data || this.segment.video(videoPath)).catch(async (err) => {
+        let result = await this.bot.pickGroup(e.group_id).sendMsg(data || this.segment.video(videoPath)).catch(async (err) => {
             await faith()
             logger.warn(err)
         })
         if (!result) return false
-        let res = await Bot.getMsg(result.message_id)
-        if (res.message[0].fid.length < 3) {
+        let res = await this.bot.getMsg(result.message_id)
+        //没有结果说明不适用，不进行数据存储
+        if (!res) return
+        if (res?.message[0].fid.length < 3) {
             e.group.recallMsg(result.message_id)
             await this.common.sleep(1000)
             await this.sendVideo(bv, e, videoPath, data)
@@ -354,8 +356,8 @@ export default class bilibili extends Bili {
 
 
     async makeGroupMsg2(title, msg, isfk = false, group_id, user_id) {
-        let nickname = Bot.nickname
-        let uid = user_id ? user_id : Bot.uin
+        let nickname = this.bot.nickname
+        let uid = user_id ? user_id : this.bot.uin
         let userInfo = {
             user_id: uid,
             nickname
@@ -369,8 +371,8 @@ export default class bilibili extends Bili {
             })
         });
         /** 制作转发内容 */
-        if (Bot.pickGroup(group_id).makeForwardMsg) {
-            forwardMsg = await Bot.pickGroup(group_id).makeForwardMsg(forwardMsg)
+        if (this.bot.pickGroup(group_id).makeForwardMsg) {
+            forwardMsg = await this.bot.pickGroup(group_id).makeForwardMsg(forwardMsg)
         } else {
             return msg.join('\n')
         }

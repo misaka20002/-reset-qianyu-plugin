@@ -271,7 +271,7 @@ export default class api extends Api {
                     isfaith = true
                     return this.reply("请求错误！请重试！")
                 }
-                Bot.pickGroup(this.e.group_id).sendMsg(this.segment.video(`${this.Path.qianyuPath}resources/video/${msg}.mp4`)).catch(err => {
+                this.this.bot.pickGroup(this.e.group_id).sendMsg(this.segment.video(`${this.Path.qianyuPath}resources/video/${msg}.mp4`)).catch(err => {
                     videoing = false
                     return e.reply("视频解析失败！")
                 })
@@ -320,11 +320,11 @@ export default class api extends Api {
             }
             if (api.isGroup) {
                 if (!isNaN(api.target)) {
-                    await Bot.pickGroup(api.target).sendMsg(res)
+                    await this.bot.pickGroup(api.target).sendMsg(res)
                 } else if (api.target === 'all') {
-                    let groupList = Bot.gl
+                    let groupList = this.bot.gl
                     for (let g of groupList) {
-                        await Bot.pickGroup(g[0]).sendMsg(res)
+                        await this.bot.pickGroup(g[0]).sendMsg(res)
                         await this.common.sleep(1000)
                     }
                 }

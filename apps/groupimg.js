@@ -42,7 +42,7 @@ export default class groupimg extends Base {
         groupList = this.Cfg !== null ? Object.keys(this.Cfg).filter(item => !fileterList.includes(item)) : []
     }
     async seeface(e) {
-        let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
+        let imgData = this.Data.getDataJson(`/groupface/${e.group_id}-face`) || []
         let page = this.e.msg.replace("#查看所有表情", "") || 1
         let bqsum = imgData.length
         let imglist = [];
@@ -145,15 +145,15 @@ export default class groupimg extends Base {
                     if (imgData.length === 0) return false
                     let img = imgData[lodash.random(0, imgData.length - 1)]
                     msg[g] = msg[g] ? msg[g] : {}
-                    if (msg[g]?.user_id === Bot.uin) {
+                    if (msg[g]?.user_id === this.bot.uin) {
                         //暂未定
                     } else {
                         let time = msg[g]?.time || 0
                         let sum = msg[g].sum ? ++msg[g].sum : 1
                         if (moment().unix() >= time + (rdtime * 60)) {
                             //冷群时间了
-                            let rs = await Bot.pickGroup(g).sendMsg(img.content)
-                            let m = (await Bot.pickGroup(g).getChatHistory(rs.seq, 1))[0]
+                            let rs = await this.bot.pickGroup(g).sendMsg(img.content)
+                            let m = (await this.bot.pickGroup(g).getChatHistory(rs.seq, 1))[0]
                             msg[g] = { ...msg[g], ...m }
                             msg[g].sum = sum
                             msg[g].sendimgsum = msg[g].sendimgsum ? ++msg[g].sendimgsum : 1

@@ -10,7 +10,7 @@ export default class ai extends Base {
     }
 
     async getWenxinAi(content) {
-        return await headless({ cookie: this.Ck.wenxinCk, timeout: 1000 * 120, prompt: content })
+        return await headless({ cookie: this.Ck.wenxinCk, timeout: 1000 * 120, prompt: content, headless: 'new' })
     }
 
 }

@@ -8,7 +8,7 @@ let video = new Video({ name: 'video' })
 export default class bilibili extends base {
     constructor(data) {
         super(data)
-        this.File.CreatDir('data/bilibili')
+        this.File.CreatDir('/data/bilibili')
     }
 
     get ck() {
@@ -35,12 +35,17 @@ export default class bilibili extends base {
     }
 
     setBilibiUpPushData(group_id, data) {
-        this.Data.setDataJson(data, `bilibili/${group_id}`) || {}
+        this.Data.setDataJson(data, `/bilibili/${group_id}`) || {}
+    }
+
+    //获取推送群列表
+    getBilibiliGroupList() {
+        return this.File.GetfileList('/data/bilibili').map(i => i.replace(".json", ""))
     }
 
     //获取推送up数据
     getBilibiUpPushData(group_id) {
-        return this.Data.getDataJson(`bilibili/${group_id}`) || {}
+        return this.Data.getDataJson(`/bilibili/${group_id}`) || {}
     }
 
     //删除推送up数据
@@ -150,7 +155,7 @@ export default class bilibili extends base {
 
     //查询b站粉丝牌（未实装）
     async getBilibiliUpBymedal(str) {
-        let medalData = this.File.getFileDataToJson('resources/medal.json')
+        let medalData = this.File.getFileDataToJson('/resources/medal.json')
         return medalData.find(item => item[str])
     }
 
@@ -208,13 +213,15 @@ export default class bilibili extends base {
         let cid;
         if (dynamic?.type == "DYNAMIC_TYPE_ARTICLE") {
             let ulist = dynamic?.modules?.module_dynamic?.major?.opus?.jump_url.split('/')
-            cid = ulist[ulist.length - 2]
+            cid = ulist[ulist.includes('opus') ? ulist.length - 1 : ulist.length - 2]
         }
         if (dynamic) {
             dynamic = this.dealDynamicData(dynamic)
         }
         if (cid) {
             dynamic.article = await this.getArticle(cid)
+            console.log(dynamic.article);
+            dynamic.article.content = dynamic.article?.content.replace(/<img src="/g, '<img src="https:')
         }
         return dynamic
     }
@@ -450,6 +457,6 @@ export default class bilibili extends base {
     }
 }
 // let b = new bilibili({ name: 'bilibili' })
-// // console.log(await b.getDynamicByType('401742377', '文字'));
+// console.log(await b.getArticle('28826547'))
 // console.log(await b.getFirstDynamic('401742377'));
 

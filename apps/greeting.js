@@ -34,9 +34,9 @@ export default class greeting extends Base {
     }
 
     async nightinfo(e) {
-        let userdata = this.Data.getDataJson(`greeting/${e.user_id}`) || {}
-        let info = await Bot.getGroupMemberInfo(this.e.group_id, e.user_id)
-        let imglist = this.File.GetfileList('resources/html/time/bg')
+        let userdata = this.Data.getDataJson(`/greeting/${e.user_id}`) || {}
+        let info = await this.bot.getGroupMemberInfo(this.e.group_id, e.user_id)
+        let imglist = this.File.GetfileList('/resources/html/time/bg')
         let img = imglist[lodash.random(0, imglist.length - 1)]
         if (info.sex == "male") {
             info.sex = "男"
@@ -74,12 +74,12 @@ export default class greeting extends Base {
         let hours = moment().hours()
         let msg = ``;
         if (e.msg == '早安' && !monightlist[e.group_id].mlist.includes(e.user_id)) {
-            let userdata = this.Data.getDataJson(`greeting/${e.user_id}`) || {}
+            let userdata = this.Data.getDataJson(`/greeting/${e.user_id}`) || {}
             userdata[`${moment().format("YYYY-MM-DD")}`] = {
                 ...userdata[`${moment().format("YYYY-MM-DD")}`],
                 mtime: moment()
             }
-            this.Data.setDataJson(userdata, `greeting/${e.user_id}`)
+            this.Data.setDataJson(userdata, `/greeting/${e.user_id}`)
             let daydata = userdata[`${moment().format("YYYY-MM-DD")}`]
             monightlist[e.group_id].mnum += 1
             monightlist[e.group_id].mlist.push(e.user_id)
@@ -116,12 +116,12 @@ export default class greeting extends Base {
         let hours = moment().hours()
         let msg = ``;
         if (e.msg == '晚安' && !monightlist[e.group_id].nlist.includes(e.user_id)) {
-            let userdata = this.Data.getDataJson(`greeting/${e.user_id}`) || {}
+            let userdata = this.Data.getDataJson(`/greeting/${e.user_id}`) || {}
             userdata[`${moment().format("YYYY-MM-DD")}`] = {
                 ...userdata[`${moment().format("YYYY-MM-DD")}`],
                 ntime: moment()
             }
-            this.Data.setDataJson(userdata, `greeting/${e.user_id}`)
+            this.Data.setDataJson(userdata, `/greeting/${e.user_id}`)
             let daydata = userdata[`${moment().format("YYYY-MM-DD")}`]
             monightlist[e.group_id].nnum += 1
             monightlist[e.group_id].nlist.push(e.user_id)

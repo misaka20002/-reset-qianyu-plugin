@@ -28,10 +28,6 @@ export default class worldColud extends Base {
 
     init() {
         this.File.CreatDir('data/groupMsgRand')
-        let groupList = Bot.gl
-        for (let g of groupList) {
-            this.File.CreatDir(`data/groupMsgRand/${g[0]}`)
-        }
     }
 
     async usermsg(e) {
@@ -152,10 +148,12 @@ export default class worldColud extends Base {
         })
         let bclist = lodash.orderBy(CharArray, 'facestime', 'desc')
         CharArray = CharArray.slice(0, CharArray.length > 10 ? 10 : CharArray.length);
+        console.log(CharArray);
         for (let i in CharArray) {
             CharArray[i].Percentage = (CharArray[i].times / groupMsglist.allcount * 100).toFixed(2)
         }
         issqtj = false
+        console.log(bclist);
         return this.reply(await this.render(`list`, { charlist: CharArray, dsw: CharArray[0], bqd: bclist[0], shwz: memberlist[0], type: 'png', botcount: groupMsglist.botcount, allcount: groupMsglist.allcount, day: day }))
     }
 
@@ -169,28 +167,25 @@ export default class worldColud extends Base {
     * Cfg.iscountAll 是否获取总消息统计
     * Cfg.iscountByDay 是否根据天数分割
     */
-    async getGroupHistoryMsg(startTime, endTime, Cfg = { isMsgInfo: false, iscountBot: false, iscountAll: false }, group_id = this.e.group_id) {
+    async getGroupHistoryMsg(startTime, endTime, Cfg = {}, group_id = this.e.group_id) {
         let isover;
         let CharList = {}
         let data = {}
-        let CharHistory = await Bot.pickGroup(group_id).getChatHistory(0, 1);
-        let seq = CharHistory[0]?.seq;
+        let CharHistory = await this.bot.pickGroup(group_id).getChatHistory(0, 1);
+        let seq = CharHistory[0]?.seq || CharHistory[0]?.real_id;
         if (!seq) return false
         let centerTime = endTime ? moment(endTime).unix() : moment().hour(0).minute(0).second(0).unix()
         Cfg.iscountBot ? data.botcount = 0 : ''
         Cfg.iscountAll ? data.allcount = 0 : ''
-
         startTime = startTime ? moment(startTime).unix() : moment().hour(0).minute(0).second(0).unix()
         endTime = endTime ? moment(endTime).unix() : moment().unix()
         if (moment(endTime * 1000) != moment().hour(0).minute(0).second(0)) {
             centerTime = moment().hour(0).minute(0).second(0).unix()
         }
         for (let i = seq; i > 0; i = i - 20) {
-            let CharTemp = await Bot.pickGroup(group_id).getChatHistory(i, 20);
+            let CharTemp = await this.bot.pickGroup(group_id).getChatHistory(i, 20);
             CharTemp = lodash.orderBy(CharTemp, 'time', 'desc')
-            if (i == seq && CharTemp.length == 0) {
-                return false
-            }
+            if (i == seq && CharTemp.length == 0) return false
             if (CharTemp.length == 0) {
                 if (Cfg.iscountByDay) {
                     data[moment().format("YYYY-MM-DD")] = { ...data[moment().format("YYYY-MM-DD")], ...CharList }
@@ -221,7 +216,7 @@ export default class worldColud extends Base {
                 if (CharTemp[key].time > endTime) {
                     continue;
                 }
-                if (CharTemp[key].user_id == Bot.uin) {
+                if (CharTemp[key].user_id == this.bot.uin) {
                     Cfg.iscountBot ? data.botcount++ : ''
                     Cfg.iscountByDay ? data[moment(t).format("YYYY-MM-DD")].botcount++ : ""
                     continue;
@@ -255,12 +250,13 @@ export default class worldColud extends Base {
                 data = Cfg.iscountByDay ? { ...data } : { ...CharList, ...data }
                 break;
             }
+
         }
         return { ...data }
     }
 
     async learnGroupImg() {
-        let groupList = Bot.gl
+        let groupList = this.bot.gl
         let Cfg = { iscountBot: true, iscountAll: true, isMsgInfo: true }
         let msgList = {}
         let face = {}
@@ -308,7 +304,7 @@ export default class worldColud extends Base {
                 let facelist = [...oldList, ...faceList]
                 this.Data.setDataJson(facelist, `groupface/${g[0]}-face`)
                 if (faceList.length > 0 && this.Config.GetCfg('groupimg').isSendMsg) {
-                    Bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('昨日学习表情包', faceList, true, g[0]))
+                    this.bot.pickGroup(g[0]).sendMsg(await this.makeGroupMsg2('昨日学习表情包', faceList, true, g[0]))
                 }
             } catch (error) {
                 continue;
@@ -318,8 +314,8 @@ export default class worldColud extends Base {
     }
 
     async makeGroupMsg2(title, msg, isfk = false, group_id, user_id) {
-        let nickname = Bot.nickname
-        let uid = user_id ? user_id : Bot.uin
+        let nickname = this.bot.nickname
+        let uid = user_id ? user_id : this.bot.uin
         let userInfo = {
             user_id: uid,
             nickname
@@ -333,8 +329,8 @@ export default class worldColud extends Base {
             })
         });
         /** 制作转发内容 */
-        if (Bot.pickGroup(group_id).makeForwardMsg) {
-            forwardMsg = await Bot.pickGroup(group_id).makeForwardMsg(forwardMsg)
+        if (this.bot.pickGroup(group_id).makeForwardMsg) {
+            forwardMsg = await this.bot.pickGroup(group_id).makeForwardMsg(forwardMsg)
         } else {
             return msg.join('\n')
         }

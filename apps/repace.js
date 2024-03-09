@@ -38,7 +38,7 @@ export default class repace extends Base {
         if (await this.isSomeMessage(this.e.message, msg[this.e.group_id].msg)) {
             msg[this.e.group_id].times++
             if (msg[this.e.group_id].times == 3) {
-                await Bot.pickGroup(e.group_id).sendMsg(msg[this.e.group_id].msg)
+                await this.bot.pickGroup(e.group_id).sendMsg(msg[this.e.group_id].msg)
             } else if (msg[this.e.group_id].times == 5 && this.fdCfg.bkrepace) {
                 if (!this.e.img) {
                     let random = _.random(0, 1)

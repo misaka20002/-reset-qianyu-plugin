@@ -23,7 +23,12 @@
         <span class="nickname" style="bottom:{{author.pendantImg?'-25px':'0px'}}">{{author.nickname}}</span>
     </div>
     <div class="content">
+        {{if article}}
+        <h1>{{article.title}}</h1>
+        <span class="article">{{@ article.content}}</span>
+        {{else}}
         <span>{{@ text}}</span>
+        {{/if}}
         <div class="imglist">
             {{each imglist img}}
             <div class="imgbox" style="width:{{imglist.length>1?200+'px':800+'px'}}">

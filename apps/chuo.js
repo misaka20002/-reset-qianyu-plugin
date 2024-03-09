@@ -20,7 +20,7 @@ export default class chuo extends Base {
         let groupNumber = this.e.group_id;
         /** 判断戳的是不是自己 */
         if (e.target_id == e.self_id) {
-            let imgData = this.Data.getDataJson(`groupface/${groupNumber}-face`) || [];
+            let imgData = this.Data.getDataJson(`/groupface/${groupNumber}-face`) || [];
             if (imgData.length == 0) {
                 return this.reply("还没有在该群学习过表情包");
             } else {

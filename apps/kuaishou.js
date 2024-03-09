@@ -65,12 +65,12 @@ export default class kuaishou extends Kuaishou {
     }
 
     async sendVideo(videoPath, e, faith = () => { }) {
-        let result = await Bot.pickGroup(e.group_id).sendMsg(this.segment.video(videoPath)).catch(async (err) => {
+        let result = await this.bot.pickGroup(e.group_id).sendMsg(this.segment.video(videoPath)).catch(async (err) => {
             await faith()
             logger.warn(err)
         })
         if (!result) return false
-        let res = await Bot.getMsg(result.message_id)
+        let res = await this.bot.getMsg(result.message_id)
         if (res.message[0].fid.length < 3) {
             e.group.recallMsg(result.message_id)
             await this.common.sleep(1000)

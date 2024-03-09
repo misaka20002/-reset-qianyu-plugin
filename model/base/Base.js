@@ -14,7 +14,7 @@ export default class Base {
         this.name = data.name
         this.Data = new Data(data.name)
         this.Config = Config
-        this.File = new File()
+        this.File = new File(Path.qianyuPath)
         this.networks = networks
         this.downfile = downfile
         this.Path = Path

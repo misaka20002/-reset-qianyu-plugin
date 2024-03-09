@@ -53,9 +53,9 @@ export default class ai extends AI {
     }
 
     async choieai(msg, ai) {
-        let ailist = this.File.getYamlData('resources/api/ai.yaml').ailist
+        let ailist = this.File.getYamlData('/resources/api/ai.yaml').ailist
         let botname = this.Cfg.botname
-        let imglist = this.File.GetfileList('resources/img/noresult')
+        let imglist = this.File.GetfileList('/resources/img/noresult')
         let aida = ailist.find(list => list.name == ai)
         if (!aida) return
         if (!msg) {
