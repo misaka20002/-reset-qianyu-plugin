@@ -61,6 +61,7 @@ export default class greeting extends Base {
         this.reply(await this.render('time', { info: info, userdata: userdata, daylist: JSON.stringify(daylist), ntimelist: JSON.stringify(ntimelist), average: average == 0 ? 0 : average.toFixed(1), img: img }))
     }
 
+    
     async morning(e) {
         let monringMsg = this.Cfg.monringMsg
         if (!monightlist[e.group_id]) {
