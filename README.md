@@ -11,8 +11,7 @@
 ## 安装命令
 
 ```
-git clone --depth=1 https://gitee.com/think-first-sxs/reset-qianyu-plugin.git ./plugins/reset-qianyu-plugin/
-```
+git clone --depth=1 git@github.com:misaka20002/-reset-qianyu-plugin.git ./plugins/reset-qianyu-plugin/```
 
 ## 使用说明
 
