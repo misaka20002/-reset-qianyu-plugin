@@ -49,17 +49,17 @@ export default class bilibili extends Bili {
             ]
         })
         this.e = e
-        this.task = [
-            {
-                name: 'pushdynamic',
-                fnc: 'pushdynamic',
-                cron: '0 */5 * * * *'
-            }, {
-                name: 'livepush',
-                fnc: 'livepush',
-                cron: '10 * * * * *'
-            }
-        ]
+        // this.task = [
+        //     {
+        //         name: 'pushdynamic',
+        //         fnc: 'pushdynamic',
+        //         cron: '0 */5 * * * *'
+        //     }, {
+        //         name: 'livepush',
+        //         fnc: 'livepush',
+        //         cron: '10 * * * * *'
+        //     }
+        // ]
     }
 
 
