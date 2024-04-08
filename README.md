@@ -1,4 +1,6 @@
 # 注意，主分支有重大bug各种报错和已经不能更新群表情，建议切换到分支before_pupp
+# 注意，主分支有重大bug各种报错和已经不能更新群表情，建议切换到分支before_pupp
+# 注意，主分支有重大bug各种报错和已经不能更新群表情，建议切换到分支before_pupp
 ```
 git checkout before_pupp
 ```
