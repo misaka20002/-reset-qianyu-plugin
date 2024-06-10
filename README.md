@@ -53,24 +53,20 @@ git clone --depth=1 git@github.com:misaka20002/-reset-qianyu-plugin.git ./plugin
 
 ## 帮助指令
 
+### 千羽设置
+
+![de4245252d0dd8cdf303c2131eb19cd9](https://github.com/misaka20002/-reset-qianyu-plugin/assets/40714502/fbbb3c10-766a-4e51-b496-aecde9c54f38)
+
+
 ### 千羽帮助
 
-![](https://gitee.com/think-first-sxs/qianyu-resources/raw/master/helpimg/qianyuhelp.jpg)
+![499e233bcd3141992d6b484fe6353ff4](https://github.com/misaka20002/-reset-qianyu-plugin/assets/40714502/bbcc5a48-7274-4858-bf70-1ccf5c4b7aac)
 
-### api 帮助
-
-![](https://gitee.com/think-first-sxs/qianyu-resources/raw/master/helpimg/apihelp.jpg)
 
 ## 免责声明
 
 1. 功能仅限内部交流与小范围使用，严禁将 qianyu-plugin 用于任何商业用途或盈利
 2. 图片与其他素材均来自于网络，仅供交流学习使用，如有侵权请联系，会立即删除
-
-## 其他
-
-- QQ 群
-  - qianyu-plugin 交流群 QQ 群：[860111915](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=ZJEKletp5HiYrz1T28nV21-xOXwlC89J&authKey=fYvmzDU8wu4moRw1GEc%2FVboJMDvQQV%2F6aIGGIz2elD5U53bOqGpC9YRz2k4Msvuy&noverify=0&group_code=860111915)
-- [爱发电](https://afdian.net/a/qianyu-plugin) :欢迎老板打赏
 
 ## 访问数量：
 
