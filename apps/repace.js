@@ -26,6 +26,10 @@ export default class repace extends Base {
     }
 
     async fd(e) {
+        if (e.msg?.startsWith('#')) {
+            // logger.info('消息以#开头，，不予理会')
+            return false
+        }
         if (!this.e.isGroup) return false
         if (this.Cfg[e.group_id]) {
             this.fdCfg = this.Cfg[e.group_id]
