@@ -42,6 +42,7 @@ export default class groupimg extends Base {
         groupList = this.Cfg !== null ? Object.keys(this.Cfg).filter(item => !fileterList.includes(item)) : []
     }
     async seeface(e) {
+        if (!e.isMaster) return false;
         let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
         let page = this.e.msg.replace("#查看所有表情", "") || 1
         let bqsum = imgData.length
@@ -62,6 +63,7 @@ export default class groupimg extends Base {
     }
 
     async filterimg(e) {
+        if (!e.isMaster) return false;
         let imgData = this.Data.getDataJson(`groupface/${e.group_id}-face`) || []
         this.reply("开始检测中，请稍等一段时间...")
         let deletetime = 0
@@ -110,7 +112,7 @@ export default class groupimg extends Base {
     }
 
     async deleteface(e) {
-        if (!e.source) {
+        if (!e.source || !e.isMaster) {
             return false
         }
         if (e.source.user_id == e.self_id) {
