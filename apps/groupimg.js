@@ -13,7 +13,6 @@ export default class groupimg extends Base {
                 {
                     reg: '^#查看所有表情',
                     fnc: 'seeface',
-                    permission: 'master'
                 },
                 {
                     reg: '^#?(哒|达)咩$',
