@@ -103,6 +103,7 @@ export default class wz extends Base {
     }
 
     async weiz(e) {
+        if (!e.isMaster) return true
         let cishu = this.Cfg.cishu
         if (!e.isGroup) {
             return false
@@ -213,6 +214,7 @@ export default class wz extends Base {
         return true
     }
     async stopwz(e) {
+        if (!e.isMaster) return true
         let iswz = await redis.get('qianyu:wz:iswz')
         let myuserinfo = JSON.parse(await redis.get('qianyu:wz:myinfo'))
         if (!iswz) {
