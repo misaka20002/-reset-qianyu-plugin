@@ -7,43 +7,43 @@ export default class bilibili extends Bili {
             name: 'bilibili',
             priority: 50,
             rule: [
-                {
-                    reg: '',
-                    fnc: 'bili',
-                    log: false
-                },
-                {
-                    reg: '^#历史b站视频',
-                    fnc: 'historyBilibiliVideo'
-                },
-                {
-                    reg: '^#设置b站ck',
-                    fnc: 'setCk'
-                },
-                {
-                    reg: '^#删除b站视频',
-                    fnc: 'deleteBilibili'
-                },
-                {
-                    reg: '^#订阅列表$',
-                    fnc: 'getPushList'
-                },
-                {
-                    reg: '^#订阅(UP|up|)(动态|)(uid:|UID:|)',
-                    fnc: 'setUpPush'
-                },
-                {
-                    reg: '^#取消订阅(UP|up|)(动态|)(uid:|UID:|)',
-                    fnc: 'delUpPush'
-                },
-                {
-                    reg: '^#查询(UP|up|)最新动态',
-                    fnc: 'getmydynamic'
-                },
-                {
-                    reg: '^#(取消|)直播推送全体',
-                    fnc: 'livepushall'
-                }
+                // {
+                //     reg: '',
+                //     fnc: 'bili',
+                //     log: false
+                // },
+                // {
+                //     reg: '^#历史b站视频',
+                //     fnc: 'historyBilibiliVideo'
+                // },
+                // {
+                //     reg: '^#设置b站ck',
+                //     fnc: 'setCk'
+                // },
+                // {
+                //     reg: '^#删除b站视频',
+                //     fnc: 'deleteBilibili'
+                // },
+                // {
+                //     reg: '^#订阅列表$',
+                //     fnc: 'getPushList'
+                // },
+                // {
+                //     reg: '^#订阅(UP|up|)(动态|)(uid:|UID:|)',
+                //     fnc: 'setUpPush'
+                // },
+                // {
+                //     reg: '^#取消订阅(UP|up|)(动态|)(uid:|UID:|)',
+                //     fnc: 'delUpPush'
+                // },
+                // {
+                //     reg: '^#查询(UP|up|)最新动态',
+                //     fnc: 'getmydynamic'
+                // },
+                // {
+                //     reg: '^#(取消|)直播推送全体',
+                //     fnc: 'livepushall'
+                // }
 
 
             ]
