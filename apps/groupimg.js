@@ -67,8 +67,8 @@ export default class groupimg extends Base {
         this.reply("开始检测中，请稍等一段时间...")
         let deletetime = 0
         for (let i in imgData) {
-            let rsp = await fetch(imgData[i].content.url)
-            if (rsp.status != 200) {
+            const response = await fetch(imgData[i].content.url)
+            if (response.status != 200 || await response.json().retcode < 0) {
                 deletetime++
                 imgData.splice(i, 1)
             }
