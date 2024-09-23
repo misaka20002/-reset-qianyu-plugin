@@ -64,7 +64,7 @@ export default class bilibili extends Bili {
 
 
     async init() {
-        this.File.DeleteAllFile('/resources/video')
+        // this.File.DeleteAllFile('/resources/video')
     }
 
     async setCk(e) {

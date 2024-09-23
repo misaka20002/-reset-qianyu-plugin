@@ -68,7 +68,7 @@ export default class groupimg extends Base {
         let deletetime = 0
         for (let i in imgData) {
             const response = await fetch(imgData[i].content.url)
-            if (response.status != 200 || await response.json().retcode < 0) {
+            if (response.status != 200 || await response.json()?.retcode < 0) {
                 deletetime++
                 imgData.splice(i, 1)
             }
