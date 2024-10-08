@@ -5,13 +5,11 @@
  * 
  * 这个插件要求你的ffmpeg所在的文件夹在PATH环境变量中
  * 原作者：https://gitee.com/Aliorpse/Yunzai-AliorpsePlugins/blob/master/bilitv.js#
- * 更新日期：2024年9月15日
+ * 更新日期：2024年10月9日
  */
 
 import plugin from '../../../lib/plugins/plugin.js'
 import _ from 'lodash'
-
-const returnVideo = true //视频解析是否返回原视频
 
 const regB23 = /b23\.tv\\?\/\w{7}/
 const regBV = /BV1\w{9}/
@@ -96,7 +94,8 @@ export class bilitv extends plugin {
                 e.reply("解析失败",true)
                 return true
             }
-        }else{
+        }
+        if(e.msg.match(regBV)){
             bvid = regBV.exec(e.msg)
         }
         let res = await fetch(`https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`,{
@@ -107,11 +106,10 @@ export class bilitv extends plugin {
         })
         res = await res.json()
         if(res.code != 0){
-            return e.reply("解析失败\n信息:" + res.message)
+            return e.reply(bvid + "解析失败\n信息:" + res.message)
         }else{
             e.reply([segment.image(res.data.pic),`${res.data.title}\nhttps://www.bilibili.com/video/${bvid}\n作者: ${res.data.owner.name}\n播放: ${formatNumber(res.data.stat.view)} | 弹幕: ${formatNumber(res.data.stat.danmaku)}\n点赞: ${formatNumber(res.data.stat.like)} | 投币: ${formatNumber(res.data.stat.coin)}\n收藏: ${formatNumber(res.data.stat.favorite)} | 评论: ${formatNumber(res.data.stat.reply)}`],true)
         }
-        if(!returnVideo){ return true }
         res = await fetch(`https://api.bilibili.com/x/player/playurl?avid=${res.data.aid}&cid=${res.data.cid}&qn=16&type=mp4&platform=html5`,{
             headers: {
                 'referer': 'https://www.bilibili.com/',
