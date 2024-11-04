@@ -12,59 +12,59 @@ export default class bilibili extends Bili {
                 //     fnc: 'bili',
                 //     log: false
                 // },
-                {
-                    reg: '^#历史b站视频',
-                    fnc: 'historyBilibiliVideo'
-                },
+                // {
+                //     reg: '^#历史b站视频',
+                //     fnc: 'historyBilibiliVideo'
+                // },
                 // {
                 //     reg: '^#设置b站ck',
                 //     fnc: 'setCk'
                 // },
-                {
-                    reg: '^#删除b站视频',
-                    fnc: 'deleteBilibili'
-                },
-                {
-                    reg: '^#订阅列表$',
-                    fnc: 'getPushList'
-                },
-                {
-                    reg: '^#订阅(UP|up|)(动态|)(uid:|UID:|)',
-                    fnc: 'setUpPush'
-                },
-                {
-                    reg: '^#取消订阅(UP|up|)(动态|)(uid:|UID:|)',
-                    fnc: 'delUpPush'
-                },
-                {
-                    reg: '^#查询(UP|up|)最新动态',
-                    fnc: 'getmydynamic'
-                },
-                {
-                    reg: '^#(取消|)直播推送全体',
-                    fnc: 'livepushall'
-                }
+                // {
+                //     reg: '^#删除b站视频',
+                //     fnc: 'deleteBilibili'
+                // },
+                // {
+                //     reg: '^#订阅列表$',
+                //     fnc: 'getPushList'
+                // },
+                // {
+                //     reg: '^#订阅(UP|up|)(动态|)(uid:|UID:|)',
+                //     fnc: 'setUpPush'
+                // },
+                // {
+                //     reg: '^#取消订阅(UP|up|)(动态|)(uid:|UID:|)',
+                //     fnc: 'delUpPush'
+                // },
+                // {
+                //     reg: '^#查询(UP|up|)最新动态',
+                //     fnc: 'getmydynamic'
+                // },
+                // {
+                //     reg: '^#(取消|)直播推送全体',
+                //     fnc: 'livepushall'
+                // }
 
 
             ]
         })
         this.e = e
-        this.task = [
-            {
-                name: 'pushdynamic',
-                fnc: 'pushdynamic',
-                cron: '0 */5 * * * *'
-            }, {
-                name: 'livepush',
-                fnc: 'livepush',
-                cron: '10 * * * * *'
-            }
-        ]
+        // this.task = [
+        //     {
+        //         name: 'pushdynamic',
+        //         fnc: 'pushdynamic',
+        //         cron: '0 */5 * * * *'
+        //     }, {
+        //         name: 'livepush',
+        //         fnc: 'livepush',
+        //         cron: '10 * * * * *'
+        //     }
+        // ]
     }
 
 
     async init() {
-        this.File.DeleteAllFile('/resources/video')
+        // this.File.DeleteAllFile('/resources/video')
     }
 
     async setCk(e) {
