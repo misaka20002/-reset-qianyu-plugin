@@ -8,7 +8,9 @@
  * 更新日期：2025年1月2日
  */
 
-import plugin from '../../lib/plugins/plugin.js'
+// 需要修改点： import plugin from '../../../lib/plugins/plugin.js'
+
+import plugin from '../../../lib/plugins/plugin.js'
 import _ from 'lodash'
 
 const regB23 = /(b23\.tv|bili2233.cn)\\?\/\w{7}/
